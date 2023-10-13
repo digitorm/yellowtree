@@ -1,0 +1,65 @@
+{% include 'spurit_po2_section_snippet', product: all_products[section.settings.selected_product], products: null %}
+
+{% render 'yt-loox_slider-css', section: section %}
+
+
+<section id="slider_{{section.id}}">
+<div class="container">
+    {%- if section.settings.heading_text != blank -%}
+    <div class="inner-content">
+        <h3 class="header">{{section.settings.heading_text}}</h3>
+    </div>
+    {%- endif -%}
+    <div 
+        id="looxCarousel" 
+        data-show-more="true" 
+        data-product-ids="{{ section.settings.selected_product.id }}"
+        data-mode="text"
+    ></div>
+</div>
+</section>
+
+{% schema %}
+{
+  "name": "Loox Slider Section",
+  "class": "loox-slider-section",
+  "settings": [
+    {
+        "type":"product",
+        "id":"selected_product",
+        "label":"Select Product"
+    },
+    {
+        "type":"textarea",
+        "id":"heading_text",
+        "label":"Heading Text"
+    },
+    {
+        "type":"text",
+        "id":"margin-top",
+        "label":"Margin Top"
+    },
+    {
+        "type":"text",
+        "id":"margin-bottom",
+        "label":"Margin Bottom"
+    },
+    {
+        "type":"text",
+        "id":"margin-top-mobile",
+        "label":"Margin Top Mobile"
+    },
+    {
+        "type":"text",
+        "id":"margin-bottom-mobile",
+        "label":"Margin Bottom Mobile"
+    }
+  ],
+"presets":[
+  {
+    "name":"Loox Slider Section",
+    "category":"Custom Section"
+  }
+]
+}
+{% endschema %}

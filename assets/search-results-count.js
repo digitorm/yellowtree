@@ -1,0 +1,1 @@
+(async()=>{var e=await import(window.theme.modules.baseComponent);customElements.define("search-results-count",class extends e.default{render(){this.listenTo("filterChange",(e,t)=>{this._update(t.html)})}_update(e){e=(new DOMParser).parseFromString(e,"text/html").querySelector("search-results-count");this.replaceChildren(...e.childNodes)}})})();

@@ -1,0 +1,227 @@
+
+
+{% assign input = section.settings %}
+
+{% assign yt_container = '#shopify-section-' | append: section.id %}
+
+<style>
+  
+  {{ yt_container }}.image-multi-setup section {
+    padding: 70px 0;
+    background-color: #f2cd1a2e;
+  }
+  {{ yt_container }}.image-multi-setup section h2 {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 45px;
+    margin-bottom: 40px;
+    margin-top: 40px;
+  }
+  {{ yt_container }} .image-container img.lazyloaded {
+    width: auto;
+    height: auto;
+    max-height: 100vh;
+    margin: 0 auto 30px;
+    max-width: 100%;
+    display: block;
+  }
+  {{ yt_container }} a.btn.landing-btn {
+    margin: 30px auto 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  {{ yt_container }} .image-container img.mobile {
+      display: none;
+  }
+  {{ yt_container }} .swiper-button-next:after,
+  {{ yt_container }} .swiper-button-prev:after {
+      font-size: 30px;
+      color: #000;
+  }
+  {{ yt_container }} span.custom-icon img {
+    max-width: 25px;
+    margin-left: 10px;
+  }
+  @media(max-width: 1199px){
+    {{ yt_container }}.image-multi-setup section h2 {
+      font-size: 35px;
+    }
+  }
+  @media(max-width: 768px){
+    {{ yt_container }} .image-container img.mobile {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+    {{ yt_container }} .image-container img.desktop{
+      display: none;
+=
+    }
+    {{ yt_container }}.image-multi-setup section h2 {
+      font-size: 21px;
+      margin-bottom: 20px;
+    }
+    {{ yt_container }}.image-multi-setup section {
+      padding: 20px 0;
+    }
+    {{ yt_container }}.image-multi-setup section h2 {
+      margin-top: 0;
+    }
+  }
+</style>
+<style>  
+  .yt2-image-setup section .inner-content > *{
+    transform: translateY(30px);
+  }
+</style>
+
+<script  type="lazyload2" defer>
+	function image_setup(){
+    let box = document.querySelector('#shopify-section-{{section.id}}');
+  
+    var sections = gsap.utils.toArray('#shopify-section-{{section.id}}.yt2-image-setup section .inner-content > *');
+      sections.forEach((section) => {      
+        ScrollTrigger.matchMedia({
+         "(min-width: 320px)": function() {
+              let topSecHeight = `${section.clientHeight}px`;
+              var full_sec_timeline = gsap.timeline({
+                scrollTrigger: {
+                  animation: full_sec_timeline,
+                  trigger: box,
+                  start: "start bottom",
+                  toggleActions: "restart none restart none",
+                  pinSpacing: true,
+                  invalidateOnRefresh: true
+                }
+              });
+  
+              full_sec_timeline.to(section, {
+                transform: "translateY(0px)",
+                duration: 1
+              });
+  
+          }
+        })
+      });
+  } 
+  image_setup();
+  
+</script>
+
+<section class="image-table_{{section.id}}">
+    <div class="container">
+        <div class="row">
+            <div class="inner-content">
+                <h2>
+                    {{ input.heading }}
+                </h2>
+                <div class="swiper the_image_swiper">
+                    
+                  <div class="swiper-wrapper">
+                    {% for block in section.blocks %}
+                    {% assign block_input = block.settings %}
+                        <div class="swiper-slide">
+                            <div class="inner-content">
+                                <div class="image-container">
+                                {% render 'yt-image-size', image: block_input.featured_image, class:"desktop" %}
+                                {% render 'yt-image-size', image: block_input.featured_mobile, class:"mobile" %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                    <!-- If we need navigation buttons -->
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+
+                {% if input.btn_url != blank %}
+                <div class="btn-cont">
+                    {% render 'btn-landing-page', url: input.btn_url, text: input.btn_text, custom_icon: input.enable_custom_icon, image: input.custom_icon %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="lazyload2">
+  function multi_image(){
+    var swiper = new Swiper("{{ yt_container }} .the_image_swiper", {
+      navigation: {
+        nextEl: "{{ yt_container }} .swiper-button-next",
+        prevEl: "{{ yt_container }} .swiper-button-prev",
+      },
+      breakpoints: {
+        320: {
+          slidesPerView: 1,
+          spaceBetween: 20
+        },
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 40
+        }
+      }
+    });
+  }
+  multi_image();
+  </script>
+
+{% schema %}
+{
+    "name":"Image Multi Setup",
+    "class":"image-multi-setup",
+    "settings":[
+        {
+            "type":"checkbox",
+            "id":"enable_custom_icon",
+            "label":"Enable Custom Icon"
+        },
+        {
+            "type":"image_picker",
+            "id":"custom_icon",
+            "label":"Custom Icon"
+        },
+        {
+            "type":"textarea",
+            "id":"heading",
+            "label":"Heading"
+        },
+        {
+            "type":"url",
+            "id":"btn_url",
+            "label":"Button Url"
+        },
+        {
+            "type":"text",
+            "id":"btn_text",
+            "label":"Button Url"
+        }
+    ],
+    "blocks":[
+        {
+          "type":"image",
+          "name":"Image",
+          "settings":[
+            {
+              "type":"image_picker",
+              "id":"featured_image",
+              "label":"Featured Image"
+            },
+            {
+              "type":"image_picker",
+              "id":"featured_mobile",
+              "label":"Featured Image Mobile"
+            }
+          ]
+        }
+    ],
+    "presets":[
+        {
+            "name":"Image Multi Setup",
+            "category":"Custom section"
+        }
+    ]
+}
+{% endschema %}

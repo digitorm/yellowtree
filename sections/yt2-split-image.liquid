@@ -1,0 +1,234 @@
+{% assign input = section.settings %}
+
+<section id="mb_{{section.id}}">
+    <div class="container">
+      	{% if input.heading != blank %}
+          <div class="row heading_text">
+            <h2 class="heading"> {{input.heading }}  </h2>
+          </div>
+      	{% endif %}
+        {% for block in section.blocks %}
+      
+      	{% if block.settings.image-display-pos == 'left' %}
+            <div class="row content-wrapper mb_{{ block.settings.image-display-pos }}">
+                <div class="col-12 col-md-6">
+                    <div class="inner-class">
+                      <div class="image-container">
+                        <a href="{{block.settings.url_link}}">
+                          {% render 'yt-image-size', image: block.settings.image-display %}
+                        </a>
+                       </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="inner-class text-display">
+                        <h4>{{block.settings.title-text}}</h4>
+                        <div class="text-content">{{block.settings.content-text}}</div>
+                        {% if block.settings.url_link != blank %}
+                      	{% render 'btn-landing-page', url: block.settings.url_link, text: block.settings.text_link %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+      	{% else %}
+      		<div class="row content-wrapper mb_{{ block.settings.image-display-pos }}">
+                <div class="col-12 col-md-6">
+                    <div class="inner-class  text-display">
+                        <h4>{{block.settings.title-text}}</h4>
+                        <div class="text-content">{{block.settings.content-text}}</div>
+                        {% if block.settings.url_link != blank %}
+                      	{% render 'btn-landing-page', url: block.settings.url_link, text: block.settings.text_link %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="inner-class">
+                      <div class="image-container">
+                        <a href="{{block.settings.url_link}}">
+                          {% render 'yt-image-size', image: block.settings.image-display %}
+                        </a>
+                      </div>
+                    </div>
+                </div>
+            </div>
+      
+      	{% endif %}
+      
+      
+        {% endfor %}
+      
+      	{% if input.btn_url != blank or input.btn_text != blank %}
+          <div class="row button_setup">
+            {% render 'yt2-btn-landing-page', url: input.btn_url, text: input.btn_text %}
+          </div>
+      	{% endif %}
+      
+    </div>
+</section>
+
+{% render 'yt2-split-image-css', input: input %}
+
+{% schema %}
+{
+    "name": "Split Image v2",
+	"class":"yt2-split-image-css",
+    "settings": [
+        {
+          "type": "header",
+          "content": "styling"
+        },
+        {
+          "type": "select",
+          "id": "title_font_weight",
+          "label": "Title Font Weight",
+          "options": [
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "600",
+              "label": "Bold"
+            },
+            {
+              "value": "900",
+              "label": "Bolder"
+            }
+          ],
+          "default": "400"
+        },
+        {
+          "type":"checkbox",
+          "id":"compress_text",
+          "label":"Compress Content",
+          "default": false
+        },
+        {
+            "type":"color",
+            "id":"back_color",
+            "label":"Background Color"
+        },
+        {
+            "type":"number",
+            "id":"section_spacing_top",
+            "label":"Section Spacing Top",
+            "default": 50
+        },
+        {
+            "type":"number",
+            "id":"section_spacing_bottom",
+            "label":"Section Spacing Bottom",
+            "default": 50
+        },
+        {
+            "type":"number",
+            "id":"section_spacing_top_mobile",
+            "label":"Section Spacing Top Mobile",
+            "default": 30
+        },
+        {
+            "type":"number",
+            "id":"section_spacing_bottom_mobile",
+            "label":"Section Spacing Bottom Mobile",
+            "default": 30
+        },
+        {
+            "type":"textarea",
+            "id":"heading",
+            "label":"Heading"
+        },
+        {
+            "type":"url",
+            "id":"btn_url",
+            "label":"Button Url"
+        },
+        {
+            "type":"text",
+            "id":"btn_text",
+            "label":"Button Text"
+        },
+        {
+            "type":"header",
+            "content": "mobile_styling"
+        },
+        {
+           "type" :"text",
+           "id" :"mob_text_align",
+           "label": "Mobile Text Align",
+           "default": "left",
+           "info": "left, right, center"
+        },
+        {
+            "type": "select",
+            "id": "image_positioning",
+            "label": "Image Positioning",
+            "options": [
+              {
+                "value": "mb_left",
+                "label": "Style 1"
+              },
+              {
+                "value": "mb_right",
+                "label": "Style 2"
+              }
+            ],
+            "default": "mb_left"
+        }
+        ],
+        "blocks":[
+            {
+            "name":"Image Split",
+            "type":"image-split",
+            "settings":[
+                {
+                    "type": "select",
+                    "id": "image-display-pos",
+                    "label": "Image Display",
+                    "options": [
+                        {
+                            "value": "right",
+                            "label": "Right Image"
+                        },
+                        {
+                            "value": "left",
+                            "label": "Left Image"
+                        }
+                ],
+                "default": "right"
+                },
+                {
+                    "type":"image_picker",
+                    "id":"image-display",
+                    "label":"Image Display"
+                },
+                {
+                    "type":"text",
+                    "id":"title-text",
+                    "label":"Title Text"
+                },
+                {
+                    "type":"textarea",
+                    "id":"content-text",
+                    "label":"Content"
+                },
+                {
+                    "type":"url",
+                    "id":"url_link",
+                    "label":"URL Link"
+                },
+                {
+                    "type":"text",
+                    "id":"text_link",
+                    "label":"URL Text"
+                }
+            ]
+            }
+        ],
+    "presets":[
+        {
+            "name":"Split Image v2",
+            "category":"Custom Section"
+        }
+    ]
+}
+{% endschema %}

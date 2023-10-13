@@ -1,0 +1,348 @@
+{%- liquid
+            assign on_sale = false
+            if product.compare_at_price_min > product.price_min
+                assign on_sale = true
+            endif
+            assign sold_out = true
+            if product.available
+                assign sold_out = false
+            endif
+            assign option_color_swatch = settings.option_color_swatch | downcase
+            assign url = ''
+            for option in product.options_with_values
+                assign option_name = option.name | downcase
+                if option_color_swatch contains option_name
+                    assign product_option = option
+                    assign index = forloop.index0
+                    assign position = forloop.index | minus: 1
+                    assign select = option.selected_value
+                    for variant in product.variants limit: 1
+                        if variant.image != null  
+                        assign url = variant.image.src
+                        endif
+                    endfor
+                    break
+                else 
+                    assign position = 0
+                endif
+            endfor
+            if sectionId == blank 
+                assign sectionId = section.id
+            endif
+        -%}
+
+
+{% liquid
+  assign product_form_id = 'product-form-' | append: section.id
+  assign current_variant = product.selected_or_first_available_variant
+  
+  for item in cart.items
+    if product.id == item.product_id and item.variant_id == current_variant.id
+      assign in_cart_qty = item.quantity
+      break
+    endif
+  endfor
+
+  if section.settings.gallery_padding
+    
+  endif
+%}
+
+<div id="product-{{product.id}}" class="row product-display">
+
+  <div class="col-md-6 left-content">
+    <div class="inner-content image-display addi-transition transition-left">
+      <div class="image-container slider-above-cont">
+        <div class="swiper slider-above slider-above-{{forloop.index}}" data-slide_selec="slider-above-{{forloop.index}}">
+          <div class="swiper-wrapper">
+			{% if section.settings.use_custom_images %}
+            
+              {% for block in section.blocks %}
+                {% if block.type == "image" %}
+                  <div class="swiper-slide active-{{ block.settings.input_equivalent }}" data-attr="{{ forloop.index }}">
+                    {% render 'yt-image-size', image: block.settings.image %}
+                  </div>
+                {% else %}
+                  <div class="swiper-slide active-{{ block.settings.input_equivalent }}" data-attr="{{ forloop.index }}">
+                    <video autoplay="false" loop="loop" muted="false" preload="metadata" controls="true" class="lazy-video" playsinline>
+                      	<source  data-src="{{ block.settings.video_url }}#t=0.001" type="video/mp4"></source>
+                    	<source  data-src="{{ block.settings.video_url }}" type="video/mov"></source>
+            		</video>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            
+            {% else %}
+              {% for media in product.media %}
+              {% case media.media_type %}
+              {% when 'image' %}
+              <div class="swiper-slide">
+                  {% render 'yt-image-size', image: media %}
+              </div>
+              {% when 'external_video' %}
+              <div class="swiper-slide">
+                <div class="thumb filter-{{ media.alt | handle }}">
+                  <div class="product-single__media" style="padding-top: 100%" data-media-id="{{ media.id }}">
+                    {{ media | external_video_tag: image_size: "1024x", loop: true}}
+                  </div>
+                </div>
+              </div>
+              {% when 'video' %}
+              <div class="swiper-slide">
+                <div class="thumb">
+                  <div class="product-single__media" style="padding-top: {{ 1 | divided_by: media.aspect_ratio | times: 100 }}%" data-media-id="{{ media.id }}">
+                    {{ media | video_tag: controls: true, loop: true, autoplay: false, image_size: "1024x" }}
+                  </div>
+                </div>
+              </div>
+              {% when 'model' %}
+              <div class="swiper-slide">
+              <div class="thum">
+                <div class="product-single__media model-viewer-click" style="padding-top: 100%" data-media-id="{{ media.id }}">
+                  {{ media | model_viewer_tag: image_size: '1024x', 
+                                    reveal: 'interaction', 
+                  toggleable: true, 
+                  data-model-id: media.id, 
+                  auto-rotate: true,
+                  id: 'paused-change-demo'
+                  }}
+                </div>
+                <div class="shopify-model-viewer-ui__controls-overlay">
+                  <div class="shopify-model-viewer-ui__button shopify-model-viewer-ui__button--poster" aria-label="Play 3D Viewer">
+                    <svg viewBox="0 0 60 60" id="threed-icon-button-control"><path fill="none" d="M0 0h60v60H0z"></path><path fill="currentColor" d="M40.4 22.57l-8.8-5.14a3.19 3.19 0 00-3.21 0l-8.8 5.14A3.24 3.24 0 0018 25.36v10.28a3.23 3.23 0 001.6 2.79l8.8 5.14a3.2 3.2 0 003.21 0l8.8-5.14A3.23 3.23 0 0042 35.64V25.36a3.24 3.24 0 00-1.6-2.79zM20.6 36.7a1.23 1.23 0 01-.6-1.06V25.36a1.23 1.23 0 01.6-1.06l8.8-5.14a1.19 1.19 0 011.19 0l8.8 5.14a1.2 1.2 0 01.36.34l-9.51 4.89a2.23 2.23 0 00-1.25 2V41.6z"></path></svg>
+                  </div>
+                </div>
+              </div>
+                </div>
+
+              {% else %}
+            <div class="swiper-slide">
+              <div class="thumb filter-{{ media.alt | handle }}">
+                <div class="product-single__media" data-media-id="{{ media.id }}">
+                  {{ media | media_tag }}
+                </div>
+              </div>
+              </div>
+              {% endcase %}
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="image-container slider-below-cont">
+        <div class="swiper slider-below slider-below-{{forloop.index}}" data-slide_selec="slider-below-{{forloop.index}}">
+          <div class="swiper-wrapper">
+            {% if section.settings.use_custom_images %}
+
+            {% for block in section.blocks %}
+            
+             {% if block.type == "image" %}
+              <div class="swiper-slide active-{{ block.settings.input_equivalent }}" data-attr="{{ forloop.index }}">
+                {% render 'yt-image-size', image: block.settings.image %}
+              </div>
+              {% else %}
+            	<div class="swiper-slide" data-attr="{{ forloop.index }}">
+                  {% render 'yt-image-size', image: block.settings.video_thumb %}
+                  <svg viewBox="0 0 200 200" id="icon-video-product">
+                    <circle cx="100" cy="100" r="90" fill="none" stroke-width="8"></circle>
+                    <polygon points="70, 50 70, 145 155, 100"></polygon>
+                  </svg>
+            	</div>
+              {% endif %}
+            {% endfor %}
+
+            {% else %}
+			{% for media in product.media %}
+            {% case media.media_type %}
+            {% when 'image' %}
+            <div class="swiper-slide">
+                {% render 'yt-image-size', image: media %}
+            </div>
+            {% when 'external_video' %}
+            <div class="swiper-slide">
+              <div class="thumb filter-{{ media.alt | handle }}">
+                <div class="product-single__media" style="padding-top: 100%" data-media-id="{{ media.id }}">
+                  {{ media | external_video_tag: image_size: "1024x", loop: true}}
+                  
+                </div>
+              </div>
+            </div>
+            {% when 'video' %}
+            <div class="swiper-slide">
+              <div class="item">
+                <div class="product-single__media" data-media-id="{{ media.id }}">
+                  <a href="javascript:void(0)" data-image="{{ product.images.first | img_url: '180x' }}" data-zoom-image="{{ product.images.first | img_url: '180x' }}">
+                    <img id="product-featured-image-{{image.id}}" class="product-single__thumbnail-image" src="{{ product.images.first | img_url: '180x' }}" alt="{{ media.alt }}">
+                    <svg viewBox="0 0 200 200" id="icon-video-product">
+                      <circle cx="100" cy="100" r="90" fill="none" stroke-width="8"></circle>
+                      <polygon points="70, 50 70, 145 155, 100"></polygon>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+            {% when 'model' %}
+            <div class="swiper-slide">
+            <div class="thum">
+              <div class="product-single__media model-viewer-click" style="padding-top: 100%" data-media-id="{{ media.id }}">
+                {{ media | model_viewer_tag: image_size: '1024x', 
+                                  reveal: 'interaction', 
+                toggleable: true, 
+                data-model-id: media.id, 
+                auto-rotate: true,
+                id: 'paused-change-demo'
+                }}
+              </div>
+              <div class="shopify-model-viewer-ui__controls-overlay">
+                <div class="shopify-model-viewer-ui__button shopify-model-viewer-ui__button--poster" aria-label="Play 3D Viewer">
+                  <svg viewBox="0 0 60 60" id="threed-icon-button-control"><path fill="none" d="M0 0h60v60H0z"></path><path fill="currentColor" d="M40.4 22.57l-8.8-5.14a3.19 3.19 0 00-3.21 0l-8.8 5.14A3.24 3.24 0 0018 25.36v10.28a3.23 3.23 0 001.6 2.79l8.8 5.14a3.2 3.2 0 003.21 0l8.8-5.14A3.23 3.23 0 0042 35.64V25.36a3.24 3.24 0 00-1.6-2.79zM20.6 36.7a1.23 1.23 0 01-.6-1.06V25.36a1.23 1.23 0 01.6-1.06l8.8-5.14a1.19 1.19 0 011.19 0l8.8 5.14a1.2 1.2 0 01.36.34l-9.51 4.89a2.23 2.23 0 00-1.25 2V41.6z"></path></svg>
+                </div>
+              </div>
+            </div>
+              </div>
+
+            {% else %}
+          	<div class="swiper-slide">
+            	<div class="thumb filter-{{ media.alt | handle }}">
+                  <div class="product-single__media" data-media-id="{{ media.id }}">
+                    {{ media | media_tag }}
+                  </div>
+                </div>
+            </div>
+            {% endcase %}
+            {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 right-content">
+    <div class="inner-content addi-transition transition-right">
+        <link rel="stylesheet" href="{{ 'product-meta-loading.css' | asset_url }}" media="print" onload="this.media='all'">
+        <noscript>{{ 'product-meta-loading.css' | asset_url | stylesheet_tag }}</noscript>
+        <product-meta-loading class="#product-meta-loading" section-id="{{ section.id }}">
+          {% render 'spinner' %}
+        </product-meta-loading>
+        <script type="module" src="{{ 'product-meta-loading.js' | asset_url }}"></script>
+      <div class="above-cont">
+        <a href="{{ product.url }}">
+          {% if section.settings.custom_product_title != blank %}
+          <h3 class="product-title">
+            {{ section.settings.custom_product_title }}
+          </h3>
+          {% else %}
+          <h3 class="product-title">
+            {{ product.title }}
+          </h3>
+          {% endif %}
+        </a>
+        
+        <div class="loox-rating" data-id="{{ section.settings.selected_product_for_review.id }}" data-rating="{{ section.settings.selected_product_for_review.metafields.loox.avg_rating }}" data-raters="{{ section.settings.selected_product_for_review.metafields.loox.num_reviews }}"></div>
+        
+      </div>
+
+      <div class="product_actions">
+        {% comment %}
+        <div class="price-box">
+          {% if on_sale %}
+          <div class="price-sale">
+            <span class="special-price pricing_state">
+              {% comment %}
+              	{% if product.price_varies %}{% render 'varies_from' %}{% endif %}{{ product.price_min | money }}
+               </span>
+              {% endcomment %}
+              <span class="label"> Sale Price </span>
+              {% if product.price_varies %}
+              	
+              <span class="money"> {{ product.selected_or_first_available_variant.price | money }} </span>
+              {% endif %}
+            
+            <span class="old-price pricing_state">
+              <span class="label"> List Price </span>
+              <span class="money"> {{ product.selected_or_first_available_variant.compare_at_price | money }} </span>
+            </span>
+            <span class="pricing_state">
+              <span class="label"> You save </span>
+              {% assign cur_price =  product.selected_or_first_available_variant.price %}
+              {% assign reg_price =  product.selected_or_first_available_variant.compare_at_price %}
+              {% assign floating_cur_price =  cur_price | times: 1.0 %}
+              {% assign floating_reg_price =  reg_price | times: 1.0 %}
+              {% assign discount = reg_price | minus: cur_price %}
+              {% assign percentage = floating_cur_price | divided_by: floating_reg_price | times: 100 %}
+              {% assign percentage_discount = 100 | minus: percentage %}
+              
+              <span class="money"> 
+                <span class="discount_price "> {{discount | money }} </span>
+                <span class="percentage_discount_price "> ( {{percentage_discount | round }}% )</span>
+              </span>
+            </span>
+          </div>
+          {% else %}
+          <div class="price-regular">
+            <span>{% if product.price_varies %}{% render 'varies_from' %}{% endif %}{{ product.price_min | money }}</span>
+          </div>
+          {% endif %}
+        </div>
+        
+        {% endcomment %}
+          {%- if current_variant -%}
+          <div class="#product-meta-price" {{ block.shopify_attributes }}>
+            {% render 'yt-product-price', product: product, variant: current_variant, block: block, align: align, show_save_price: true, show_titles: true, enablescripts: true %}
+          </div>
+          {%- endif -%}
+        
+        {% assign variantCount = product.variants | size %}
+        {% assign downcased_option = product.options_with_values[0].name | downcase %}
+        {% assign option_color_swatch = settings.option_color_swatch | downcase %}
+
+        
+        <div class="actions">
+          {%- if product != blank -%}
+          {%- unless product.has_only_default_variant -%}
+          	{% render 'product-variant-selector', product: product, type: 'swatch', color_swatches: true, color_first: true, align: align, product_form_id: product_form_id %} 
+          {%- endunless -%}
+          {%- endif -%}
+          
+          {% render 'product-form', product: product, in_cart_qty: in_cart_qty, current_variant: current_variant, dynamic_checkout: false, product_form_id: product_form_id, notify_me: section.settings.enable-notify-me
+          %} 
+        </div>
+        {% if section.settings.custom_product_description != blank %}
+          <div class="default-description">
+            {{section.settings.custom_product_description}}
+          </div>
+          {% endif %}
+    
+        {% if section.settings.bnpl != blank %}
+        <div class="bnpl">
+          {% render 'yt-image-size', image: section.settings.bnpl %}
+        </div>
+        {% endif %}
+          
+          
+          
+        {% if product.metafields.custom.pre_order_text_paragraph != blank %}
+          {{ product.metafields.custom.pre_order_text_paragraph }}
+        {% endif %}
+        
+        {% if product.metafields.custom.pre_order_text != blank %}
+         <div class="pre-order-date">
+         	{{ product.metafields.custom.pre_order_text }} 
+          </div>
+        {% endif %}
+        
+        {% if section.blocks.size >= 1 %}
+          {% for block in section.blocks %}
+              {% if block.type == 'selly' %}
+                  {% assign block_input = block.settings %}
+                  <noscript type="text/flag" class="tdfPlace{{ block_input.offer_name }}" data-offer-id="{{ block_input.offer_id }}"></noscript>
+              {% endif %}
+          {% endfor %}
+        {% endif %}
+
+      </div>
+      
+      
+    </div>
+  </div>
+</div>

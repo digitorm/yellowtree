@@ -1,0 +1,295 @@
+{% render 'yt-table-section-css' %}
+
+<section class="table-data">
+  <div class="container">
+    <div class="row">
+      <div class="inner-content col-12">
+        <h2>{{ section.settings.header_text }}</h2>
+      </div>
+    </div>
+    <div class="row row-2">
+      <div class="inner-content col-12">
+        {% for block in section.blocks %}
+
+{% if block.type == 'header_list' %}
+
+<div class="header_list list_type">
+  <ul>
+    {%- for head_list in (1..4) -%}
+      {%- assign list_text_handle = 'list_text_' | append: head_list -%}
+      {%- assign list_text = block.settings[list_text_handle] -%}
+      {%- assign list_image_handle = 'list_image_' | append: head_list -%}
+      {%- assign list_image = block.settings[list_image_handle] -%}
+      
+      <li> 
+        {%- if list_image != blank -%}
+          {%- render 'yt-image-size', image: list_image -%}
+        {%- else -%}
+          {%- if list_text != blank -%}
+          <p> {{list_text}} </p>
+          {%- endif -%}
+        {%- endif -%}
+      </li>
+     
+    {%- endfor -%}
+  </ul>
+</div>
+{% else %}
+<div class="content_list list_type">
+  <ul>
+    {%- for content_list in (1..4) -%}
+      {%- assign use_icon_handle = 'use_icon_' | append: content_list -%}
+      {%- assign use_icon = block.settings[use_icon_handle] -%}
+      {%- assign list_text_handle = 'list_text_' | append: content_list -%}
+      {%- assign list_text = block.settings[list_text_handle] -%}
+      {%- assign list_icon_handle = 'list_icon_' | append: content_list -%}
+      {%- assign list_icon = block.settings[list_icon_handle] -%}
+    	{% if list_text != blank or use_icon != blank %}
+      <li> 
+        {% if use_icon %}
+          <div class="icon-handler">
+            {% if list_icon == 'check' %}
+            <div class="check-icon icon-view">
+              {% render 'yt-check-icon'%}
+            </div>
+            {% else %}
+            <div class="wrong-icon">
+              {% render 'yt-wrong-icon'%}
+            </div>
+            {% endif %}
+          </div>
+        {% else %}
+            <p>{{list_text}}</p>
+        {% endif %}
+      </li>
+    	{% endif %}
+    {%- endfor -%}
+  </ul>
+</div>
+{% endif %}
+{% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+{% schema %}
+{
+  "name": "Table Section",
+  "class": "table-section",
+  "settings": [
+    {
+      "type":"textarea",
+      "id":"header_text",
+      "label":"Header Text"
+    }
+  ],
+  "blocks":[
+      {
+          "type":"header_list",
+          "name":"Header List",
+          "limit": 1,
+          "settings":[
+              {
+                "type":"header",
+                "content":"List 1",
+                "info":"Leave Image empty if not needed."
+              },
+              {
+                "type":"textarea",
+                "id":"list_text_1",
+                "label":"List Text 1"
+              },
+              {
+                "type":"image_picker",
+                "id":"list_image_1",
+                "label":"List Image 1"
+              },
+              {
+                "type":"header",
+                "content":"List 2",
+                "info":"Leave Image empty if not needed."
+              },
+              {
+                "type":"textarea",
+                "id":"list_text_2",
+                "label":"List Text 2"
+              },
+              {
+                "type":"image_picker",
+                "id":"list_image_2",
+                "label":"List Image 2"
+              },
+              {
+                "type":"header",
+                "content":"List 3",
+                "info":"Leave Image empty if not needed."
+              },
+              {
+                "type":"textarea",
+                "id":"list_text_3",
+                "label":"List Text 3"
+              },
+              {
+                "type":"image_picker",
+                "id":"list_image_3",
+                "label":"List Image 3"
+              },
+              {
+                "type":"header",
+                "content":"List 4",
+                "info":"Leave Image empty if not needed."
+              },
+              {
+                "type":"textarea",
+                "id":"list_text_4",
+                "label":"List Text 4"
+              },
+              {
+                "type":"image_picker",
+                "id":"list_image_4",
+                "label":"List Image 4"
+              }
+          ]
+      },
+      {
+        "type":"content_list",
+        "name":"Content List",
+        "settings":[
+            {
+              "type":"header",
+              "content":"List 1",
+              "info":"Turn ON the checkbox to use icons"
+            },
+            {
+              "type":"checkbox",
+              "id":"use_icon_1",
+              "label":"Use Icon"
+            },
+            {
+              "type":"textarea",
+              "id":"list_text_1",
+              "label":"List Text 1"
+            },
+            {
+              "type": "select",
+              "id": "list_icon_1",
+              "label": "Select Icon",
+              "options": [
+                {
+                  "value": "check",
+                  "label": "Check"
+                },
+                {
+                  "value": "wrong",
+                  "label": "Wrong"
+                }
+              ],
+              "default": "check"
+            },
+            {
+              "type":"header",
+              "content":"List 2",
+              "info":"Turn ON the checkbox to use icons"
+            },
+            {
+              "type":"checkbox",
+              "id":"use_icon_2",
+              "label":"Use Icon"
+            },
+            {
+              "type":"textarea",
+              "id":"list_text_2",
+              "label":"List Text 2"
+            },
+            {
+              "type": "select",
+              "id": "list_icon_2",
+              "label": "Select Icon",
+              "options": [
+                {
+                  "value": "check",
+                  "label": "Check"
+                },
+                {
+                  "value": "wrong",
+                  "label": "Wrong"
+                }
+              ],
+              "default": "check"
+            },
+            {
+              "type":"header",
+              "content":"List 3",
+              "info":"Turn ON the checkbox to use icons"
+            },
+            {
+              "type":"checkbox",
+              "id":"use_icon_3",
+              "label":"Use Icon"
+            },
+            {
+              "type":"textarea",
+              "id":"list_text_3",
+              "label":"List Text 3"
+            },
+            {
+              "type": "select",
+              "id": "list_icon_3",
+              "label": "Select Icon",
+              "options": [
+                {
+                  "value": "check",
+                  "label": "Check"
+                },
+                {
+                  "value": "wrong",
+                  "label": "Wrong"
+                }
+              ],
+              "default": "check"
+            },
+            {
+              "type":"header",
+              "content":"List 4",
+              "info":"Turn ON the checkbox to use icons"
+            },
+            {
+              "type":"checkbox",
+              "id":"use_icon_4",
+              "label":"Use Icon"
+            },
+            {
+              "type":"textarea",
+              "id":"list_text_4",
+              "label":"List Text 4"
+            },
+            {
+              "type": "select",
+              "id": "list_icon_4",
+              "label": "Select Icon",
+              "options": [
+                {
+                  "value": "check",
+                  "label": "Check"
+                },
+                {
+                  "value": "wrong",
+                  "label": "Wrong"
+                }
+              ],
+              "default": "check"
+            }
+        ]
+    }
+  ],
+"presets":[
+  {
+    "name":"Table Section",
+    "category":"Custom Section"
+  }
+]
+}
+{% endschema %}

@@ -1,0 +1,64 @@
+{% if request.page_type contains 'index' %}
+    <script>
+      window.routes = {
+        cart: '{{ routes.cart }}',
+        cart_add_url: '{{ routes.cart_add_url }}',
+        cart_change_url: '{{ routes.cart_change_url }}',
+        cart_update_url: '{{ routes.cart_update_url }}'
+      }
+      window.theme = {
+        i18n: {
+          addToCart: {{ 'products.product.add_to_cart' | t | json }},
+          soldOut: {{ 'products.product.sold_out' | t | json }},
+          unavailable: {{ 'products.product.unavailable' | t | json }},
+          subtotal: {{ 'sections.cart.subtotal' | t | json }},
+          loading: {{ 'accessibility.loading' | t | json }},
+        },
+        scripts: {
+          Plyr: 'https://cdn.plyr.io/3.6.8/plyr.js'
+        },
+        modules: {
+          utils: "{{ 'utils.js' | asset_url }}",
+          sellingPlanUtil: "{{ 'selling-plan-util.js' | asset_url }}",
+          baseComponent: "{{ 'base-component.js' | asset_url }}"
+        },
+        routes: {
+          predictiveSearch: "{{ routes.predictive_search_url }}"
+        }
+      };
+    </script>
+  {% else %}
+      <script type="">
+      window.routes = {
+        cart: '{{ routes.cart }}',
+        cart_add_url: '{{ routes.cart_add_url }}',
+        cart_change_url: '{{ routes.cart_change_url }}',
+        cart_update_url: '{{ routes.cart_update_url }}'
+      }
+      window.theme = {
+        i18n: {
+          addToCart: {{ 'products.product.add_to_cart' | t | json }},
+          soldOut: {{ 'products.product.sold_out' | t | json }},
+          unavailable: {{ 'products.product.unavailable' | t | json }},
+          subtotal: {{ 'sections.cart.subtotal' | t | json }},
+          loading: {{ 'accessibility.loading' | t | json }},
+        },
+        scripts: {
+          Plyr: 'https://cdn.plyr.io/3.6.8/plyr.js',
+          Swiper: 'https://unpkg.com/swiper@7/swiper-bundle.min.js'
+        },
+        styles: {
+          Swiper: 'https://unpkg.com/swiper@7/swiper-bundle.min.css'
+        },
+        modules: {
+          utils: "{{ 'utils.js' | asset_url }}",
+          swiper: "{{ 'swiper-module.js' | asset_url }}",
+          sellingPlanUtil: "{{ 'selling-plan-util.js' | asset_url }}",
+          baseComponent: "{{ 'base-component.js' | asset_url }}"
+        },
+        routes: {
+          predictiveSearch: "{{ routes.predictive_search_url }}"
+        }
+      };
+    </script>
+  {% endif %}

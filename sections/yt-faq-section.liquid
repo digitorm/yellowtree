@@ -1,0 +1,510 @@
+{% render 'yt-faq-css', section:section %}
+
+{% liquid
+  assign setting = section.settings
+%}
+
+<div id="faq-{{ section.id }}" class="faq-wrapper">
+  <div class="container">
+    {% if section.settings.enable_above_header %}
+    <div class="row above_header">
+      <div class="col-12">
+      <h2{% if setting.style == 'style_2' %} class="mb-0"{% endif %} style="color: {{ setting.t_color }};">
+        {{ setting.title }}
+      </h2>
+      </div>
+    </div>
+    {% endif %}
+    <div class="row align-items-{{ setting.v_align }}">
+      <div class="col {% if setting.style == 'style_2' %}col-lg-6 {% else %}fullwidth {% endif %}col-12">
+        <div class="section-title text-{{ section.settings.alignment }}">
+          {% if section.settings.enable_above_header == false %}
+          <h2{% if setting.style == 'style_2' %} class="mb-0"{% endif %} style="color: {{ setting.t_color }};">
+            {{ setting.title }}
+          </h2>
+          {% endif %}
+        </div>
+        {%- if setting.faq_banner -%}
+          {% assign col_count = setting.style | remove: 'style_' %}
+          <div class="img-wrapper">
+            {%- render 'eo-image-size', image: setting.faq_banner -%}
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="col {% if setting.style == 'style_2' %}col-lg-6 {% endif %}col-12 mb-0">
+        <div id="{{ section.id }}-faq-panel" class="faq-panel acc-panel">
+          {% assign index = 0 %}
+          {%- for block in section.blocks -%}
+            {% if block.settings.cat_title != blank %}
+              <div class="acc-category">
+                <h3 class="cat-title">{{ block.settings.cat_title }}</h3>
+                {{ block.settings.cat_decs }}
+              </div>
+            {% endif %}
+          
+            {% for i in (1..10) %}
+              {% assign index = index | plus: 1 %}
+              {% assign qID = 'question_' | append: i %}
+              {% assign question = block.settings[qID] %}
+              {% assign aID = 'answer_' | append: i %}
+              {% assign answer = block.settings[aID] %}
+          
+              {%- if question != blank and answer != blank -%}
+                <div class="acc-elems faq-{{ index }}">
+                  <div class="acc-title position-relative">
+                    <h4 class="text-uppercase mb-0 position-relative" style="color: {{ setting.acc_q_color }};">{{ question }}</h4>
+                    {%- if setting.show_icon -%}
+                    <span class="faq-icon">
+                      {% if setting.cust_icon != blank %}
+                        {{ setting.cust_icon }}
+                      {%- else -%}
+                        {% render 'icon-down' %}
+                      {%- endif -%}
+                    </span>
+                    {%- endif -%}
+                  </div>
+                  <div class="acc-content" style="display: none;">
+                    {{ answer }}
+                  </div>
+                </div>
+          	  {%- endif -%}
+            {% endfor %}
+          
+          {%- endfor -%}
+          
+          <div class="btn-update-setup">
+            {% render 'btn-landing-page', url: section.settings.btn_url, text: section.settings.btn_text %}
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script >
+  
+   window.addEventListener('load',function(){
+  	console.log('logged');  
+    function accordion_data(container){
+      let my_container = this.container = container;
+      my_container = `.${container} .acc-title`;
+
+      jQuery(my_container).click(function($){
+        jQuery(".acc-content").slideUp();
+        jQuery(".acc-title").removeClass('open');
+        jQuery(this).removeClass('open');
+        if(jQuery(this).siblings('.acc-content').is(":visible") == false){
+          jQuery(this).siblings('.acc-content').slideDown();
+          jQuery(this).addClass('open');
+        }
+      });
+    }
+
+
+    accordion_data('acc-panel');
+  })
+</script>
+
+{% schema %}
+  {
+    "name": "FAQ Section",
+	"class": "faq-section",
+	"tag": "section",
+    "settings": [
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "range",
+        "id": "wrap_width",
+        "label": "Custom wrapper width",
+        "unit": "%",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "default": 100,
+		"info": "Width"
+      },
+      {
+        "type": "select",
+        "id": "style",
+        "label": "Layout style",
+		"default": "style_1",
+        "options": [
+          {
+            "value": "style_1",
+            "label": "Style 1"
+          },
+          {
+            "value": "style_2",
+            "label": "Style 2"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_above_header",
+        "label": "Enable Above Header"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Section title",
+        "default": "FAQ"
+      },
+      {
+        "type": "color",
+        "id": "t_color",
+        "label": "Title color",
+        "default": "#000000"
+      },
+      {
+        "type": "range",
+        "id": "f_size",
+        "label": "Font-size",
+		"unit": "px",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "default": 38
+      },
+      {
+        "type": "range",
+        "id": "f_size_mb",
+        "label": "Mobile font-size",
+		"unit": "px",
+        "min": 1,
+        "max": 50,
+        "step": 1,
+        "default": 28
+      },
+      {
+        "type": "select",
+        "id": "alignment",
+        "label": "Alignment",
+		"default": "center",
+        "options": [
+          {
+            "value": "start",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "end",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "image_picker",
+        "id": "faq_banner",
+        "label": "FAQ banner"
+      },
+      {
+        "type": "select",
+        "id": "v_align",
+        "label": "Vertical alignment",
+		"default": "center",
+        "options": [
+          {
+            "value": "start",
+            "label": "Top"
+          },
+          {
+            "value": "center",
+            "label": "Middle"
+          },
+          {
+            "value": "end",
+            "label": "Bottom"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Block settings"
+      },
+      {
+        "type": "color",
+        "id": "acc_q_color",
+        "label": "Accordion question color",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "acc_a_color",
+        "label": "Accordion answer color",
+        "default": "#000000"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_icon",
+        "label": "Show icon",
+        "default": false
+      },
+      {
+        "type": "liquid",
+        "id": "cust_icon",
+        "label": "Custom icon",
+        "info": "SVG code for custom icon"
+      },
+      {
+        "type": "header",
+        "content": "Button"
+      },
+      {
+        "type": "text",
+        "id": "btn_text",
+        "label": "Button Text"
+      },
+      {
+        "type": "url",
+        "id": "btn_url",
+        "label": "Button Url"
+      },
+      {
+        "type": "header",
+        "content": "Spacing settings",
+        "info": "Top and bottom padding"
+      },
+      {
+        "type": "range",
+        "id": "pad_desk",
+        "label": "Dektop",
+        "unit": "px",
+        "min": 10,
+        "max": 250,
+        "step": 10,
+        "default": 100,
+		"info": "Padding"
+      },
+      {
+        "type": "range",
+        "id": "pad_lap",
+        "label": "Laptop",
+        "unit": "px",
+        "min": 10,
+        "max": 250,
+        "step": 10,
+        "default": 80,
+		"info": "Padding"
+      },
+      {
+        "type": "range",
+        "id": "pad_tab",
+        "label": "Tablet",
+        "unit": "px",
+        "min": 10,
+        "max": 250,
+        "step": 10,
+        "default": 60,
+		"info": "Padding"
+      },
+      {
+        "type": "range",
+        "id": "pad_mob",
+        "label": "Mobile",
+        "unit": "px",
+        "min": 10,
+        "max": 250,
+        "step": 10,
+        "default": 40,
+		"info": "Padding"
+      }
+	],
+    "blocks": [
+      {
+        "type": "qa",
+        "name": "Qusetion and Answer",
+        "settings": [
+          {
+            "type": "text",
+            "id": "cat_title",
+            "label": "Category title"
+          },
+          {
+            "type": "richtext",
+            "id": "cat_decs",
+            "label": "Category description"
+          },
+          {
+            "type": "header",
+            "content": "Question 1"
+          },
+          {
+            "type": "text",
+            "id": "question_1",
+            "label": "Question",
+            "default": "Question?"
+          },
+          {
+            "type": "richtext",
+            "id": "answer_1",
+            "label": "Answer",
+			"default": "<p>Answer here.</p>"
+          },
+          {
+            "type": "header",
+            "content": "Question 2"
+          },
+          {
+            "type": "text",
+            "id": "question_2",
+            "label": "Question",
+            "default": "Question?"
+          },
+          {
+            "type": "richtext",
+            "id": "answer_2",
+            "label": "Answer",
+			"default": "<p>Answer here.</p>"
+          },
+          {
+            "type": "header",
+            "content": "Question 3"
+          },
+          {
+            "type": "text",
+            "id": "question_3",
+            "label": "Question",
+            "default": "Question?"
+          },
+          {
+            "type": "richtext",
+            "id": "answer_3",
+            "label": "Answer",
+			"default": "<p>Answer here.</p>"
+          },
+          {
+            "type": "header",
+            "content": "Question 4"
+          },
+          {
+            "type": "text",
+            "id": "question_4",
+            "label": "Question",
+            "default": "Question?"
+          },
+          {
+            "type": "richtext",
+            "id": "answer_4",
+            "label": "Answer",
+			"default": "<p>Answer here.</p>"
+          },
+          {
+            "type": "header",
+            "content": "Question 5"
+          },
+          {
+            "type": "text",
+            "id": "question_5",
+            "label": "Question",
+            "default": "Question?"
+          },
+          {
+            "type": "richtext",
+            "id": "answer_5",
+            "label": "Answer",
+			"default": "<p>Answer here.</p>"
+          },
+          {
+            "type": "header",
+            "content": "Question 6"
+          },
+          {
+            "type": "text",
+            "id": "question_6",
+            "label": "Question",
+            "default": "Question?"
+          },
+          {
+            "type": "richtext",
+            "id": "answer_6",
+            "label": "Answer",
+			"default": "<p>Answer here.</p>"
+          },
+          {
+            "type": "header",
+            "content": "Question 7"
+          },
+          {
+            "type": "text",
+            "id": "question_7",
+            "label": "Question",
+            "default": "Question?"
+          },
+          {
+            "type": "richtext",
+            "id": "answer_7",
+            "label": "Answer",
+			"default": "<p>Answer here.</p>"
+          },
+          {
+            "type": "header",
+            "content": "Question 8"
+          },
+          {
+            "type": "text",
+            "id": "question_8",
+            "label": "Question",
+            "default": "Question?"
+          },
+          {
+            "type": "richtext",
+            "id": "answer_8",
+            "label": "Answer",
+			"default": "<p>Answer here.</p>"
+          },
+          {
+            "type": "header",
+            "content": "Question 9"
+          },
+          {
+            "type": "text",
+            "id": "question_9",
+            "label": "Question",
+            "default": "Question?"
+          },
+          {
+            "type": "richtext",
+            "id": "answer_9",
+            "label": "Answer",
+			"default": "<p>Answer here.</p>"
+          },
+          {
+            "type": "header",
+            "content": "Question 10"
+          },
+          {
+            "type": "text",
+            "id": "question_10",
+            "label": "Question",
+            "default": "Question?"
+          },
+          {
+            "type": "richtext",
+            "id": "answer_10",
+            "label": "Answer",
+			"default": "<p>Answer here.</p>"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "FAQ Section",
+        "category": "YT Custom Section",
+		"blocks": [
+			{ "type": "qa" }
+		]
+      }
+    ]
+  }
+{% endschema %}

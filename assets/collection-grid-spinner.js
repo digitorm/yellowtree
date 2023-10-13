@@ -1,0 +1,1 @@
+(async()=>{const{setActive:t,unsetActive:e}=await import(window.theme.modules.utils);var i=await import(window.theme.modules.baseComponent);customElements.define("collection-grid-spinner",class extends i.default{render(){this.on("filterUpadting",()=>t(this)),this.on("filterChange",()=>e(this)),this.on("sortChange",()=>e(this))}})})();

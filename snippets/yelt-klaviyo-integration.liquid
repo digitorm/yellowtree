@@ -1,0 +1,106 @@
+<script type="lazyload2" data-src="//static.klaviyo.com/onsite/js/klaviyo.js?company_id=Yq3iNQ"></script>
+<script type="lazyload2">
+ var _learnq = _learnq || [];
+ if ('{{ customer.email }}') {
+   _learnq.push(['identify', {
+       '$email' : '{{ customer.email }}'
+     }]);
+  }
+</script>
+{% if request.page_type contains 'product' %}
+<script type="lazyload2">
+  var _learnq = _learnq || [];
+
+  var item = {
+    Name: {{ product.title|json }},
+    ProductID: {{ product.id|json }},
+    Categories: {{ product.collections|map:'title'|json }},
+    ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+    URL: "{{ shop.secure_url }}{{ product.url }}",
+    Brand: {{ product.vendor|json }},
+    Price: {{ product.price|money|json }},
+    CompareAtPrice: {{ product.compare_at_price_max|money|json }}
+  };
+
+  _learnq.push(['track', 'Viewed Product', item]);
+  _learnq.push(['trackViewedItem', {
+    Title: {{ product.title|json }},
+    ItemId: {{ product.id|json }},
+    Categories: {{ product.collections|map:'title'|json }},
+    ImageUrl: "https:{{ product.featured_image.src|img_url:'grande' }}",
+    Url: "{{ shop.secure_url }}{{ product.url }}",
+    Metadata: {
+      Brand: {{ product.vendor|json }},
+      Price: {{ product.price|money|json }},
+      CompareAtPrice: {{ product.compare_at_price_max|money|json }}
+    }
+  }]);
+  
+  
+</script>
+{% endif %}
+
+{% if request.page_type contains 'product' or request.page_type contains 'collection' %}
+<script type="lazyload2">
+
+    var _learnq = _learnq || [];
+    function addedToCart(addedItem = null) {
+      fetch(`${window.location.origin}/cart.js`)
+      .then(res => res.clone().json().then(data => {
+        var cart = {
+          total_price: data.total_price/100,
+          $value: data.total_price/100,
+          total_discount: data.total_discount,
+          original_total_price: data.original_total_price/100,
+          items: data.items
+        }
+          if (addedItem !== null) {
+            cart = Object.assign(cart, addedItem)
+          }
+          
+          console.log(cart);
+
+        _learnq.push(['track', 'Added to Cart', cart])
+      }))
+    } 
+    (function (ns, fetch) {
+      ns.fetch = function() {
+        const response = fetch.apply(this, arguments);
+        response.then(res => {
+          if (`${window.location.origin}/cart/add.js`
+              .includes(res.url)) {
+              var added_item = {
+                Name: {{ product.title|json }},
+                ProductID: {{ product.id|json }},
+                Categories: {{ product.collections|map:'title'|json }},
+                ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+                URL: "{{ shop.secure_url }}{{ product.url }}",
+                Brand: {{ product.vendor|json }},
+                Price: {{ product.price|money|json }},
+                CompareAtPrice: {{ product.compare_at_price_max|money|json }}
+              };
+                addedToCart(added_item)
+          }
+        });
+        return response
+      }
+    }(window, window.fetch))
+    $(document).ajaxComplete(function(event, request, settings){
+      if(settings != undefined){
+      if(settings.url == "/cart/add.js"){
+
+        let req_res = request.responseJSON;
+        let added_item = {
+            Name: req_res.product_title,
+            ProductID: req_res.product_id,
+            ImageURL: req_res.image,
+            URL: req_res.url,
+            Brand: req_res.vendor,
+            Price: req_res.price / 100,
+        };
+        addedToCart(added_item);
+      }
+      }
+    })
+</script>
+{% endif %}

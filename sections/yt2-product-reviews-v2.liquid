@@ -1,0 +1,111 @@
+{% include 'spurit_po2_section_snippet', product: all_products[section.settings.product], products: null %}
+
+
+{% assign input = section.settings %}
+{% assign product = input.product %}
+<style>
+  #shopify-section-{{ section.id }} .row.reviews-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #000;
+    color: #fff;
+    padding: 40px;
+  }
+  #shopify-section-{{ section.id }} .row.reviews-slider div {
+    height: 600px;
+  }
+  #shopify-section-{{ section.id }} .loox-rating .loox-icon {
+    color: #ffd015;
+    font-size: 35px;
+  }
+  #shopify-section-{{ section.id }} .loox-rating {
+    margin: 10px 0;
+    position: relative;
+  }
+  #shopify-section-{{ section.id }} .loox-rating span {
+    position: absolute;
+    font-size: 10px;
+  }
+  #shopify-section-{{ section.id }} .join-setup {
+    font-size: 20px;
+    line-height: 1.6;
+  }
+  #shopify-section-{{ section.id }} .real-people {
+    font-size: 35px;
+    font-weight: 900;
+    line-height: 1.6;
+  }
+  @media(max-width: 767px){
+    #shopify-section-{{ section.id }} .loox-rating .loox-icon {
+      font-size: 20px;
+    }
+    #shopify-section-{{ section.id }} .join-setup {
+      font-size: 13px;
+    }
+    #shopify-section-{{ section.id }} .real-people {
+      font-size: 20px;
+    }
+    #shopify-section-{{ section.id }} .row.reviews-slider div {
+      height: 530px;
+    }
+  }
+  
+</style>
+<section id="prod_rev_v2">
+  <div class="container-fluid">
+    <div class="row reviews-display">
+        <div class="image-container">
+          <div class="loox-rating" data-id="{{ product.id }}" data-rating="{{ product.metafields.loox.avg_rating }}" data-raters="{{ product.metafields.loox.num_reviews }}"></div>
+        </div>
+        <div class="join-setup">
+          {{ input.sub_text }}
+        </div>
+        <div class="real-people">
+          {{ input.head_text }}
+        </div>
+    </div>
+    <div class="row reviews-slider">
+        <div class="">
+        <iframe src="https://loox.io/widget/4JZeaJ2hKq/v2/carousel?slideType=card&amp;maxWidth=1100&amp;borderRadius=8&amp;itemsPerView=3&amp;imageRatio=0.72&amp;maxNumberOfCharacters=100&amp;reviewerNameColor=000000&amp;textColor=000000&amp;itemBackgroundColor=ffffff&amp;starsBackgroundColor=ffffff&amp;arrows[backgroundColor]=FFFFFF&amp;arrows[iconColor]=9A9A9A&amp;arrows[hideOnMobile]=yes&amp;shadow=offset-dark&amp;border[active]=no&amp;border[width]=2&amp;border[color]=000000&amp;pagination[active]=no&amp;autoplay[active]=no&amp;productIds={{product.id}}&amp;frameId=LOOX-V2_CAROUSEL-782551410&amp;h=1657163962004&amp;preview=no&amp;customerLocale=en" width="100%" height="100%" id="LOOX-V2_CAROUSEL-782551410_FRAME" data-last-change="{&quot;slideType&quot;:&quot;card&quot;,&quot;maxWidth&quot;:&quot;1100&quot;,&quot;borderRadius&quot;:&quot;8&quot;,&quot;itemsPerView&quot;:&quot;4&quot;,&quot;imageRatio&quot;:&quot;0.72&quot;,&quot;maxNumberOfCharacters&quot;:&quot;100&quot;,&quot;reviewerNameColor&quot;:&quot;000000&quot;,&quot;textColor&quot;:&quot;000000&quot;,&quot;itemBackgroundColor&quot;:&quot;ffffff&quot;,&quot;starsBackgroundColor&quot;:&quot;ffffff&quot;,&quot;arrows&quot;:{&quot;backgroundColor&quot;:&quot;FFFFFF&quot;,&quot;iconColor&quot;:&quot;9A9A9A&quot;,&quot;hideOnMobile&quot;:&quot;yes&quot;},&quot;shadow&quot;:&quot;offset-dark&quot;,&quot;border&quot;:{&quot;active&quot;:&quot;no&quot;,&quot;width&quot;:&quot;2&quot;,&quot;color&quot;:&quot;000000&quot;},&quot;pagination&quot;:{&quot;active&quot;:&quot;no&quot;},&quot;autoplay&quot;:{&quot;active&quot;:&quot;no&quot;},&quot;productIds&quot;:&quot;{{product.id}}&quot;,&quot;frameId&quot;:&quot;LOOX-V2_CAROUSEL-782551410&quot;,&quot;h&quot;:&quot;1657163962004&quot;,&quot;preview&quot;:&quot;no&quot;,&quot;customerLocale&quot;:&quot;en&quot;}" 
+        style="display:block;border:0;overflow:hidden;height:100%;width:100%;"></iframe>
+        </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+    "name":"YT2 Product Review v2",
+    "class":"yt2-product-review-v2",
+    "settings":[
+        {
+            "type":"header",
+            "content":"Badge Text"
+        },
+        {
+            "type":"textarea",
+            "id":"head_text",
+            "label":"Head Text"
+        },
+        {
+            "type":"textarea",
+            "id":"sub_text",
+            "label":"Sub Text"
+        },
+        {
+            "type":"product",
+            "id":"product",
+            "label":"Product"
+        }
+    ],
+    "presets":[
+        {
+            "name":"YT2 Product Review v2",
+            "category":"Custom Section"
+        }
+    ]
+}
+
+{% endschema %}

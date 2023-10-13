@@ -1,0 +1,1 @@
+(async()=>{var e=await import(window.theme.modules.baseComponent);customElements.define("currency-selector",class extends e.default{elements={form:"form"};render(){this.$form.addEventListener("change",e=>e.target.form.submit())}})})();

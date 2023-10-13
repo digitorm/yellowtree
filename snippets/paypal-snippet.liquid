@@ -1,0 +1,58 @@
+<style>
+  .paypal-four-payment {
+    display: flex;
+    align-items: center;
+    opacity: 0;
+  }
+  .content-here p {
+    font-size: 14px;
+    text-align: center;
+    margin: 0;
+  }
+  .content-here p span.price_upd {
+    font-weight: 900;
+  }
+  .paypal-four-payment .image-container {
+    max-width: 80px;
+    margin-left: 10px;
+  }
+  .paypal-four-payment img {
+    width: 100%;
+    height: auto;
+  }
+  @media(max-width: 767px){
+    .paypal-four-payment {
+        flex-flow: row wrap;
+        gap: 5px;
+        margin-top: 10px;
+    }
+  }
+</style>
+<div class="paypal-four-payment">
+    <div class="content-here">
+        <p>Pay in 4 interest-free payments of <span class="price_upd"> $ </span> with  </p>
+    </div>
+    <div class="image-container">
+        {% render 'yt-image-size', image: block.settings.image %}
+    </div>
+</div>
+
+<script>
+ document.addEventListener("DOMContentLoaded", function(){
+  document.querySelectorAll(".paypal-four-payment").forEach(el => {
+    el.style.opacity = "1";
+  });
+   let cont = document.querySelector(".reg-price .reg-value").textContent.trim();
+   let initial_final_price = (parseFloat(cont.replace('$', '')) / 4.00).toFixed(2);
+   document.querySelector(".paypal-four-payment .price_upd").innerText = `$${initial_final_price}`;
+
+  document.querySelector(".product-wrapper").addEventListener("DOMSubtreeModified", function() {
+      let price = this.querySelector(".reg-price .reg-value").textContent.trim();
+      let final_price = (parseFloat(price.replace('$', '')) / 4.00).toFixed(2);
+      document.querySelector(".paypal-four-payment .price_upd").textContent = `$${final_price}`;
+  });
+   
+ });
+
+
+</script>

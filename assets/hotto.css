@@ -1,0 +1,40 @@
+body.hotto-infrared-heater .\#main-nav-container,
+body.hotto-infrared-heater .\#main-header-toolbar,
+body.hotto-infrared-heater .loox-float-toggler,
+#shopify-section-announcement-bar {
+  display: none;
+}
+body.hotto-infrared-heater .\#main-header-inner {
+  padding-bottom: calc(var(--spacer)*1.5);
+}
+body.hotto-infrared-heater .\#main-header-inner-container {
+  justify-content: center;
+}
+.hotto-infrared-heater .loox-slider-section .inner-content h3.header {
+    font-weight: 900;
+}
+.hotto-infrared-heater .loox-slider-section .inner-content .review-count {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+.hotto-infrared-heater .loox-slider-section .inner-content p {
+  font-size: 18px;
+  color: #fff;
+}
+body.hotto-infrared-heater .color {
+  color: #ffc405;
+}
+body.hotto-infrared-heater .loox-slider-section {
+   background-color: #fed30059;
+}
+html {
+  padding-bottom: 0 !important;
+}
+body.hotto-infrared-heater .\#button:not(.\@ghost):not(.\@link)::after, 
+body.hotto-infrared-heater .\#button:not(.\@ghost):not(.\@link)::before {
+  background: #94b558;
+  opacity: 1;
+}
+body.hotto-infrared-heater .\#hero .\#button-group .\#button {
+  color: #fff;
+}

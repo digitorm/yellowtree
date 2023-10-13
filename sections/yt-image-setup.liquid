@@ -1,0 +1,138 @@
+
+
+{% assign input = section.settings %}
+
+{% assign yt_container = '#shopify-section-' | append: section.id %}
+
+<style>
+  
+  {{ yt_container }}.yt2-image-setup section {
+    padding: 70px 0;
+    background-color: #f2cd1a2e;
+  }
+  {{ yt_container }}.yt2-image-setup section h2 {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 45px;
+    margin-bottom: 40px;
+    margin-top: 40px;
+  }
+  {{ yt_container }} .image-container img.lazyloaded {
+    width: 100%;
+    height: auto;
+  }
+  {{ yt_container }} a.btn.landing-btn {
+    margin: 30px auto 10px;
+    display: block;
+  }
+  @media(max-width: 1199px){
+    {{ yt_container }}.yt2-image-setup section h2 {
+      font-size: 35px;
+    }
+  }
+  @media(max-width: 768px){
+    {{ yt_container }}.yt2-image-setup section h2 {
+      font-size: 25px;
+      margin-bottom: 20px;
+    }
+    {{ yt_container }}.yt2-image-setup section {
+      padding: 20px 0;
+    }
+    {{ yt_container }}.yt2-image-setup section h2 {
+      margin-top: 0;
+    }
+  }
+</style>
+<style>  
+  .yt2-image-setup section .inner-content > *{
+    transform: translateY(30px);
+  }
+</style>
+
+<script  type="lazyload2" >
+	function image_setup(){
+    let box = document.querySelector('#shopify-section-{{section.id}}');
+  
+    var sections = gsap.utils.toArray('#shopify-section-{{section.id}}.yt2-image-setup section .inner-content > *');
+      sections.forEach((section) => {      
+        ScrollTrigger.matchMedia({
+         "(min-width: 320px)": function() {
+              let topSecHeight = `${section.clientHeight}px`;
+              var full_sec_timeline = gsap.timeline({
+                scrollTrigger: {
+                  animation: full_sec_timeline,
+                  trigger: box,
+                  start: "start bottom",
+                  toggleActions: "restart none restart none",
+                  pinSpacing: true,
+                  invalidateOnRefresh: true
+                }
+              });
+  
+              full_sec_timeline.to(section, {
+                transform: "translateY(0px)",
+                duration: 1
+              });
+  
+          }
+        })
+      });
+  } 
+  image_setup();
+  
+</script>
+
+<section class="image-table_{{section.id}}">
+    <div class="container">
+        <div class="row">
+            <div class="inner-content">
+                <h2>
+                    {{ input.heading }}
+                </h2>
+                <div class="image-container">
+                    {% render 'yt-image-size', image: input.featured_image %}
+                </div>
+                {% if input.btn_url != blank and input.btn_text != blank %}
+                <div class="btn-cont">
+                    {% render 'btn-landing-page', url: input.btn_url, text: input.btn_text %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+    "name":"Image Setup v1",
+    "class":"yt2-image-setup v1",
+    "settings":[
+        {
+            "type":"textarea",
+            "id":"heading",
+            "label":"Heading"
+        },
+        {
+            "type":"image_picker",
+            "id":"featured_image",
+            "label":"Featured Image"
+        },
+        {
+            "type":"url",
+            "id":"btn_url",
+            "label":"Button Url"
+        },
+        {
+            "type":"text",
+            "id":"btn_text",
+            "label":"Button Url"
+        }
+    ],
+    "presets":[
+        {
+            "name":"Image Setup v1",
+            "category":"Custom section"
+        }
+    ]
+}
+{% endschema %}

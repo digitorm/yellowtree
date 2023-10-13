@@ -1,0 +1,139 @@
+<section id="mb_{{section.id}}">
+    <div class="container">
+        {% for block in section.blocks %}
+      
+      	{% if block.settings.image-display-pos == 'left' %}
+            <div class="row content-wrapper mb_{{ block.settings.image-display-pos }}">
+                <div class="col-12 col-md-6">
+                    <div class="inner-class">
+                      <div class="image-container">
+                        <a href="{{block.settings.url_link}}">
+                          {% render 'yt-image-size', image: block.settings.image-display %}
+                        </a>
+                       </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="inner-class text-display">
+                        <h2>{{block.settings.title-text}}</h2>
+                        <div class="text-content">{{block.settings.content-text}}</div>
+                      	{% render 'btn-landing-page', url: block.settings.url_link, text: block.settings.text_link %}
+                    </div>
+                </div>
+            </div>
+      	{% else %}
+      		<div class="row content-wrapper mb_{{ block.settings.image-display-pos }}">
+                <div class="col-12 col-md-6">
+                    <div class="inner-class  text-display">
+                        <h2>{{block.settings.title-text}}</h2>
+                        <div class="text-content">{{block.settings.content-text}}</div>
+                      	{% render 'btn-landing-page', url: block.settings.url_link, text: block.settings.text_link %}
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="inner-class">
+                      <div class="image-container">
+                        <a href="{{block.settings.url_link}}">
+                          {% render 'yt-image-size', image: block.settings.image-display %}
+                        </a>
+                      </div>
+                    </div>
+                </div>
+            </div>
+      
+      	{% endif %}
+      
+      
+        {% endfor %}
+    </div>
+</section>
+
+{% render 'yt-split-image-css' %}
+
+{% schema %}
+{
+    "name": "Split Image",
+	"class":"yt-split-image-css",
+    "settings": [
+        {
+            "type":"number",
+            "id":"section_spacing_top",
+            "label":"Section Spacing Top",
+            "default": 50
+        },
+        {
+            "type":"number",
+            "id":"section_spacing_bottom",
+            "label":"Section Spacing Bottom",
+            "default": 50
+        },
+        {
+            "type":"number",
+            "id":"section_spacing_top_mobile",
+            "label":"Section Spacing Top Mobile",
+            "default": 30
+        },
+        {
+            "type":"number",
+            "id":"section_spacing_bottom_mobile",
+            "label":"Section Spacing Bottom Mobile",
+            "default": 30
+        }
+        ],
+        "blocks":[
+            {
+            "name":"Image Split",
+            "type":"image-split",
+            "settings":[
+                {
+                    "type": "select",
+                    "id": "image-display-pos",
+                    "label": "Image Display",
+                    "options": [
+                        {
+                            "value": "right",
+                            "label": "Right Image"
+                        },
+                        {
+                            "value": "left",
+                            "label": "Left Image"
+                        }
+                ],
+                "default": "right"
+                },
+                {
+                    "type":"image_picker",
+                    "id":"image-display",
+                    "label":"Image Display"
+                },
+                {
+                    "type":"text",
+                    "id":"title-text",
+                    "label":"Title Text"
+                },
+                {
+                    "type":"textarea",
+                    "id":"content-text",
+                    "label":"Content"
+                },
+                {
+                    "type":"url",
+                    "id":"url_link",
+                    "label":"URL Link"
+                },
+                {
+                    "type":"text",
+                    "id":"text_link",
+                    "label":"URL Text"
+                }
+            ]
+            }
+        ],
+    "presets":[
+        {
+            "name":"Split Image",
+            "category":"Custom Section"
+        }
+    ]
+}
+{% endschema %}

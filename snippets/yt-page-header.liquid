@@ -1,0 +1,96 @@
+{{ 'page-header.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+    if bg_image != blank or force_bg == true
+        assign use_bg = true
+    endif
+    
+    assign text_size = text_size | default: 'xl'
+    assign image_size = image_size | default: 'medium'
+-%}
+
+{% if t_title != blank %}
+    {% assign title = t_title | t %}
+{% endif %}
+
+{%- capture title_hide -%}
+  {{ title }}-{{ section.id }}
+{%- endcapture -%}
+
+{%- capture text -%}
+  {% if bg_image == blank %}
+    <div class="#page-header-content {{ title_hide }} {{ page.handle }}">
+        {% render 'hero',
+            heading: title,
+            text: subtitle,
+            align: 'center',
+            size: text_size,
+            color_scheme: color_scheme
+        %}
+    </div>
+  {% endif %}
+{%- endcapture -%}
+
+<div class="#page-header {% if spaced == true %}@spaced{% endif %} {% if use_bg %}@bg-img{% endif %} " {% if use_bg %}data-main-header-overlap{% endif %} section-id="{{ section.id }}">
+    {%- if use_bg -%}
+        {%- capture caption -%}
+            {%- render 'floating-content',
+                content: text,
+                x: 'center',
+                y: 'center',
+                padded: true,
+                absolute: true
+            -%}
+        {%- endcapture -%}
+        <div class="hide-mobile">{%- render 'yt-media',
+            image: bg_image,
+            content: caption,
+            size: image_size,
+            overlay: bg_overlay,
+            color_scheme: color_scheme
+        -%}</div>
+        {% if bg_image_mobile != blank %}
+          <div class="hide-desktop">{%- render 'yt-media',
+              image: bg_image_mobile,
+              content: caption,
+              size: image_size,
+              overlay: bg_overlay,
+              color_scheme: color_scheme
+          -%}</div>
+        {% endif %}
+    {%- else -%}
+        {{ text }}
+    {%- endif -%}
+</div>
+
+<style>
+  .Under50-template--16864335495487__banner h3.\#hero-heading, 
+  .Under30-template--16864335495487__banner h3.\#hero-heading {
+    display: none;
+  }
+  @media only screen and (max-width: 991px){
+    #template--14772603650129__banner .\#media {
+      min-height: auto;
+    }
+    #template--14772603650129__banner .\#media-image.\@cover {
+      object-fit: contain;
+      top: 27.5%;
+      height: 33vh !important;
+    }
+    #template--14772603650129__banner .\#media {
+      height: 33vh !important;
+    }
+  }
+  @media only screen and (max-width: 460px){
+    #template--14772603650129__banner .\#media {
+      height: auto !important;
+    }
+    div#shopify-section-template--16864335495487__banner div#yt-landing-body > div {
+      overflow: hidden;
+    }
+    #template--14772603650129__banner .\#media {
+      --media-height: 33vh;
+      --media-overlay: 0.0;
+    }
+  }
+</style>

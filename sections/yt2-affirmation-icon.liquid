@@ -1,0 +1,187 @@
+{% assign input = section.settings %}
+
+{% render 'yt2-affirmation-icon-css', input: input %}
+
+<style>  
+#shopify-section-{{section.id}} img.affirm-icon.mr-3{
+  transform: translateY(30px);
+}
+</style>
+
+</style>
+
+<script  type="lazyload2" >
+function affirmation(){
+    
+    let box = document.querySelector('#shopify-section-{{section.id}}');
+    ScrollTrigger.matchMedia({
+     "(min-width: 320px)": function() {
+          var affirmation_timeline = gsap.timeline({
+          scrollTrigger: {
+            animation: affirmation_timeline,
+            trigger: box,
+            start: "start bottom",
+            toggleActions: "restart none restart none",
+            pinSpacing: true,
+            invalidateOnRefresh: true
+          }
+        });
+        affirmation_timeline.to("#shopify-section-{{section.id}} img.affirm-icon.mr-3", {
+          transform: "translateY(0px)",
+          duration: 1
+        });
+      }
+    })
+} 
+affirmation();
+
+</script>
+
+{% if input.display_section == true %}
+
+<div id="affirm_section" class="">
+{%- if input.background_image != blank -%}
+  <div class="image-container background-image">
+    {% render 'yt-image-size', image: input.background_image %}
+  </div>
+{% endif %}
+
+<div class="container">
+      <div class="row">
+        <div class="heading">
+          <h3> {{input.heading}} </h3>
+        </div>
+      </div>
+  <div class="row align-items-center justify-content-center">
+        {% for block in section.blocks %}
+        <div class="affirm-col col-4 d-flex align-items-center justify-content-center">
+          {% render 'yt-image-size', image: block.settings.affirm_icon_img, class: "affirm-icon mr-3" %}
+          {% if block.settings.affirm_heading != blank or block.settings.affirm_content != blank  %}
+          <div class="inner-content">
+            <h3 class="heading_text">{{block.settings.affirm_heading}}</h3>
+            <p class="description text-left">
+              {{ block.settings.affirm_content }}
+            </p>
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+  </div>
+</div>
+</div>
+{% endif %}
+
+
+{% schema %}
+{
+"name": "Affirmation Section v2",
+"class": "yt2-affirmation-icon",
+"settings": [
+    {
+      "type": "select",
+      "id": "affirmation_style",
+      "label": "Affirmation Style",
+      "options": [
+        {
+          "value": "style_1",
+          "label": "Style 1"
+        },
+        {
+          "value": "style_2",
+          "label": "Style 2"
+        }
+      ],
+      "default": "style_1"
+    },
+    {
+        "type":"checkbox",
+        "id":"display_section",
+        "label":"Display Section?",
+        "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label":"Heading"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "image_picker",
+      "id":"background_image",
+      "label":"Background Image"
+    },
+    {
+      "type":"color",
+      "id":"sec_section_bg",
+      "label":"Background Color",
+      "default": "#fff"
+    },
+    {
+      "type":"color",
+      "id":"affirm_text_color",
+      "label":"Text Color",
+      "default": "#fff"
+    },
+    {
+      "type": "header",
+      "content": "Section Paddings"
+    },
+    {
+        "type":"text",
+        "id":"lp_section_padd_top",
+        "label":"Top",
+        "default": "100px"
+    },
+    {
+        "type":"text",
+        "id":"lp_section_padd_right",
+        "label":"Right",
+        "default": "20px"
+    },
+    {
+        "type":"text",
+        "id":"lp_section_padd_bottom",
+        "label":"Bottom",
+        "default": "100px"
+    },
+    {
+        "type":"text",
+        "id":"lp_section_padd_left",
+        "label":"Left",
+        "default": "20px"
+    }
+],
+"blocks": [
+    {
+        "type": "quote",
+        "name": "Quote",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "affirm_icon_img",
+            "label": "Icon Image"
+          },
+          {
+              "id": "affirm_heading",
+              "type": "textarea",
+              "label": "Affirm Heading"
+          },
+          {
+              "id": "affirm_content",
+              "type": "textarea",
+              "label": "Content"
+          }
+        ]
+    }
+],
+"presets":[
+    {
+      "name":"Affirmation Section v2",
+      "category":"Custom Section"
+    }
+]
+}
+{% endschema %}

@@ -1,0 +1,40 @@
+.\#product-option-picker{display:block}.\#product-option-picker-header{margin-bottom:.5rem}.\#product-option-picker-value{font-weight:var(--font-body-weight-bold);margin-left:.2rem}.\#product-option-picker-name{opacity:.8}.\#product-option-picker+.\#product-option-picker{margin-top:1rem}.\#product-option-picker.\@align\:center .\#form-inline-group{justify-content:center}
+input[name="Color"] ~ div .\#form-color-swatch-display {
+    background-color: #b87333;
+}
+input[value="Light Red"] ~ div .\#form-color-swatch-display {
+    background-color: #ff4747 !important;
+}
+input[name="Color"] ~ div .\#form-color-swatch-display {
+    background-color: #d6b60d;
+    background-image: unset !important;
+}
+.\#form-color-swatch-inner.scarlett-red .\#form-color-swatch-display {
+  background-color: #fd4034;
+}
+.\#form-color-swatch-inner.deep-blue .\#form-color-swatch-display {
+  background-color: #434aba;
+}
+.\#form-color-swatch-inner .\#form-color-swatch-display .custom-color {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.\#form-color-swatch-inner.red-grey .\#form-color-swatch-display .custom-color {
+  background: #8c0700;
+  background: -moz-linear-gradient(-45deg, #8c0700 0%, #8c0700 50%, #7c8083 51%, #7c8083 100%);
+  background: -webkit-linear-gradient(-45deg, #8c0700 0%,#8c0700 50%,#7c8083 51%,#7c8083 100%);
+  background: linear-gradient(135deg, #8c0700 0%,#8c0700 50%,#7c8083 51%,#7c8083 100%);
+  background-image: -moz-linear-gradient(135deg, rgb(140, 7, 0) 0%, rgb(140, 7, 0) 50%, rgb(124, 128, 131) 51%, rgb(124, 128, 131) 100%);
+  background-image: -webkit-linear-gradient(135deg, rgb(140, 7, 0) 0%, rgb(140, 7, 0) 50%, rgb(124, 128, 131) 51%, rgb(124, 128, 131) 100%);
+  background-image: linear-gradient(135deg, rgb(140, 7, 0) 0%, rgb(140, 7, 0) 50%, rgb(124, 128, 131) 51%, rgb(124, 128, 131) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#8c0700', endColorstr='#7c8083',GradientType=1 );
+}
+
+.\#form-color-swatch-inner.red-black .\#form-color-swatch-display .custom-color {
+  background: #fb1216;
+  background: -moz-linear-gradient(-45deg, #fb1216 0%, #fb1216 50%, #120e0e 51%, #120e0e 100%);
+  background: -webkit-linear-gradient(-45deg, #fb1216 0%,#fb1216 50%,#120e0e 51%,#120e0e 100%);
+  background: linear-gradient(135deg, #fb1216 0%,#fb1216 50%,#120e0e 51%,#120e0e 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fb1216', endColorstr='#120e0e',GradientType=1 );
+}

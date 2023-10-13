@@ -1,0 +1,1 @@
+(async()=>{var e=await import(window.theme.modules.baseComponent);customElements.define("subtotal-price",class extends e.default{render(){this.listenTo("cartChange",(e,t)=>{t=t.html.querySelector("subtotal-price");this.replaceChildren(...t.childNodes)})}})})();

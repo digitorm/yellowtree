@@ -1,0 +1,80 @@
+{% if settings.enable_counter == true %}
+  {% assign subtotal_price = cart.items_subtotal_price | money_without_currency %}
+  {% assign qouta = settings.free_ship_qouta %}
+  {% assign remaining = qouta | minus: subtotal_price %}
+  {% assign percent = cart.items_subtotal_price | divided_by: qouta %}
+  
+<div class="free-shipping-rate-container" {% if cart.items_subtotal_price == 0 %} style="display:none;" {% endif %} data-qouta="{{ qouta }}" >
+
+  <div class="free_shipping_container">
+      {% if remaining >= 1 %}
+      <div class="free_shipping_massage1"><div class="freeshipt_cont"> Only <span class="color_red"> ${{ remaining }} </span> away from <span> free shipping </span> </div> </div>
+      {% else %}
+      <div class="free_shipping_massage1">Congratulations on your Free Shipping!  </div>
+        {% endif %}
+      <div class="free_shipping_progress">
+          <div class="progress_shipping" role="progressbar" aria-label="progressbar" 
+          style="height: 15px; margin-top: 10px; margin-bottom: 10px;background-color: #e1dfd6;-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.1);box-shadow: inset 0 1px 2px rgba(0,0,0,.1);">            
+              <div class="progress-meter" >
+                  {% render 'yt-shipping-icon' %}
+              </div>            
+          </div>
+      </div>
+   </div>
+  
+</div>
+
+<style>
+  .free_shipping_container {
+    margin: 20px;
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #a3a3a3;
+}
+.free_shipping_massage1 {
+    text-transform: uppercase;
+}
+.free_shipping_massage1 span.color_red {
+    font-weight: 900;
+}
+.free_shipping_progress {
+    width: 100%;
+    border-radius: 5px;
+}
+.progress_shipping {
+    border-radius: 4px;
+}
+.progress-meter {
+    position: relative;
+    display: block;
+    height: 100%;
+    text-align: center;
+    line-height: 15px;
+    color: #ffffff;
+    {%- if percent >= 100  -%}
+    width: 100%;
+    {%- else -%}
+    width: {{ percent }}%;
+    {%- endif -%}
+    background-color: #000;
+    border-radius: 3px;
+}
+.progress-meter svg {
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    right: -4px;
+    padding: 10px;
+    background-color: #ffd400;
+    top: -12px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 6px #ffd400;
+}
+  @media(max-width: 767px){
+    .free_shipping_container{
+      margin: 10px 10px 10px 10px;
+      padding-bottom: 10px;
+    }
+  }
+</style>
+{% endif %}

@@ -1,0 +1,1 @@
+(async()=>{var e=await import(window.theme.modules.baseComponent);customElements.define("collection-grid-count",class extends e.default{render(){this.listenTo("filterChange",(e,t)=>{this._update(t.html)})}_update(e){e=(new DOMParser).parseFromString(e,"text/html").querySelector("collection-grid-count");this.replaceChildren(...e.childNodes)}})})();

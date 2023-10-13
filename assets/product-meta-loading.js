@@ -1,0 +1,1 @@
+(async()=>{var t=await import(window.theme.modules.baseComponent);customElements.define("product-meta-loading",class extends t.default{render(){this.listenTo("variantLoading",()=>{this.setAttribute("active","")}),this.listenTo("variantChange",()=>{this.removeAttribute("active")})}})})();

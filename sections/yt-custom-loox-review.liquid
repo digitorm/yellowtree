@@ -1,0 +1,68 @@
+<style>
+  .loox-section {
+    padding: 100px 0;
+    background-color: #f2cd1a2e;
+  }
+  .loox-section .inner-content h2{
+  	text-align: center;
+  }
+  @media screen and (max-width: 767px){
+    .loox-section {
+      padding: 35px 0;
+    }
+    .loox-section .inner-content h2 {
+      font-size: 30px;
+    }
+  }
+  @media screen and (max-width: 575px){
+    .loox-section .inner-content h2 {
+      font-size: 23px;
+    }
+  }
+</style>
+
+
+<section id="loox_{{section.id}}" class="loox_custom_section">
+  <div class="container">
+      <div class="inner-content">
+        <h2>{{section.settings.section_title}}</h2>
+      </div>
+      <div id="looxReviews" data-product-id="{{section.settings.product_id}}" class="loox-reviews-default">{{ product.metafields.loox.reviews }}</div><br>
+  </div>
+</section>
+
+
+{% schema %}
+{
+  "name": "Loox Section",
+  "class": "loox-section",
+  "settings": [
+    {
+      "type":"number",
+      "id":"top_spacing",
+      "label":"Top Spacing"
+    },
+    {
+      "type":"number",
+      "id":"bottom_spacing",
+      "label":"Bottom Spacing"
+    },
+    {
+      "type":"text",
+      "id":"section_title",
+      "label":"Section Title"
+    },
+    {
+      "type":"text",
+      "id":"product_id",
+      "label":"Product Id"
+    }
+  ],
+  "presets":[
+    {
+      "name":"Loox Section",
+      "category":"Custom Section"
+    }
+  ]
+}
+{% endschema %}

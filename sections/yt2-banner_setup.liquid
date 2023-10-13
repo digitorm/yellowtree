@@ -1,0 +1,257 @@
+{% include 'spurit_po2_section_snippet', product: all_products[section.settings.badge_product_rev], products: null %}
+
+{% render 'yt2-banner_setup_css', section: section, input: section.settings %}
+
+<style>
+#shopify-section-{{section.id}}.landing-banner-v2 .content-badge {
+    transform: scale(1);
+}
+</style>
+<script type="lazyload2" >
+	function bannereffects(){
+      var banner_timeline = gsap.timeline();
+      
+      let box = document.querySelector('.yt2-banner-{{section.id}}');
+      
+      banner_timeline.to(".landing-banner-v2 .yt2-banner-{{section.id}} .content-badge", {
+        opacity: 1,
+        transform: "scale(1.2)",
+        duration: 0.5
+      })
+      .to(".landing-banner-v2 .yt2-banner-{{section.id}} .content-badge", {
+        opacity: 1,
+        transform: "scale(1)",
+        duration: 0.5
+      })
+
+  } 
+  bannereffects();
+  
+</script>
+
+{% assign input = section.settings %}
+
+<section class="yt2-banner-{{section.id}} {{ input.unique_class }}">
+    <div class="container">
+        <div class="row">
+            
+            <div class="inner-content background-image">
+                <div class="image-container">
+                    {% render 'yt-image-size', image: input.background_image %}
+                </div>
+            </div>
+            <div class="inner-content main-cont mobile-display" style="display: none;">
+              <div class="col-md-7 " >
+                <div class="content container">
+                  <h1> {{ input.heading_text }} </h1>
+                  <h3> {{ input.sub_heading_text }} </h3>
+                  <div class="content-badge" >
+                    <div class="image-container badge-background">
+                      {% render 'yt-image-size', image: input.badge_back_image %}
+                    </div>
+                    <div class="badge-setup">
+                      <div class="image-container badge-setup-img">
+                        {% render 'yt-image-size', image: input.badge_feat_image %}
+                      </div>
+                      <div class="content-display">
+                        <div class="number-reviews">
+                          {{ input.badge_num_rev }}
+                        </div>
+                        <div class="rating-reviews">
+                          {{ input.badge_rating_rev }}
+                        </div>
+                        <div class="badges-display">
+                          {%- assign product = input.badge_product_rev -%}
+                          <div class="loox-rating" data-id="{{ product.id }}" data-rating="{{ product.metafields.loox.avg_rating }}" data-raters="{{ product.metafields.loox.num_reviews }}"></div>
+                          {% comment %}
+                          {% if shop.metafields.loox["global_stats"] %}
+                          {% assign looxstats = shop.metafields.loox["global_stats"] | split: ',' %} 
+                          <div class="loox-rating loox-rating-hp" data-rating="{{ looxstats[0] }}" data-raters="{{ looxstats[1] }}"></div> 
+                          {% endif %}
+                          {% endcomment %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {% render 'yt2-btn-landing-page', url: input.btn_url, text: input.btn_text, class: 'banner_btn' %}
+
+                </div>
+              </div>
+            </div>
+            <div class="inner-content main-cont  desktop-display">
+                <div class="col-md-5">
+                    <div class="image-container content-image">
+                        {% render 'yt-image-size', image: input.featured_image %}
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="content container">
+                        <h1> {{ input.heading_text }} </h1>
+                        <h3> {{ input.sub_heading_text }} </h3>
+                        <div class="content-badge" >
+                            <div class="image-container badge-background">
+                                {% render 'yt-image-size', image: input.badge_back_image %}
+                            </div>
+                            <div class="badge-setup">
+                                <div class="image-container badge-setup-img">
+                                    {% render 'yt-image-size', image: input.badge_feat_image %}
+                                </div>
+                                <div class="content-display">
+                                  <div class="number-reviews">
+                                    {{ input.badge_num_rev }}
+                                  </div>
+                                  <div class="rating-reviews">
+                                    {{ input.badge_rating_rev }}
+                                  </div>
+                                  <div class="badges-display">
+                                    {%- assign product = input.badge_product_rev -%}
+                                    <div class="loox-rating" data-id="{{ product.id }}" data-rating="{{ product.metafields.loox.avg_rating }}" data-raters="{{ product.metafields.loox.num_reviews }}"></div>
+                                    {% comment %}
+                                    {% if shop.metafields.loox["global_stats"] %}
+                                    {% assign looxstats = shop.metafields.loox["global_stats"] | split: ',' %} 
+                                    <div class="loox-rating loox-rating-hp" data-rating="{{ looxstats[0] }}" data-raters="{{ looxstats[1] }}"></div> 
+                                    {% endif %}
+                                    {% endcomment %}
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+
+                      	{% render 'yt2-btn-landing-page', url: input.btn_url, text: input.btn_text, class: 'banner_btn' %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+    "name":"Landing Banner V2",
+    "class":"landing-banner-v2",
+    "settings":[
+        {
+            "type":"checkbox",
+            "id":"show_review_count",
+            "label":"Hide Review Count"
+        },
+        {
+            "type":"header",
+            "content":"colors"
+        },
+        {
+          "type":"color",
+          "id":"title_color",
+          "label":"Title Color",
+          "default": "#000000"
+        },
+        {
+          "type":"color",
+          "id":"sub_title_color",
+          "label":"Sub Title Color",
+          "default": "#000000"
+        },
+        {
+          "type":"color",
+          "id":"star_color",
+          "label":"Star Color",
+          "default": "#ffd015"
+        },
+        {
+          "type":"header",
+          "content":"Font Size"
+        },
+        {
+          "type":"text",
+          "id":"title_size",
+          "label":"Title Size"
+        },
+        {
+          "type":"text",
+          "id":"sub_title_size",
+          "label":"Sub Title Size"
+        },
+        {
+            "type":"image_picker",
+            "id":"background_image",
+            "label":"Background Image"
+        },
+        {
+            "type":"image_picker",
+            "id":"featured_image",
+            "label":"Featured Image"
+        },
+        {
+            "type":"header",
+            "content":"Featured Content"
+        },
+        {
+            "type":"textarea",
+            "id":"heading_text",
+            "label":"Heading Text"
+        },
+        {
+            "type":"textarea",
+            "id":"sub_heading_text",
+            "label":"Sub Heading Text"
+        },
+        {
+            "type":"header",
+            "content":"Badge"
+        },
+        {
+            "type":"image_picker",
+            "id":"badge_back_image",
+            "label":"Badge Background Image "
+        },
+        {
+            "type":"image_picker",
+            "id":"badge_feat_image",
+            "label":"Badge Featured Image"
+        },
+        {
+            "type":"text",
+            "id":"badge_num_rev",
+            "label":"Badge Number Reviews"
+        },
+        {
+            "type":"text",
+            "id":"badge_rating_rev",
+            "label":"Badge Rating Reviews"
+        },
+        {
+            "type":"product",
+            "id":"badge_product_rev",
+            "label":"Badge Product"
+        },
+        {
+            "type":"header",
+            "content":"Links"
+        },
+        {
+            "type":"url",
+            "id":"btn_url",
+            "label":"Button URL"
+        },
+        {
+            "type":"text",
+            "id":"btn_text",
+            "label":"Button Text"
+        },
+        {
+            "type":"text",
+            "id":"unique_class",
+            "label":"Unique Class"
+        }
+    ],
+    "presets":[
+        {
+            "name":"Landing Banner v2",
+            "category": "Custom Section"
+        }
+    ]
+}
+
+{% endschema %}

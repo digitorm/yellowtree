@@ -1,0 +1,164 @@
+{% render 'yt-split-image-css' %}
+
+
+<section id="mb_{{section.id}}">
+    <div class="container">
+      	{% if section.settings.image-display-pos == 'left' %}
+            <div class="row content-wrapper mb_{{ section.settings.image-display-pos }}">
+                <div class="col-12 col-md-6">
+                    <div class="swiper image_swiper">
+                        <div class="swiper-wrapper">
+                            {%- for block in section.blocks -%}
+                                <div class="swiper-slide">
+                                    <div class="image-container">
+                                        <a href="{{section.settings.url_link}}">
+                                            {% render 'yt-image-size', image: block.settings.image-display %}
+                                        </a>
+                                    </div>
+                                </div>
+                            {%- endfor -%}
+                        </div>
+                        <div class="swiper-button-next image_swiper_next"></div>
+                        <div class="swiper-button-prev image_swiper_prev" ></div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="inner-class text-display">
+                        <h2>{{section.settings.title-text}}</h2>
+                        <p>{{section.settings.content-text}}</p>
+                        {% if section.settings.url_link != blank and section.settings.text_link != blank %}
+                      	{% render 'btn-landing-page', url: section.settings.url_link, text: section.settings.text_link %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+      	{% else %}
+      		<div class="row content-wrapper mb_{{ section.settings.image-display-pos }}">
+                <div class="col-12 col-md-6">
+                    <div class="inner-class  text-display">
+                        <h2>{{section.settings.title-text}}</h2>
+                        <p>{{section.settings.content-text}}</p>
+                        {% if section.settings.url_link != blank and section.settings.text_link != blank %}
+                      	{% render 'btn-landing-page', url: section.settings.url_link, text: section.settings.text_link %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="swiper image_swiper">
+                        <div class="swiper-wrapper">
+                            {%- for block in section.blocks -%}
+                                <div class="swiper-slide">
+                                    <div class="image-container">
+                                        <a href="{{section.settings.url_link}}">
+                                            {% render 'yt-image-size', image: block.settings.image-display %}
+                                        </a>
+                                    </div>
+                                </div>
+                            {%- endfor -%}
+                        </div>
+                        <div class="swiper-button-next image_swiper_next"></div>
+                        <div class="swiper-button-prev image_swiper_prev" ></div>
+                    </div>
+                </div>
+            </div>
+      	{% endif %}
+    </div>
+</section>
+
+<script type="lazyload2" defer>
+  var swiper = new Swiper("#mb_{{section.id}} .image_swiper", {
+    navigation: {
+      nextEl: "#mb_{{section.id}} .swiper-button-next",
+      prevEl: "#mb_{{section.id}} .swiper-button-prev",
+    },
+  });
+</script>
+
+
+{% schema %}
+{
+    "name": "Split Text Image",
+    "class": "yt-slide-image-text",
+    "settings": [
+        {
+            "type":"number",
+            "id":"section_spacing_top",
+            "label":"Section Spacing Top",
+            "default": 50
+        },
+        {
+            "type": "select",
+            "id": "image-display-pos",
+            "label": "Image Display",
+            "options": [
+                {
+                    "value": "right",
+                    "label": "Right Image"
+                },
+                {
+                    "value": "left",
+                    "label": "Left Image"
+                }
+        ],
+        "default": "right"
+        },
+        {
+            "type":"text",
+            "id":"title-text",
+            "label":"Title Text"
+        },
+        {
+            "type":"textarea",
+            "id":"content-text",
+            "label":"Content"
+        },
+        {
+            "type":"url",
+            "id":"url_link",
+            "label":"URL Link"
+        },
+        {
+            "type":"text",
+            "id":"text_link",
+            "label":"URL Text"
+        },
+        {
+            "type":"number",
+            "id":"section_spacing_bottom",
+            "label":"Section Spacing Bottom",
+            "default": 50
+        },
+        {
+            "type":"number",
+            "id":"section_spacing_top_mobile",
+            "label":"Section Spacing Top Mobile",
+            "default": 30
+        },
+        {
+            "type":"number",
+            "id":"section_spacing_bottom_mobile",
+            "label":"Section Spacing Bottom Mobile",
+            "default": 30
+        }
+        ],
+        "blocks":[
+            {
+            "name":"Image Split",
+            "type":"image-split",
+            "settings":[
+                {
+                    "type":"image_picker",
+                    "id":"image-display",
+                    "label":"Image Display"
+                }
+            ]
+            }
+        ],
+    "presets":[
+        {
+            "name":"Split Text Image",
+            "category":"Custom Section"
+        }
+    ]
+}
+{% endschema %}

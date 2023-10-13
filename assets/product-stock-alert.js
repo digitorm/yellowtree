@@ -1,0 +1,1 @@
+(async()=>{var e=await import(window.theme.modules.baseComponent);customElements.define("stock-alert",class extends e.default{render(){this.listenTo("variantChange",(e,t)=>{t.variant?this._update(t.html):this.style.display="none"})}_update(e){const t=e.querySelector("stock-alert");this.replaceChildren(...t.cloneNode(!0).childNodes)}})})();

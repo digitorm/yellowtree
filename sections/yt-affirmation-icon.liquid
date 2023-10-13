@@ -1,0 +1,268 @@
+
+<style>
+    #shopify-section-{{section.id}} #affirm_section {
+      background-color: {{ section.settings.sec_section_bg }};
+      padding-top: {{ section.settings.lp_section_padd_top }};
+      padding-right: {{ section.settings.lp_section_padd_right }};
+      padding-bottom: {{ section.settings.lp_section_padd_bottom }};
+      padding-left: {{ section.settings.lp_section_padd_left }};
+    }
+    #shopify-section-{{section.id}} .description{
+      color: {{ section.settings.affirm_text_color }};
+      color: #000;
+    }
+    #shopify-section-{{section.id}} img.affirm-icon.mr-3 {
+      max-height: {{section.settings.image_height}};
+      width: auto;
+    }
+    #shopify-section-{{section.id}} h3.heading_text {
+      margin-bottom: 10px;
+    }
+    #shopify-section-{{section.id}} .container {
+      max-width: {{section.settings.container_max_width}};
+    }
+    #shopify-section-{{section.id}} .inner-content {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 30px;
+      margin-top: 10px;
+    }
+    #shopify-section-{{section.id}} .justify-content-center {
+      justify-content: center!important;
+      flex-flow: row wrap;
+    }
+    #shopify-section-{{section.id}} h3.head-text {
+        text-align: center;
+        margin-bottom: 50px;
+        font-size: 35px;
+    }
+    @media screen and (max-width:991px){
+      #affirm_section .affirm-col {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+    @media screen and (max-width:767px){
+      #shopify-section-{{section.id}} #affirm_section .affirm-col {
+        flex-wrap: wrap;
+      }
+      #shopify-section-{{section.id}} #affirm_section .affirm-col .description.text-left {
+        width: 100%;
+        text-align: center !important;
+      }
+      #shopify-section-{{section.id}} #affirm_section .affirm-icon {
+        margin: 0 0 5px !important;
+      }
+      #shopify-section-{{section.id}} .inner-content {
+        margin-bottom: 0;
+      }
+      #shopify-section-{{section.id}} h3.heading_text {
+          margin-bottom: 10px;
+          font-size: 12px;
+      }
+      #shopify-section-{{section.id}} h3.head-text {
+        font-size: 25px;
+        margin-bottom: 25px;
+        font-weight: 600;
+      }
+    }
+    @media screen and (max-width:575px){
+      #affirm_section > div > .row {
+        row-gap: 3rem;
+      }
+      #shopify-section-{{section.id}} #affirm_section {
+        padding: 20px;
+      }
+      #shopify-section-{{section.id}} img.affirm-icon.mr-3 {
+        max-height: 60px;
+        margin-bottom: 0px;
+      }
+    }
+    @media screen and (max-width:440px){
+        #affirm_section .affirm-col {
+        padding: 0;
+      }
+      #affirm_section > div > .row {
+        row-gap: 2rem;
+      }
+    }
+  </style>
+
+
+<style>  
+  #shopify-section-{{section.id}} .row.align-items-center{
+    transform: translateY(30px);
+  }
+</style>
+
+<script  type="lazyload2" >
+	function yt_affirmation_icon(){
+    let box = document.querySelector('#shopify-section-{{section.id}}');
+  
+    var sections = gsap.utils.toArray('#shopify-section-{{section.id}} .row.align-items-center');
+      sections.forEach((section) => {      
+        ScrollTrigger.matchMedia({
+         "(min-width: 320px)": function() {
+              let topSecHeight = `${section.clientHeight}px`;
+              var full_sec_timeline = gsap.timeline({
+                scrollTrigger: {
+                  animation: full_sec_timeline,
+                  trigger: box,
+                  start: "start bottom",
+                  toggleActions: "restart none restart none",
+                  pinSpacing: true,
+                  invalidateOnRefresh: true,
+                }
+              });
+  
+              full_sec_timeline.to(section, {
+                transform: "translateY(0px)",
+                duration: 1
+              });
+  
+          }
+        })
+      });
+  } 
+  yt_affirmation_icon();
+  
+</script>
+
+  
+  {% if section.settings.display_section == true %}
+  <div id="affirm_section" class="">
+      <div class="container">
+          {% if section.settings.head_text != blank %}
+          <div class="row header-cont">
+                <h3 class="head-text">
+                    {{ section.settings.head_text }}          
+                </h3>    
+          </div>
+          {% endif %}
+          <div class="row align-items-center justify-content-center">
+            {% for block in section.blocks %}
+            <div class="affirm-col col d-flex align-items-center justify-content-center">
+              {% render 'yt-image-size', image: block.settings.affirm_icon_img, class: "affirm-icon mr-3" %}
+              {% if block.settings.affirm_heading != blank or block.settings.affirm_content != blank  %}
+              <div class="inner-content">
+                <h3 class="heading_text">{{block.settings.affirm_heading}}</h3>
+                <p class="description text-left">
+                  {{ block.settings.affirm_content }}
+                </p>
+              </div>
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+      </div>
+  </div>
+  {% endif %}
+  
+  
+  {% schema %}
+  {
+      "name": "Affirmation Section",
+      "settings": [
+        {
+            "type":"header",
+            "content":"Sizes"
+        },
+        {
+            "type":"text",
+            "id":"image_height",
+            "label":"Image Max Height",
+            "default": "90px"
+        },
+        {
+            "type":"text",
+            "id":"container_max_width",
+            "label":"Container Max Width",
+            "default": "780px"
+        },
+        {
+            "type":"checkbox",
+            "id":"display_section",
+            "label":"Display Section?",
+            "default": true
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+            "type":"text",
+            "id":"head_text",
+            "label":"Heading Text"
+        },
+        {
+          "type":"color",
+          "id":"sec_section_bg",
+          "label":"Background Color",
+          "default": "#fff"
+        },
+        {
+          "type":"color",
+          "id":"affirm_text_color",
+          "label":"Text Color",
+          "default": "#fff"
+        },
+        {
+          "type": "header",
+          "content": "Section Paddings"
+        },
+        {
+            "type":"text",
+            "id":"lp_section_padd_top",
+            "label":"Top",
+            "default": "100px"
+        },
+        {
+            "type":"text",
+            "id":"lp_section_padd_right",
+            "label":"Right",
+            "default": "20px"
+        },
+        {
+            "type":"text",
+            "id":"lp_section_padd_bottom",
+            "label":"Bottom",
+            "default": "100px"
+        },
+        {
+            "type":"text",
+            "id":"lp_section_padd_left",
+            "label":"Left",
+            "default": "20px"
+        }
+      ],
+      "blocks": [
+        {
+            "type": "quote",
+            "name": "Quote",
+            "settings": [
+              {
+                "type": "image_picker",
+                "id": "affirm_icon_img",
+                "label": "Icon Image"
+              },
+              {
+                  "id": "affirm_heading",
+                  "type": "textarea",
+                  "label": "Affirm Heading"
+              },
+              {
+                  "id": "affirm_content",
+                  "type": "textarea",
+                  "label": "Content"
+              }
+            ]
+        }
+      ],
+      "presets":[
+        {
+          "name":"Affirmation Section",
+          "category":"Custom Section"
+        }
+      ]
+  }
+  {% endschema %}

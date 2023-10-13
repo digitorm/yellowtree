@@ -1,0 +1,229 @@
+{% liquid
+  assign setting = section.settings
+  assign desktop_pad_top = setting.pad_desk_top
+  assign desktop_pad_bottom = setting.pad_desk_bottom
+  assign laptop_pad_top = setting.pad_lap_top
+  assign laptop_pad_bottom = setting.pad_lap_bottom
+  assign tablet_pad_top = setting.pad_tab_top
+  assign tablet_pad_bottom = setting.pad_tab_bottom
+  assign mobile_pad_top = setting.pad_mob_top
+  assign mobile_pad_bottom = setting.pad_mob_bottom
+%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    padding: {{ desktop_pad_top }}px 0 {{ desktop_pad_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+  }
+  #faq-{{ section.id }} {
+    width: 100%;
+    max-width: {{ section.settings.wrap_width }}%;
+    margin: 0 auto;
+  }
+  {%- if setting.inner_container_width != unset -%}
+  #faq-{{ section.id }} .container {
+      max-width: {{ setting.inner_container_width }};
+  }
+  {%- endif -%}
+  #faq-{{ section.id }} .image-container img {
+      width: 100%;
+      height: auto;
+  }
+  #faq-{{ section.id }} .image-container img.mobile {
+      display: none;
+  }
+
+   #faq-{{ section.id }} a,
+   #faq-{{ section.id }} a:hover {
+    color: #ffd400;
+  }
+  #faq-{{ section.id }} a.btn.landing-btn {
+    margin-top: 20px;
+  }
+  #faq-{{ section.id }} .section-title h2 {
+    font-size: {{ section.settings.f_size }}px;
+    line-height: 1.2;
+    font-weight: 400;
+    margin-bottom: 0;
+    text-align: {{section.settings.alignment}};
+  }
+  #faq-{{ section.id }} .section-title ~ .img-wrapper {
+    margin-top: 40px;
+  }
+  #faq-{{ section.id }} .fullwidth {
+    margin-bottom: 50px;
+  }
+  #faq-{{ section.id }} .col-lg-6 .faq-panel {
+    padding-left: 60px;
+  }
+  #faq-{{ section.id }} .acc-category {
+    margin-bottom: 10px;
+  }
+  #faq-{{ section.id }} .acc-elems {
+    padding: 12px 0;
+  }
+  #faq-{{ section.id }} .acc-elems .acc-title {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+  #faq-{{ section.id }} .acc-elems .acc-title .faq-icon {
+    line-height: 0;
+    color: {{ section.settings.acc_q_color }};
+    position: relative;
+    min-width: 12px;
+    height: 12px;
+    position: absolute;
+    top: 0;
+    right: 10px;
+  }
+  #faq-{{ section.id }} .acc-elems .acc-title .faq-icon svg {
+    width: 20px;
+    height: 20px;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+  }
+  #faq-{{ section.id }} .acc-elems .acc-title h4 {
+    font-size: 20px;
+    line-height: 1.2;
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 10px;
+  }
+  #faq-{{ section.id }} .acc-elems .acc-title h4::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 1px;
+    background-color: #000;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+  }
+  #faq-{{ section.id }} .acc-elems .acc-title.open h4::after {
+    width: 100%;
+  }
+  #faq-{{ section.id }} .acc-elems .acc-title.open svg {
+    transform: rotate(180deg);
+  }
+  #faq-{{ section.id }} .acc-elems .acc-content {
+    padding: 20px 0 20px 20px;
+    font-size: 20px;
+    line-height: 1.4;
+  }
+  #{{ section.id }}-faq-panel .acc-content > * {
+    color: {{ setting.acc_a_color }};
+  }
+  #faq-{{ section.id }} .row.above_header h2.mb-0 {
+    padding-bottom: 20px;
+    border-bottom: 2px solid #000;
+    font-size: {{ section.settings.f_size }}px;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+  #faq-{{ section.id }} .btn-update-setup {
+    text-align: center;
+  }
+  @media only screen and (max-width: 1440px) {
+    #faq-{{ section.id }} {
+      max-width: 80%;
+    }
+    #faq-{{ section.id }} .section-title h2 {
+      font-size: 45px;
+    }
+  }
+  
+  @media only screen and (max-width: 1199px) {
+    #shopify-section-{{ section.id }} {
+      padding: {{ laptop_pad_top }}px 0 {{ laptop_pad_bottom }}px;
+    }
+    #faq-{{ section.id }} .col-lg-6 .faq-panel {
+      padding-left: 0;
+    }
+    #faq-{{ section.id }} {
+      max-width: 100%;
+    }
+    #faq-{{ section.id }} .col {
+      margin-bottom: 50px;
+    }
+  }
+
+  @media only screen and (max-width: 991px) {
+    #shopify-section-{{ section.id }} {
+      padding: {{ tablet_pad_top }}px 0 {{ tablet_pad_bottom }}px;
+    }
+    #faq-{{ section.id }} .section-title ~ .img-wrapper {
+      margin-top: 20px;
+    }
+    #faq-{{ section.id }} .fullwidth {
+      margin-bottom: 20px;
+    }
+  }
+  
+  @media only screen and (max-width: 767px) {
+    #faq-{{ section.id }} .image-container img.desktop {
+        display: none;
+    }
+    #faq-{{ section.id }} .image-container img.mobile {
+        display: block;
+    }
+    #faq-{{ section.id }} .acc-content > .image_setup.row .col {
+      flex: 1 1 100%;
+      width: 100%;
+      padding: 0;
+    }
+    #shopify-section-{{ section.id }} {
+      padding: {{ mobile_pad_top }}px 0 {{ mobile_pad_bottom }}px;
+    }
+    #shopify-section-{{ section.id }} .acc-elems .acc-content {
+      padding-left: 0;
+      font-size: 15px;
+    }
+    #faq-{{ section.id }} .col {
+      margin-bottom: 30px;
+      padding: 0 30px;
+    }
+    #faq-{{ section.id }} .section-title h2 {
+      font-size: {{ section.settings.f_size_mb }}px;
+    }
+    #faq-{{ section.id }} .row.above_header h2.mb-0 {
+      padding-bottom: 20px;
+      border-bottom: 2px solid #000;
+      font-size: {{ section.settings.f_size_mb }}px;
+      line-height: 1.2;
+      font-weight: 700;
+    }
+    #faq-{{ section.id }} .acc-category .cat-title {
+      margin-bottom: 10px;
+    }
+    #faq-{{ section.id }} .acc-elems .acc-title h4,
+    #faq-{{ section.id }} .acc-category .cat-title {
+      font-size: 16px;
+    }
+    #faq-{{ section.id }} .acc-elems .acc-title h4 {
+      margin-bottom: 0;
+    }
+    #faq-{{ section.id }} a.btn.landing-btn {
+      font-size: 16px;
+    }
+    #faq-{{ section.id }} .btn-update-setup {
+      margin-top: 25px;
+    }
+    #shopify-section-{{ section.id }} .text-center.small {
+      font-size: 22px;
+    }
+  }
+  @media only screen and (max-width: 575px) {
+    #faq-{{ section.id }} a.btn.landing-btn {
+      font-size: 12px;
+    }
+  }
+</style>
+

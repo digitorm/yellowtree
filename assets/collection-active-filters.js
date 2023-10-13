@@ -1,0 +1,1 @@
+(async()=>{var e=await import(window.theme.modules.baseComponent);customElements.define("collection-active-filters",class extends e.default{render(){this.listenTo("filterChange",(e,t)=>{this._update(t.html)})}_update(e){const t=(new DOMParser).parseFromString(e,"text/html");e=t.querySelector("collection-active-filters");e&&this.replaceChildren(...e.childNodes)}})})();

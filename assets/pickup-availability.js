@@ -1,0 +1,1 @@
+(async()=>{var e=await import(window.theme.modules.baseComponent);customElements.define("pickup-availability",class extends e.default{render(){this.listenTo("variantChange",(e,t)=>{this._update(t.html)})}_update(e){const t=e.querySelector("pickup-availability");this.replaceChildren(...t.cloneNode(!0).childNodes)}})})();

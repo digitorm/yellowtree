@@ -1,0 +1,45 @@
+.pre-order-notif {
+    padding: 20px;
+    background-color: #ffd400;
+    color: #000;
+}
+.srw-widget {
+    text-align: left;
+}
+.\#product-meta-custom-image .\#media-image {
+    max-width: 350px;
+}
+.\#button.\@color\:accent-invert, 
+.shopify-payment-button__button.shopify-payment-button__button--unbranded {
+    background-color: #ff002f;
+    border-radius: 0px;
+}
+.\#button:not(.\@ghost):not(.\@link):after, 
+.\#button:not(.\@ghost):not(.\@link):before, 
+.shopify-payment-button__button.shopify-payment-button__button--unbranded:not(.\@ghost):not(.\@link):after {
+    background-color: #ff002f;
+}
+.\#button:not(.\@ghost):not(.\@link):before{
+  background-color: #090909;
+}
+.\#button:not(.\@ghost):not(.\@link), .shopify-payment-button__button.shopify-payment-button__button--unbranded:not(.\@ghost):not(.\@link) {
+    color: #fff;
+}
+.srw-widget-content {
+    background-color: #fff;
+}
+
+@media(max-width: 767px){
+  .swiper-horizontal>.swiper-pagination-bullets, 
+  .swiper-pagination-bullets.swiper-pagination-horizontal, 
+  .swiper-pagination-custom, 
+  .swiper-pagination-fraction {
+  bottom: 0;
+  }
+  body .\#product-gallery {
+      padding: 0;
+  }
+  body .\#product-meta-inner {
+      padding: 10px 20px;
+  }
+}

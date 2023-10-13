@@ -1,0 +1,226 @@
+<style>
+    {% unless product.selected_or_first_available_variant.available %}
+      a.klaviyo-bis-trigger {
+        display: block !important;
+      }
+    {% endunless %}
+    a.klaviyo-bis-trigger {
+      padding: 10px;
+      background-color: #000;
+      margin: 30px 0px !important;
+      max-width: 450px;
+      font-size: 16px;
+      text-transform: uppercase;
+      text-decoration: unset;
+      text-align: center;
+    }
+    .custom-klaviyo-bos {
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        height: 100%;
+        width: 100%;
+        z-index: 999;
+        background-color: #00000030;
+        opacity: 0;
+        pointer-events: none;
+    }
+    .container-cust {
+        padding: 50px 40px;
+        max-width: 400px;
+        margin: 0 2%;
+        background-color: #fff;
+        position: relative;
+        border-radius: 5px;
+    }
+    .custom-klaviyo-bos .container-cust h3 {
+        font-weight: 500;
+        font-size: 25px;
+    }
+    .custom-klaviyo-bos .container-cust p {
+        font-size: 17px;
+        line-height: 1;
+        margin-top: 20px;
+    }
+    .custom-klaviyo-bos input[type="email"] {
+      display: block;
+      width: 100%;
+      height: 34px;
+      padding: 6px 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #222;
+      background-color: #fff;
+      background-image: none;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+      transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+      margin-bottom: 20px;
+    }
+    .custom-klaviyo-bos button.btn {
+      color: #fff;
+      background-color: #ffd400;
+      border-color: #ffd400;
+      display: inline-block;
+      padding: 8px 12px;
+      margin-bottom: 0;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 1.5;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      -ms-touch-action: manipulation;
+      touch-action: manipulation;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      background-image: none;
+      border: 1px solid transparent;
+      border-radius: 2px;
+      width: 100%;
+  }
+  .container-cust .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+  .container-cust .specific_variant {
+      text-align: center;
+      padding: 10px 0;
+  }
+  .container-cust h3.notify {
+    color: #52f646;
+    text-transform: uppercase;
+    font-size: 20px;
+    text-align: center;
+  }
+
+  @media(max-width: 767px){
+    .container-cust h3.notify {
+        font-size: 16px;
+        line-height: 1.3;
+    }
+  }
+
+</style>
+
+<div class="custom-klaviyo-bos">
+    <div class="container-cust">
+        <div class="close"> 
+          <svg class="#icon">
+            <use href="#svg-icon-x"></use>
+          </svg>
+        </div>
+        <div class="contents_cust">
+            <h3> {{ product.title }} </h3>
+            <p> Register to receive a notification when this item comes back in stock. </p>
+        </div>
+        <div class="specific_variant">
+          
+        </div>
+        <form action="" method="post" class="custom-bos-form">
+            <input type="email" required placeholder="Email*" name="email">
+            <button class="btn" type="submit"> Notify Me </button>
+        </form>
+    </div>
+</div>
+
+<script type="lazyload2">
+    
+    let to_pass = {
+        a: "Yq3iNQ",
+        email: "",
+        productID: "{{ product.id }}",
+        productName: "{{ product.title }}",
+        variant: "{{ product.selected_or_first_available_variant.id }}",
+        VariantId: "{{ product.selected_or_first_available_variant.id }}",
+        platform: "shopify",
+    }
+    
+    $('.addi-transition product-form[section-id]').on('DOMSubtreeModified', function(){
+        let var_id = $(this).attr('current-variant');
+        let button_setup = $(this).find('button').attr('disabled');
+        let sold_out_var = "";
+        to_pass.VariantId = var_id;
+        to_pass.variant = var_id;
+        console.log(button_setup);
+        if(button_setup != undefined){
+          $('a.klaviyo-bis-trigger').css({
+            display: 'block',
+          })
+        }else{
+          $('a.klaviyo-bis-trigger').css({
+            display: 'none',
+          })
+        }
+  
+        $('.product-list product-option-picker').each(function(){
+          let cur_data = $(this).attr('value');
+          let text_value = $(this).find(`.title_value_cust`).text();
+          if(sold_out_var == ""){
+            sold_out_var = `${text_value}`;
+          }else{
+            sold_out_var = `${sold_out_var} \/ ${text_value}`;
+          }
+          
+          $('.specific_variant').text(sold_out_var);  
+        })
+        
+    });
+    $(".klaviyo-bis-trigger").click(function(e){
+        e.preventDefault();
+        $(".custom-klaviyo-bos").css({
+            opacity: '1',
+            pointerEvents: 'auto'
+        });
+    });
+    $('.custom-klaviyo-bos form').submit(function(e){
+        let the_email = $(this).find('input').val();
+        to_pass.email = the_email;
+  
+        e.preventDefault();
+        
+        $.ajax({
+        type: "POST",
+        url :"https://a.klaviyo.com/onsite/components/back-in-stock/subscribe",
+        data: to_pass,
+        success: function(response){
+            console.log(response);
+            $('.custom-klaviyo-bos .container-cust' ).html(`<h3 class="notify"> You're in! <br> We'll let you know when it's back </h3>`)
+            setTimeout(function(){
+              $(".custom-klaviyo-bos").css({
+                    opacity: '0',
+                    pointerEvents: 'none'
+              });
+            }, 1500)
+        },
+        error : function(data){
+            console.log(data);
+          setTimeout(function(){
+            $(".custom-klaviyo-bos").css({
+                  opacity: '0',
+                  pointerEvents: 'none'
+            });
+          }, 1500)
+        }
+        });
+    });
+    $('.custom-klaviyo-bos, .container-cust .close').click(function(){
+      $(".custom-klaviyo-bos").css({
+            opacity: '0',
+            pointerEvents: 'none'
+      });
+    })
+    $('.custom-klaviyo-bos .container-cust').click(function(e){
+        e.stopPropagation();
+    })
+</script>

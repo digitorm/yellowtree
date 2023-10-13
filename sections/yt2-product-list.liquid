@@ -1,0 +1,202 @@
+{% include 'spurit_po2_section_snippet', product: all_products[section.settings.selected_product], products: null %}
+
+{% render 'yt2-product-list-css' %}
+
+<section class="eo_{{section.id}}" id="product_listing_section">
+  <div class="container">
+      {% if section.settings.section_title %}
+      <div class="title-display">
+          <h2>{{section.settings.section_title}}</h2>
+      </div>
+      {% endif %}
+
+      <div class="all-product-list">
+        {% render 'yt_product_listing_content', section: section, product: section.settings.selected_product %}
+      </div>
+  </div>
+</section>
+
+    <script>
+      window.addEventListener('load',function(){
+        $('.all-product-list > div').each(function(){
+          let self = $(this),
+              slide_below = self.find('.slider-below'),
+              slide_above = self.find('.slider-above'),
+              slider_below = slide_below.data('slide_selec'),
+              slider_above = slide_above.data('slide_selec');
+
+          let product_thumbnail = new Swiper(`.${slider_below}`, {
+            slidesPerView: 4,
+            slideToClickedSlide: true,
+            pagination: {
+              el: '.swiper-pagination',
+              type: 'progressbar'
+            },
+            breakpoints: {
+              320: {
+                slidesPerView: 4,
+                direction: "horizontal",
+                loop: true,
+              },
+              480: {
+                slidesPerView: 4,
+                direction: "horizontal",
+                loop: true,
+              },
+              767:{
+                direction: "horizontal",
+                loop: true,
+              },
+              1199: {
+                slidesPerView: 4,
+                loop: false,
+              }
+            }
+          });
+          let product_main = new Swiper(`.${slider_above}`, {
+            slidesPerView: 1,
+            loop: false,
+            autoHeight: true,
+            thumbs: {
+              swiper: product_thumbnail,
+            },
+          });
+
+        });
+      
+      $(".swiper").find("button").off("mousedown").on("mousedown", function(e){ e.preventDefault(); e.stopImmediatePropagation(); });
+        
+      });
+    </script>
+
+
+
+{% schema %}
+  {
+    "name": "YT2 Product Listing",
+	"class": "product-list",
+    "settings": [
+        {
+            "type":"color",
+            "id":"bg_color",
+            "label":"Background Color",
+            "default": "#f8f8f8"
+        },
+        {
+            "type":"header",
+            "content":"Spacing"
+        },
+        {
+            "type":"number",
+            "id":"margin_bottom",
+            "label":"Margin Bottom",
+            "default": 70
+        },
+        {
+            "type":"number",
+            "id":"margin_bottom_tab",
+            "label":"Margin Bottom Tablet",
+            "default": 70
+        },
+        {
+            "type":"number",
+            "id":"margin_bottom_mob",
+            "label":"Margin Bottom Mobile",
+            "default": 40
+        },
+        {
+            "type":"text",
+            "id":"section_title",
+            "label":"Section Title"
+        },
+        {
+            "type":"checkbox",
+            "id":"enable_alternate",
+            "label":"Enable Alternate Section"
+        },
+        {
+            "type":"product",
+            "id":"selected_product",
+            "label":"Select Product"
+        },
+        {
+            "type":"textarea",
+            "id":"custom_product_description",
+            "label":"Custom Product Description"
+        },
+        {
+            "type":"checkbox",
+            "id":"use_custom_images",
+            "label":"Use Custom Images"
+        }
+        
+   ],
+   "blocks":[
+        {
+            "type":"image",
+            "name":"image",
+            "settings":[
+                {
+                    "type":"image_picker",
+                    "id":"image",
+                    "label":"Image"
+                }
+            ]
+        },
+        {
+            "type":"video",
+            "name":"Video",
+            "settings":[
+                {
+                    "type":"url",
+                    "id":"video_url",
+                    "label":"Video Url Normal"
+                },
+                {
+                    "type":"image_picker",
+                    "id":"video_thumb",
+                    "label":"Video Thumb"
+                }
+            ]
+        },
+        {
+            "type":"selly",
+            "name":"Selly Offer",
+            "settings":[
+              {
+                "type": "select",
+                "id": "offer_name",
+                "label": "Offer Name",
+                "options": [
+                {
+                  "value": "Bundle",
+                  "label": "Bundle"
+                },
+                {
+                  "value": "Wholesale",
+                  "label": "Wholesale"
+                },
+                {
+                  "value": "Rec",
+                  "label": "Recommended"
+                }
+                ],
+                "default": "Bundle"
+              },
+              {
+                "type":"text",
+                "id":"offer_id",
+                "label":"Offer Id"
+              }
+            ]
+        }
+   ],
+  "presets":[
+    {
+      "name":"YT2 Product Listing",
+      "category":"YT Custom Section"
+    }
+  ]
+  }
+{% endschema %}
+

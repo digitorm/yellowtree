@@ -1,0 +1,454 @@
+<style>
+  #price-container {
+    font-size: 24px;
+  }
+  .packs_title {
+    margin-bottom: 1rem;
+  }
+  #packs-container label {
+    cursor: pointer;
+    display: block;
+  }
+  #packs-container .pack {
+    display: flex;
+    align-items: center;
+    flex-flow: wrap;
+    gap: 10px;
+  }
+  #packs-container input {
+    position: absolute !important;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0 0 0 0);
+    word-wrap: normal !important;
+  }
+  #packs-container .pack h3 {
+    display: block;
+    width: 100%;
+    margin-top: 1.5rem;
+    font-size: 16px;
+  }
+  .packs_title p {
+    font-size: 16px;
+    text-transform: none !important;
+    font-weight: 700;
+    color: #fd2f39;
+    font-style: italic;
+  }
+  .packs_title p span {
+    color: #000;
+  }
+  #packs-container .\#form-field span {
+    display: none;
+  }
+  #packs-container .\#form-field + .\#form-field {
+    margin-top: 0;
+  }
+  product-form, product-variant-selector {
+    display: none;
+  }
+  #infoalert {
+    margin: 1rem 0 0;
+    background-color: #ef5350;
+    border-radius: 0.4rem;
+    width: fit-content;
+    padding: 0.3rem 2rem;
+    color: #fff;
+  }
+  .packs_title {
+    margin-top: 1rem;
+  }
+  #product-add-to-cart.loader #button-loading {
+    opacity: 1;
+    transform: translateX(0);
+    cursor: no-drop;
+  }
+  #product-add-to-cart.loader {
+    pointer-events: none;
+  }
+  .packs_title p {
+    font-weight: bold;
+    color: red;
+  }
+  button.tdf_cta_btn.tdf_no_gift {
+    display: none !important;
+ }
+  @media screen and (max-width: 440px){
+    .product_custom_selection .\#product-price {
+      font-size: 1.4rem;
+    }
+  }
+</style>
+<section class="product_custom_selection">
+    
+    <div class="container-full">
+            <div class="row">
+                <div class="product-meta-inner">
+                    {% for block in section.blocks %}
+                      {%- capture Block_content -%}
+                      {% case block.type %}
+                        {% when 'price' %}
+                        <link rel="stylesheet" href="{{ 'product-price.css' | asset_url }}" media="print" onload="this.media='all'">
+                        <noscript>{{ 'product-price.css' | asset_url | stylesheet_tag }}</noscript>
+                        <product-price class="product-wrapper #product-price @size:md @align:left @weight:normal price_container">
+                          <dl class="#price wrapper-price">
+                            <div class="#price-item @regular @on-sale  productView-price">
+                              <dt class="#price-item-heading   true">Sale price:</dt>
+                              <dd class="#price-item-value reg-price">
+                                <span class="#price-value reg-value" id="sale-price"></span>
+                              </dd>
+                            </div>
+                            <div class="#price-item @compare">
+                              <dt class="#price-item-heading">List price:</dt>
+                              <dd class="#price-item-value">
+                                <span class="#price-value" id="list-price"></span>
+                              </dd>
+                            </div>
+                            <div class="#price-item @save">
+                              <dt class="#price-item-heading">You save:</dt>
+                              <dd class="#price-item-value">
+                                <span class="#price-value" id="you-save"></span>
+                              </dd>
+                            </div>
+                          </dl>
+                        </product-price>
+
+                        {% when 'text' %}
+                          {% if block.settings.text != blank %}
+                            <div class="
+                                #product-meta-text
+                                @style:{{ block.settings.text_style }}
+                                @weight:{{ block.settings.text_weight }}
+                                {% if block.settings.text_uppercase %}@uppercase{% endif %}
+                              "
+                              {{ block.shopify_attributes }}
+                            >
+                              {% if block.settings.text_url != blank %}
+                                <a class="#product-meta-text-link" href="{{ block.settings.text_url }}">
+                                  {{ block.settings.text }}
+                                </a>  
+                              {% else %} 
+                                {{ block.settings.text }}
+                              {% endif %}
+                            </div>
+                          {% endif %}
+                  
+                         {% when 'paypal_image' %}
+                            {% render 'paypal-snippet', block: block %}
+                  
+                      {% endcase %}
+                      {%- endcapture -%}
+                  
+                      {% unless Block_content == blank %}
+                        <div class="#product-meta-block @type:{{ block.type }} {% if block.settings.prev_attach %}@attach{% endif %}" {{ block.shopify_attributes }}>
+                          {{ Block_content }}
+                        </div>
+                      {% endunless %}
+                    {% endfor %}
+                    </div>
+
+               <div class="packs_title">
+                  <h3> Buy More and Save:  </h3>
+                   {% if product.metafields.custom.bundle_pack != blank %}
+                   <p>{{ product.metafields.custom.bundle_pack }}</p>
+                   {% endif %}
+                </div>
+              
+              <div class="#product-option-picker-body">
+                 <div id="packs-inputs" class="#form-inline-group">
+                     <div class="#form-field">
+                         <label class="#form-color-swatch">
+                            <input class="visually-hidden" type="radio" name="packs" value="1" checked> 
+                           <div class="#form-swatch-inner">
+                              1 Pack
+                            </div>
+                         </label>
+                     </div>
+                     <div class="#form-field">
+                         <label class="#form-color-swatch">
+                            <input class="visually-hidden" type="radio" name="packs" value="2"> 
+                           <div class="#form-swatch-inner">
+                              2 Packs
+                            </div>
+                        </label>
+                     </div>
+                     <div class="#form-field">
+                        <label class="#form-color-swatch">
+                          <input class="visually-hidden" type="radio" name="packs" value="3"> 
+                          <div class="#form-swatch-inner">
+                            3 Packs
+                          </div>
+                        </label>
+                     </div>
+                     <div class="#form-field" style="display:none">
+                        <label class="#form-color-swatch">
+                            <input class="visually-hidden" type="radio" name="packs" value="4"> 
+                            <div class="#form-swatch-inner">
+                              4 Packs
+                            </div>
+                        </label>
+                     </div>
+                  </div>
+              </div>
+              
+              <div id="infoalert" style="display:none;">
+                <span>
+                  <span>
+                    &#9888;
+                  </span>
+                </span>
+                <span class="reversed reversedLeft content-info">
+                </span> 
+              </div>
+          
+              <div id="packs-container" class="color_selection"></div>
+
+              <div class="#product-meta-block @type:buy_buttons ">
+                <div class="action_button">
+                  <button class="#button @color:accent-invert @block @size:lg" id="product-add-to-cart" name="add" data-add-button="" type="button">
+                    <span class="#button-inner">
+                      <span class="#button-text">
+                        Add to cart
+                      </span>
+                    </span>
+                    <div class="#button-loading" id="button-loading">
+                      <div class="#spinner @color-scheme:light @size:xs hide-loading">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+              
+            </div>
+    </div>
+  
+</section>
+<script>
+ window.productInfo = {
+    basePrice: {{ product.selected_or_first_available_variant.price | divided_by: 100.0 }},
+    comparePrice: {{ product.compare_at_price_max | divided_by: 100.0 | default: '0.00' }},
+    colorVariants: [
+        {% for variant in product.variants %}
+            {
+                id: {{ variant.id }},
+                title: "{{ variant.title }}",
+                inventory_quantity: {{ variant.inventory_quantity }},
+                available: {{ variant.available | json }},
+                colorCode: "{{ variant.title | handleize }}"
+            }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+    ]
+    };
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const bodyElement = document.querySelector("body");
+
+    window.productInfo.colorVariants.forEach(function (variant) {
+      if (!variant.available || variant.inventory_quantity <= 0) {
+        bodyElement.classList.add(variant.colorCode);
+      }
+    });
+  });
+</script>
+
+<script>
+  
+function createBundlesPacks(numberOfPacks) {
+    let packs = [];
+    for (let i = 1; i <= numberOfPacks; i++) {
+        let pack = {
+            packNumber: i,
+            variants: window.productInfo.colorVariants.filter(variant => variant.available)
+        };
+        packs.push(pack);
+    }
+    return packs;
+}
+
+function renderBundlesPacks(packs) {
+  let container = document.getElementById("packs-container");
+  container.innerHTML = "";
+
+  packs.forEach(pack => {
+    let packContainer = document.createElement("div");
+    packContainer.classList.add("pack");
+    packContainer.dataset.packNumber = pack.packNumber;
+
+    let packTitle = document.createElement("h3");
+    packTitle.textContent = `Color ${pack.packNumber}`;
+    packContainer.appendChild(packTitle);
+
+    pack.variants.forEach(variant => {
+      let variantContainer = document.createElement("div");
+      variantContainer.classList.add("#form-field");
+
+      let variantLabel = document.createElement("label");
+      variantLabel.classList.add("#form-color-swatch");
+
+      let variantInput = document.createElement("input");
+      variantInput.type = "radio";
+      variantInput.name = `pack${pack.packNumber}`;
+      variantInput.value = variant.title;
+      variantInput.dataset.id = variant.id;
+
+      if (!variant.available || variant.inventory_quantity <= 0) {
+        variantInput.disabled = true;
+      }
+
+      let variantSwatchInner = document.createElement("div");
+      variantSwatchInner.classList.add("#form-color-swatch-inner");
+      // variantSwatchInner.classList.add(variant.title.toLowerCase());
+      variantSwatchInner.classList.add(variant.title.toLowerCase().replace(/\s+/g, '-'));
+
+      let variantSwatchDisplay = document.createElement("div");
+      variantSwatchDisplay.classList.add("#form-color-swatch-display");
+      variantSwatchDisplay.style.backgroundColor = variant.colorCode;
+
+      let customColor = document.createElement("div");
+      customColor.classList.add("#custom-color");
+
+      variantSwatchDisplay.appendChild(customColor);
+      variantSwatchInner.appendChild(variantSwatchDisplay);
+      variantLabel.appendChild(variantInput);
+      variantLabel.appendChild(variantSwatchInner);
+      variantContainer.appendChild(variantLabel);
+
+      let variantText = document.createElement("span");
+      variantText.textContent = variant.title;
+      variantContainer.appendChild(variantText);
+
+      packContainer.appendChild(variantContainer);
+
+        // Add event listener to radio button variant image
+      variantInput.addEventListener('click', () => {
+        const colorRadio = document.querySelector(`input[type="radio"][name="Color"][value="${variant.title}"]`);
+        if (colorRadio) {
+          colorRadio.click();
+        }
+      });
+      
+    });
+
+    container.appendChild(packContainer);
+  });
+}
+
+{% assign three_pack_discount = product.metafields.custom["3_packs_discount"] | divided_by: 100.0 %}
+  
+function getDiscount(packCount) {
+   const threePackDiscount = {{ three_pack_discount }}.toFixed(4);
+  switch (packCount) {
+    case 1:
+      return 0;
+    case 2:
+      return 0.0996;
+    case 3:
+      return parseFloat(threePackDiscount);
+    case 4:
+      return 0.2495;
+    default:
+      return 0;
+  }
+}
+  
+function updatePriceContainer(selectedPacks, basePrice, comparePrice) {
+  const priceContainer = document.querySelector(".price_container");
+  const discount = getDiscount(selectedPacks);
+  const totalPrice = basePrice * selectedPacks;
+
+  let salePrice = totalPrice * (1 - discount);
+  salePrice = salePrice.toFixed(2);
+
+  const listPrice = (comparePrice * selectedPacks).toFixed(2);
+  const savings = ((listPrice - salePrice) / listPrice) * 100;
+  const savingsText = `$${(listPrice - salePrice).toFixed(2)} (${savings.toFixed(0)}%)`;
+
+  document.querySelector("#sale-price").textContent = `$${salePrice}`;
+  document.querySelector("#list-price").textContent = `$${listPrice}`;
+  document.querySelector("#you-save").textContent = savingsText;
+}
+
+function addToCart() {
+  const button = document.getElementById("product-add-to-cart");
+  button.classList.add("loader");
+  
+  const selectedPacks = parseInt(document.querySelector("#packs-inputs input:checked").value);
+  const packsContainer = document.getElementById("packs-container");
+  const selectedVariants = [];
+
+  for (let i = 1; i <= selectedPacks; i++) {
+    const selectedVariant = packsContainer.querySelector(`input[name="pack${i}"]:checked`);
+    if (selectedVariant) {
+      selectedVariants.push(selectedVariant.value);
+    } else {
+      const infoAlert = document.getElementById("infoalert");
+      const infoAlertText = document.querySelector(".content-info");
+      infoAlertText.textContent = `Please select a variant for Color ${i}`;
+      infoAlert.style.display = "block";
+      setTimeout(() => {
+        infoAlert.style.display = "none";
+      }, 5000);
+       button.classList.remove("loader");
+      return;
+    }
+  }
+
+  const combinedVariants = selectedVariants.reduce((result, variantTitle) => {
+    const existingVariant = result.find((item) => item.title === variantTitle);
+    if (existingVariant) {
+      existingVariant.quantity++;
+    } else {
+      result.push({ title: variantTitle, quantity: 1 });
+    }
+    return result;
+  }, []);
+
+  const productFormElement = document.querySelector("product-form");
+  if (productFormElement) {
+    productFormElement.dispatchEvent(new CustomEvent("customAddToCart", { detail: { variants: combinedVariants }, bubbles: true }));
+  }
+}
+
+function handlePackRadioClick(packRadio) {
+  const colorRadio = document.querySelector(`input[type="radio"][name="Color"][value="${packRadio.value}"]`);
+  if (colorRadio) {
+    colorRadio.click();
+  }
+}
+
+// Call the updatePriceContainer function when the pack selection changes
+document.querySelectorAll("#packs-select input[type='radio']").forEach((radio) => {
+  radio.addEventListener("change", function () {
+    const selectedPack = parseInt(this.value, 10);
+    generatePackSelectors(selectedPack);
+    updatePriceContainer(selectedPack, window.productInfo.basePrice);
+  });
+});
+
+// Initialize the price container with the default pack selection (1 pack)
+updatePriceContainer(1);
+
+document.getElementById("product-add-to-cart").addEventListener("click", addToCart);
+document.getElementById("packs-inputs").addEventListener("change", function (event) {
+    let selectedPacks = parseInt(event.target.value);
+    let packs = createBundlesPacks(selectedPacks);
+    renderBundlesPacks(packs);
+  updatePriceContainer(selectedPacks, window.productInfo.basePrice, window.productInfo.comparePrice);
+
+});
+
+// Initial render
+let initialSelectedPacks = parseInt(document.querySelector("#packs-inputs input:checked").value);
+let initialPacks = createBundlesPacks(initialSelectedPacks);
+renderBundlesPacks(initialPacks);
+updatePriceContainer(initialSelectedPacks, window.productInfo.basePrice, window.productInfo.comparePrice);
+</script>
+
+<noscript type="text/flag" class="tdfPlaceBundle"></noscript>

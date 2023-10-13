@@ -1,0 +1,87 @@
+{% assign variantCount = product.variants | size %}
+{% assign downcased_option = product.options_with_values[0].name | downcase %}
+{% assign option_color_swatch = settings.option_color_swatch | downcase %}
+
+<form action="{{ routes.cart_url }}/add" method="post" class="variants" id="{{id}}-{{ product.id }}-{{ sectionId }}" data-id="product-actions-{{ product.id }}" enctype="multipart/form-data">
+  
+
+  
+  {% if sold_out %}
+  <button class="btn add-to-cart-btn" type="submit" disabled="disabled" {% if settings.enable_multilang %}data-translate="products.product.unavailable"{% endif %}>
+    <span class="btn-text"> {{ 'products.product.unavailable' | t }} </span>
+  </button>
+  {% else %}
+  {% if variantCount > 0 and product.variants.first.title != 'Default Title' %}
+    {% if product.options_with_values.size == 1 and option_color_swatch contains downcased_option and settings.use_color_swatch %}
+      <input type="hidden" name="id" value="{{ product.variants[0].id }}" />
+  	  <div class="qty-setup">
+      	<input type="hidden" name="quantity" value="1" />
+  	  </div>
+  	  <div class="action-buttons">
+        <button data-btn-addToCart class="btn add-to-cart-btn" type="submit" data-form-id="#{{id}}-{{ product.id }}-{{ sectionId }}" {% if settings.enable_multilang %}data-translate="products.product.add_to_cart"{% endif %}>
+          <span class="btn-text"> {{ 'products.product.add_to_cart' | t }}  </span>
+        </button>
+        <a href="#shopify-section-addi-footer" class="action-button-contact">Contact US </a>
+  	  </div>
+    {% else %}
+      <div class="variant_list" id="yt_variant_listing">
+        {% for variant in product.variants %}
+          {% if variant.available %}
+            <div class="product_variant_loop" id="">
+              <input type="radio" name="id" value="{{ variant.id }}" {% if forloop.index == 1 %} selected checked {% endif %}>
+              <label for=""> {{ variant.title }}</label>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% if section.settings.custom_product_description != blank %}
+      <div class"additional-description">
+        {{section.settings.custom_product_description}}
+      </div>
+      {% endif %}
+      {% assign des = product.description | split:'[/countdown]' | last %}
+      <div class="default-description">
+        <div class="short-description">
+          {{ des | split: '[lang2]' | first }}
+        </div>
+      </div>
+      {% if settings.enable_quick_shop %}
+        <button data-btn-addToCart class="btn add-to-cart-btn" type="submit" data-form-id="#{{id}}-{{ product.id }}-{{ sectionId }}" {% if settings.enable_multilang %}data-translate="products.product.add_to_cart"{% endif %}>
+       <span class="btn-text"> {{ 'products.product.add_to_cart' | t }} </span>
+        </button>
+      {% else %}
+      <button data-btn-addToCart class="btn add-to-cart-btn" type="submit" data-form-id="#{{id}}-{{ product.id }}-{{ sectionId }}" {% if settings.enable_multilang %}data-translate="products.product.add_to_cart"{% endif %}>
+        <span class="btn-text"> {{ 'products.product.add_to_cart' | t }} </span>
+      </button>
+      {% endif %}
+    {% endif %}
+  {% else %}
+  <input type="hidden" name="id" value="{{ product.variants[0].id }}" />
+  <div class="qty-setup">
+  <input type="hidden" name="quantity" value="1" />
+  </div>
+  {%- assign current_variant_grid = product.selected_or_first_available_variant -%}
+  {% assign first_inventory_grid = current_variant_grid.inventory_quantity %}
+  
+  <div class="action-buttons custom-carting" data-src="{{product.featured_image | img_url: '150x'}}" data-title="{{ product.title }}">
+  {% if current_variant_grid.inventory_management %}
+      {% if first_inventory_grid > 0 %}
+        <button data-btn-addToCart class="btn add-to-cart-btn" type="submit" data-form-id="#{{id}}-{{ product.id }}-{{ sectionId }}" {% if settings.enable_multilang %}data-translate="products.product.add_to_cart"{% endif %}>
+          <span class="btn-text"> {{ 'products.product.add_to_cart' | t }}  </span>
+        </button>
+        {% else %}
+        <button data-btn-addToCart class="btn add-to-cart-btn" type="submit" data-form-id="#{{id}}-{{ product.id }}-{{ sectionId }}" {% if settings.enable_multilang %}data-translate="products.product.pre_order"{% endif %}>
+          <span class="btn-text"> {{ 'products.product.pre_order' | t }} </span>
+        </button>
+        {% endif %} 
+  {% else %}
+     <button data-btn-addToCart class="btn add-to-cart-btn" type="submit" data-form-id="#{{id}}-{{ product.id }}-{{ sectionId }}" {% if settings.enable_multilang %}data-translate="products.product.add_to_cart"{% endif %}>
+       <span class="btn-text"> {{ 'products.product.add_to_cart' | t }} </span>
+        </button>
+  {% endif %}
+    	<a href="#shopify-section-painz-footer" class="btn action-button-contact d-none">Contact US </a>
+  </div>
+  
+  {% endif %}
+  {% endif %}
+</form>

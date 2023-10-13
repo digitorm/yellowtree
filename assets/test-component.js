@@ -1,0 +1,1 @@
+(async()=>{var e=await import(window.theme.modules.baseComponent);customElements.define("test-component",class extends e.default{elements={buttons:"*[data-index]"};render(){console.log(this.$buttons),this.$buttons.map(e=>e.addEventListener("click",()=>console.log(e.dataset.index)))}})})();

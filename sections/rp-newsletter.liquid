@@ -1,0 +1,368 @@
+{{ 'form.css' | asset_url | stylesheet_tag }}
+{{ 'newsletter.css' | asset_url | stylesheet_tag }}
+{% style %}
+  #shopify-section-{{ section.id }} .\#floating-content{
+    padding: min(5%,3rem);
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1466px;
+  }
+  #shopify-section-{{ section.id }} .\#hero-heading {
+    color: #28295A;
+    font-size: 40px;
+    text-transform: uppercase;
+  }
+  #shopify-section-{{ section.id }} .\#hero-text {
+    opacity: 1;
+    color: #28295A;
+    font-size: 20px;
+  }
+  #shopify-section-{{ section.id }} .\#hero {
+    width: min(46em,100%);
+  }
+   #shopify-section-{{ section.id }} .\#button {
+    --background-color: rgba(var(--color-accent), 1);
+    --text-color: rgba(var(--color-accent-c), 1);
+  }
+  
+  @media (max-width: 991px) {
+    #shopify-section-{{ section.id }} .\#media.\@aspect-ratio\:mobile\:9x16::before {
+      padding-top: 30%;
+    }
+    #shopify-section-{{ section.id }} .hide-mobile {
+      display: block !important;
+    }
+  }
+  @media (max-width: 767px) {
+    #shopify-section-{{ section.id }} .\#media.\@aspect-ratio\:mobile\:9x16::before {
+      padding-top: 45%;
+    }
+    #shopify-section-{{ section.id }} .\#hero-heading {
+      font-size: 25px;
+    }
+    #shopify-section-{{ section.id }} .\#hero-text {
+      font-size: 16px;
+    }
+    #shopify-section-{{ section.id }} .\#hero-newsletter {
+      height: 45px;
+    }
+    #shopify-section-{{ section.id }} .hide-mobile {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+  @media (max-width: 640px) {
+    #shopify-section-{{ section.id }} .\#media.\@aspect-ratio\:mobile\:9x16::before {
+      padding-top: 60%;
+    }
+    #shopify-section-{{ section.id }} .\#hero-newsletter-input {
+      width: 50%;
+    }
+  }
+{% endstyle %}
+
+{%- assign position = section.settings.text_position | split: '-' -%}
+{%- assign text_y = position[0] -%}
+{%- assign text_x = position[1] -%}
+
+{% capture Newsletter %}
+  {% render 'hero',
+    blocks: section.blocks,
+    align: text_x,
+    color_scheme: section.settings.color_scheme,
+    spaced: 'lg',
+    size: section.settings.text_size,
+    reveal_animation: true
+  %}
+{% endcapture %}
+
+{% capture Caption %}
+  {% render 'floating-content',
+    padded: true,
+    x: text_x,
+    y: text_y,
+    content: Newsletter,
+    absolute: true
+  %}
+{% endcapture %}
+
+{% capture Content %}
+  {% render 'media',
+    image: section.settings.image,
+    mobile_image: section.settings.mobile_image,
+    size: section.settings.image_size,
+    mobile_size: section.settings.image_mobile_size,
+    content: Caption,
+    overlay: section.settings.overlay,
+    color_scheme: section.settings.color_scheme,
+    reveal_zoom: true,
+    placeholder: 'lifestyle'
+  %}  
+{% endcapture %}
+
+{% render 'section-body',
+  content: Content,
+  container: false
+%}
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "section",
+  "class": "spaced-section spaced-section--full-width",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background"
+    },
+    {
+      "type": "select",
+      "id": "image_size",
+      "label": "Size",
+      "options": [
+        {
+          "value": "large",
+          "label": "Large (70%)"
+        },
+        {
+          "value": "medium",
+          "label": "Medium (60%)"
+        },
+        {
+          "value": "small",
+          "label": "Small (50%)"
+        },
+        {
+          "value": "16x9",
+          "label": "Widescreen (16x9)"
+        },
+        {
+          "value": "21x9",
+          "label": "Ultrawide (21x9)"
+        },
+        {
+          "value": "original",
+          "label": "Original image size"
+        }
+      ],
+      "default": "original"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Background mobile image (optional)"
+    },
+    {
+      "type": "select",
+      "id": "image_mobile_size",
+      "label": "Size",
+      "options": [
+        {
+          "value": "large",
+          "label": "Large (70%)"
+        },
+        {
+          "value": "medium",
+          "label": "Medium (60%)"
+        },
+        {
+          "value": "small",
+          "label": "Small (50%)"
+        },
+        {
+          "value": "9x16",
+          "label": "Instgram story (9x16)"
+        },
+        {
+          "value": "4x5",
+          "label": "Facebook feed (4x5)"
+        },
+        {
+          "value": "original",
+          "label": "Original image size"
+        }
+      ],
+      "default": "9x16"
+    },
+    {
+      "type": "range",
+      "id": "overlay",
+      "label": "Overlay opacity",
+      "unit": "%",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        {
+          "value": "sm",
+          "label": "Small"
+        },
+        {
+          "value": "md",
+          "label": "Medium"
+        },
+        {
+          "value": "lg",
+          "label": "Large"
+        },
+        {
+          "value": "xl",
+          "label": "Extra large"
+        }
+      ],
+      "default": "md"
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Top left"
+        },
+        {
+          "value": "top-center",
+          "label": "Top center"
+        },
+        {
+          "value": "top-right",
+          "label": "Top right"
+        },
+        {
+          "value": "center-left",
+          "label": "Center left"
+        },
+        {
+          "value": "center-center",
+          "label": "Center"
+        },
+        {
+          "value": "center-right",
+          "label": "Center right"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom-center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "bottom-right",
+          "label": "Bottom right"
+        }
+      ],
+      "default": "center-center"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "invert",
+          "label": "Inverted"
+        }
+      ],
+      "default": "invert",
+      "label": "Color scheme"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.newsletter.settings.paragraph.content"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "t:sections.newsletter.blocks.heading.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Subscribe to our emails",
+          "label": "t:sections.newsletter.blocks.heading.settings.heading.label"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.image-banner.blocks.text.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "default": "Be the first to know about new collections and exclusive offers.",
+          "label": "t:sections.newsletter.blocks.paragraph.settings.paragraph.label"
+        }
+      ]
+    },
+    {
+      "type": "newsletter_form",
+      "name": "Newsletter form",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "button_show_arrow",
+          "label": "Show button arrow",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "button_custom_text",
+          "label": "Custom button label text",
+          "info": "Leave it blank for default label"
+        },
+        {
+          "type": "text",
+          "id": "custom_placeholder_text",
+          "label": "Custom input text",
+          "info": "Leave it blank for default text"
+        }
+      ]
+    },
+    {
+      "type": "social",
+      "name": "Social profiles"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "RP Newsletter",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "newsletter_form"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,136 @@
+{% capture Title %}
+  <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
+  {{- collection.title | escape -}}
+{% endcapture %}
+
+
+{% if section.settings.show_collection_image and collection.metafields.custom.custom_collection_page_banner %}
+  {%- assign spaced_section = false -%}
+  {% assign bg_image = collection.metafields.custom.custom_collection_page_banner %}
+  {% assign bg_image_mobile = collection.metafields.custom.collection_page_banner_mobile %}
+{% else %}
+  {% assign spaced_section = true %}
+{% endif %}
+
+{% comment %}
+{% capture Content %}
+  {% render 'page-header',
+    title: Title,
+    bg_image: bg_image,
+    header_overlap: section.settings.header_overlap,
+    bg_overlay: section.settings.overlay,
+    text_size: section.settings.text_size,
+    image_size: section.settings.height,
+    color_scheme: section.settings.color_scheme
+  %}
+{% endcapture %}
+{% endcomment %}
+
+{% capture Content %}
+  {% render 'yt-page-header',
+    title: collection.title,
+    bg_image: bg_image,
+    bg_image_mobile: bg_image_mobile,
+    header_overlap: section.settings.header_overlap,
+    bg_overlay: section.settings.overlay,
+    text_size: section.settings.text_size,
+    image_size: section.settings.height,
+    color_scheme: section.settings.color_scheme
+  %}
+{% endcapture %}
+
+{% render 'section-body',
+    content: Content,
+    spaced: spaced_section,
+    color_scheme: section.settings.color_scheme
+%}
+
+{% schema %}
+{
+  "name": "Collection header",
+  "class": "spaced-section spaced-section--full-width",
+  "settings": [
+    {
+      "type": "select",
+      "id": "text_size",
+      "options": [
+        {
+          "value": "lg",
+          "label": "Small"
+        },
+        {
+          "value": "xl",
+          "label": "Medium"
+        },
+        {
+          "value": "xxl",
+          "label": "Large"
+        }
+      ],
+      "default": "xl",
+      "label": "Text size"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "default": false,
+      "label": "t:sections.main-collection-banner.settings.show_collection_image.label",
+      "info": "t:sections.main-collection-banner.settings.show_collection_image.info"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small (50%)"
+        },
+        {
+          "value": "medium",
+          "label": "Medium (60%)"
+        },
+        {
+          "value": "large",
+          "label": "Large (70%)"
+        }
+      ],
+      "default": "medium",
+      "label": "Image height"
+    },
+    {
+      "type": "range",
+      "id": "overlay",
+      "label": "Overlay opacity",
+      "unit": "%",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "alt",
+          "label": "Alternate"
+        },
+        {
+          "value": "accent",
+          "label": "Accent"
+        },
+        {
+          "value": "invert",
+          "label": "Inverted"
+        }
+      ],
+      "default": "invert",
+      "label": "Color scheme"
+    }
+  ]
+}
+{% endschema %}

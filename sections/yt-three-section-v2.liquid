@@ -1,0 +1,137 @@
+{% render 'yt-three-section-css-v2' %}
+
+<section id="id_{{section.id}}" class="three-columns">  
+  <div class="container ">
+    <div class="row head_text">
+      <div class="col-md-12">
+        <h2 class="title">
+          {{section.settings.title}}
+        </h2>
+      </div>
+    </div>
+    <div class="row content-display">
+      {% for block in section.blocks %}
+        <div class="col-12 col-md-4">
+          <div class="section-container">
+              <div class="section-image">
+                {% render 'yt-image-size', image: block.settings.image_logo %}
+              </div>
+              <div class="section-content">
+                <h3>{{block.settings.title_text}}</h3>
+                <div class="content">
+					{{block.settings.content}}
+                </div>
+              </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="row btn-action">
+      {% render 'btn-landing-page', url: section.settings.btn_url, text: section.settings.btn_text %}
+    </div>
+  </div>
+</section>
+
+
+
+{% schema %}
+  {
+      "name":"Three Column Section v2",
+      "class":"yt-three-section",
+      "settings":[
+          {
+              "type":"header",
+              "content":"Section Spacing"
+          },
+          {
+              "type":"number",
+              "id":"spacing_top",
+              "label":"Spacing Top",
+                "default":0
+          },
+          {
+              "type":"number",
+              "id":"spacing_bottom",
+              "label":"Spacing Bottom",
+              "default":0
+          },
+          {
+              "type":"header",
+              "content":"Header Content"
+          },
+          {
+              "type":"textarea",
+              "id":"title",
+              "label":"Title"
+          },
+          {
+              "type":"color",
+              "id":"title_color",
+              "label":"Title Color"
+          },
+          {
+              "type":"number",
+              "id":"title_size",
+              "label":"Title Size"
+          },
+          {
+              "type":"header",
+              "content":"Block Styling"
+          },
+          {
+              "type":"number",
+              "id":"title_font",
+              "label":"Title Font"
+          },
+          {
+              "type":"color",
+              "id":"icon_color",
+              "label":"Icon Color"
+          },
+          {
+              "type":"header",
+              "content":"Button Content"
+          },
+          {
+              "type":"text",
+              "id":"btn_text",
+              "label":"Button Text"
+          },
+          {
+              "type":"url",
+              "id":"btn_url",
+              "label":"Button URL"
+          }
+      ],
+      "blocks":[
+          {
+              "type":"brand-list",
+              "name":"Brand List",
+              "settings":[
+                  {
+                      "type":"image_picker",
+                      "id":"image_logo",
+                      "label":"Image Logo"
+                  },
+                  {
+                      "type":"text",
+                      "id":"title_text",
+                      "label":"Title"
+                  },
+                  {
+                    "type":"textarea",
+                    "id":"content",
+                    "label":"Content"
+                  }
+
+              ]
+          }
+      ],
+  "presets":[
+        {
+        "name":"Three Column Section v2",
+		"category":"Custom Section"
+        }
+  ]
+  }
+{% endschema %}

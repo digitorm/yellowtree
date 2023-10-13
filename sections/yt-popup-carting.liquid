@@ -1,0 +1,190 @@
+{% include 'spurit_po2_section_snippet', product: all_products[section.settings.selected_product], products: null %}
+
+{% assign product = section.settings.selected_product %}
+
+{%- liquid
+            assign on_sale = false
+            if product.compare_at_price_min > product.price_min
+                assign on_sale = true
+            endif
+            assign sold_out = true
+            if product.available
+                assign sold_out = false
+            endif
+            assign option_color_swatch = settings.option_color_swatch | downcase
+            assign url = ''
+            for option in product.options_with_values
+                assign option_name = option.name | downcase
+                if option_color_swatch contains option_name
+                    assign product_option = option
+                    assign index = forloop.index0
+                    assign position = forloop.index | minus: 1
+                    assign select = option.selected_value
+                    for variant in product.variants limit: 1
+                        if variant.image != null  
+                        assign url = variant.image.src
+                        endif
+                    endfor
+                    break
+                else 
+                    assign position = 0
+                endif
+            endfor
+            if sectionId == blank 
+                assign sectionId = section.id
+            endif
+        -%}
+
+
+{% liquid
+  assign product_form_id = 'product-form-' | append: section.id
+  assign current_variant = product.selected_or_first_available_variant
+  
+  for item in cart.items
+    if product.id == item.product_id and item.variant_id == current_variant.id
+      assign in_cart_qty = item.quantity
+      break
+    endif
+  endfor
+
+  if section.settings.gallery_padding
+    
+  endif
+%}
+
+<style>
+  .yt-popup-carting {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 0px;
+    z-index: 10;
+    display: none;
+  }
+  .toastie_cont .inner-content {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .toastie_cont .inner-content img {
+    max-width: 60px;
+    margin-right: 20px;
+    height: auto;
+  }
+  .toastie_cont .inner-content button {
+    min-width: 200px;
+    font-size: 13px;
+    font-weight: 900;
+  }
+  .toastie_cont .\#form-custom-select-dropdown {
+    bottom: 0;
+    top: unset;
+  }
+  .toastie_cont .\#product-option-picker-header{
+  	display: none;
+  }
+  .toastie_cont .\#form-custom-select {
+    margin-bottom: 0px;
+  }
+  .toastie_cont .price-container {
+    padding: 10px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+  .toastie_cont .price-container h3 {
+    font-size: 13px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 4px;
+  }
+  .toastie_cont .price-container p {
+    margin-bottom: 0;
+    font-size: 16px;
+    line-height: 1;
+    text-align: center;
+  }
+  
+  @media(max-width: 575px){
+    .toastie_cont .inner-content button {
+      min-width: 100px;
+    }
+    .toastie_cont .inner-content .\#button-inner span.\#button-text {
+      font-size: 9px;
+      padding: 0px 20px;
+    }
+    .toastie_cont .inner-content img {
+        margin-right: 0;
+    }
+    .toastie_cont .inner-content {
+        flex-flow: row;
+    }
+  }
+
+</style>
+
+<script>
+  window.addEventListener('scroll',function(){
+  	var top = this.scrollY;
+    if(top > 2000){
+      document.querySelector('.yt-popup-carting').style.display = "block";
+    }else{
+      document.querySelector('.yt-popup-carting').style.display = "none";
+    }
+  })
+</script>
+
+<section id="footer_toastie_{{section.id}}" class="toastie_cont">
+    <div class="container">
+        <div class="row">
+            <div class="inner-content">
+                <div class="image-cont">
+                    {% render 'yt-image-size', image: product.featured_image %}
+                </div>
+                <div class="variant_cont">
+                  {%- if product.has_only_default_variant -%}
+                    <div class="price-container">
+                      <h3> {{ product.title }} </h3>
+                      <p>{{ product.price | money }}</p>
+                    </div>
+                  {% else %}
+                  	{% render 'yt-product-variant-selector', product: product, type: 'dropdown', color_swatches: true, color_first: true, align: align, product_form_id: product_form_id %} 
+                  {%- endif -%}
+                </div>
+                <div class="btn_cont">
+                            
+                  {% render 'yt-product-form', product: product, in_cart_qty: in_cart_qty, current_variant: current_variant, dynamic_checkout: false, product_form_id: product_form_id
+                  %} 
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% schema %}
+{
+    "name":"Footer Popup Carting",
+    "class":"yt-popup-carting",
+    "settings":[
+        {
+            "type":"product",
+            "id":"selected_product",
+            "label":"Selected Product"
+        }
+    ],
+    "presets":[
+        {
+            "name":"Footer Popup Carting",
+            "category":"Custom Section"
+        }
+    ]
+
+}
+
+{% endschema %}

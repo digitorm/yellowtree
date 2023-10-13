@@ -1,0 +1,8 @@
+<a href="{{url}}" class="btn landing-btn {{class}}">
+  <span class="btn-text">{{text}}</span>
+  {% if custom_icon %}
+      <span class="custom-icon">
+          {% render 'yt-image-size', image: image %}
+      </span>
+  {% endif %}
+</a>

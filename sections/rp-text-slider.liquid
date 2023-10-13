@@ -1,0 +1,477 @@
+{%- if section.settings.enable_announcement and section.blocks.size > 0 -%}
+    {%-liquid
+        assign arrow =  section.settings.arrow_active
+        assign hasCountDown = section.blocks | where: 'type', 'countdown'
+        assign hasCountDown = hasCountDown[0]
+        assign timeScroll = 10 | times: section.blocks.size
+    -%}
+    <style type="text/css">
+        .announcement-bar__item-scroll {
+          margin-left: 8rem;
+        }
+        .announcement-bar .announcement-bar__message {
+          text-transform: uppercase;
+        }
+        .announcement-bar .announcement-bar__message.none-slide {
+          width: auto;
+        }
+        .announcement-bar .layout--none .row {
+          justify-content: space-evenly;
+          display: flex;
+        }
+        @keyframes SlideLeft {0% {transform: translate3d(0,0,0)} 100% {transform: translate3d(-100%,0,0)}}
+        .announcement-bar {padding-top: {{ section.settings.padding_top }}px;padding-bottom: {{ section.settings.padding_bottom }}px;{% if section.settings.bg_image_announcement != blank %}background-image: url({{ section.settings.bg_image_announcement | img_url: '2048x'}});background-repeat: no-repeat;background-position: center;background-size: cover;{% else %}background: {% if section.settings.bg_color_text_gradient != blank %}{{ section.settings.bg_color_text_gradient }}{% else %}{{ section.settings.bg_color_text }}{% endif %}{% endif %}}
+        .banner-animation-1 .announcement-bar {transition: opacity 250ms ease-in}
+        .announcement-bar .layout--scroll {max-width: 100%;padding-left: 0; padding-right: 0;overflow: hidden;text-align: right;}
+        .header-full-width #shopify-section-announcement-bar .announcement-bar .layout--scroll {padding-left: 0;padding-right: 0}
+        .announcement-bar .layout--scroll .row {display: inline-block;text-align: left; white-space: nowrap}
+        .announcement-bar__item-scroll {display: inline-block;animation: SlideLeft {{ timeScroll }}s infinite linear}
+        .announcement-bar .layout--scroll:hover .announcement-bar__item-scroll,
+        .announcement-bar .layout--scroll:focus .announcement-bar__item-scroll {animation-play-state: paused}
+        .announcement-bar .layout--scroll .announcement-bar__message {width: auto;vertical-align: middle}
+        .announcement-bar .layout--scroll .announcement-bar__message .message, 
+        .announcement-bar .layout--scroll .announcement-bar__message p {padding: 5px 12.5px;color: #FFD37A;
+  font-size: 60px;
+  font-weight: 700;
+  margin-bottom: 0;}
+        .announcement-bar .announcement-bar__message svg {display: inline-block;vertical-align: middle;width: 16px;height: 16px}
+        .announcement-bar .layout--scroll .announcement-bar__message .underline {text-decoration: underline;text-decoration-thickness: 1px;text-underline-offset: 4px}
+        .announcement-bar__message, .announcement-bar__message .message, .announcement-bar__message a, .announcement-bar__message p, .top-mesage-countdown {
+            color: {{ section.settings.color_text }};font-size: {{ section.settings.font_size_text | append: 'px' }};font-style: {{ section.settings.font_style_text }};font-weight: {{ section.settings.font_weight_text }};{% unless section.settings.enable_close %}letter-spacing: 0 {% endunless %}}
+        .announcement-bar .announcement-close.hasCountDown {width: 21px;height: 21px}
+        .announcement-bar .announcement-close svg {fill: {{ section.settings.color_text }}}
+        .announcement-bar .announcement-countdown .clock-item{color: var(--countdown-text-color);border: 1px solid var(--countdown-text-border);background-color: var(--countdown-text-background)}
+        .announcement-bar .announcement-countdown .clock-item:before{color: {{ section.settings.color_text }}}
+
+        {%- if arrow == true -%}
+            .announcement-bar .layout--slider .row{max-width: {{section.settings.content_max_width | append: '%'}}; margin: 0 auto}
+            .announcement-bar .slick-arrow svg{fill: {{ section.settings.color_text }};color: {{ section.settings.color_text }}}
+        {%- endif -%}
+        .announcement-bar .layout--slider .announcement-bar__message{display: none}
+        .announcement-bar .layout--slider .announcement-bar__message:first-child{display: inline-block}
+        .announcement-bar .slick-slider .announcement-bar__message{display: inline-block}
+        @media (max-width: 1400px){
+            {%- if arrow == true -%}
+                .announcement-bar .layout--slider .row{max-width: 50%}
+            {%- endif -%}
+        }
+        @media (max-width: 1199px){
+            {%- if arrow == true -%}
+                .announcement-bar .layout--slider .row{ max-width: 90%}
+            {%- endif -%}
+        }
+        @media (max-width: 1024px){
+            .announcement-bar .announcement-countdown+.announcement-close{top: 20%}
+            .announcement-bar__message .message.font-size-mb {font-size: calc({{ section.settings.font_size_text | append: 'px' }} - 2px)}
+        }
+        @media (max-width: 767px){
+           .announcement-bar .layout--scroll .announcement-bar__message p {
+              font-size: 25px;
+            }
+            .announcement-bar .announcement-bar__message img {
+              width: 25px;
+              object-fit: contain;
+            }
+        }
+        @media (max-width: 551px){
+            {%- if section.settings.bg_image_announcement != blank -%}
+            .announcement-bar{background-position: inherit}
+            .announcement-bar .announcement-countdown+.announcement-close{top: 18%}
+            {%- endif -%}
+            {%- if arrow == true -%}
+                .announcement-bar .layout--slider .row{max-width: 100%}
+                .announcement-bar .slick-arrow{display: none !important}
+            {%- endif -%}
+            .announcement-bar__message .message.font-size-mb {font-size: calc({{ section.settings.font_size_text | append: 'px' }} - 4px)}
+        }
+    </style>
+    <announcement-bar-component class="announcement-bar" role="region" aria-label="{{ 'sections.header.announcement' | t }}" style="opacity: 0; visibility: hidden; display: block;">
+        <script>
+            if (window.announcementClosed) {
+                document.querySelector('.announcement-bar').remove();
+            }
+        </script>
+        <div class="container layout--{{ section.settings.layout }}">
+            <div class="row{% if arrow == true %} has-arrows{% endif %}" {% if section.blocks.size > 1 and section.settings.layout == 'slider' %}data-announcement-bar data-arrows="{{arrow}}"{% endif %}>
+                {%- if section.settings.layout == 'scroll' -%}
+                    {%- liquid
+                        if section.blocks.size <= 10
+                            assign limitItems = 13 | minus: section.blocks.size
+                        else
+                            assign limitItems = 2
+                        endif
+                    -%}
+                    {%- for i in (1..limitItems) -%}
+                        <div class="announcement-bar__item-scroll">
+                            {%- for block in section.blocks -%}
+                                {%- case block.type -%}
+                                    {%- when 'announcement' -%}
+                                      
+                                        <div class="announcement-bar__message text-center dd" id="{{block.id}}" style="--button-color-style: {{ block.settings.btn_color }};--button-border-style: {{ block.settings.btn_border_color }};--button-background-style: {% if block.settings.btn_bg_color_gradient != blank %}{{ block.settings.btn_bg_color_gradient }}{% else %}{{ block.settings.btn_bg_color }}{% endif %}">
+                                          {% for i in (1..3) %}
+                                            {% capture image %}image_{{i}}{% endcapture %}
+                                            {% capture text %}text_{{i}}{% endcapture %}  
+                                            {% if block.settings[image] != blank %}
+                                            <img {% if settings.enable_lazyload %}data-{% endif %}srcset="{{ block.settings[image] | img_url: '38x' }}" alt="{{ block.settings[image].alt | default: '' }}"
+                                                {% unless settings.enable_lazyload %}src="{{ image_trust | img_url: '38x' }}"{% endunless %}
+                                                {% if settings.enable_lazyload %}class="lazyload"{% endif %}/>  
+                                            {% endif %}
+                                            {% if block.settings[text] != blank %}
+                                                 {{ block.settings[text] }}
+                                             {% endif %}
+                                          {% endfor %}
+                                         </div>
+                                {%- endcase -%}
+                            {%- endfor -%}
+                        </div>
+                    {%- endfor -%}
+                {%- else -%}
+                    {%- for block in section.blocks -%}
+                        {%- case block.type -%}
+                            {%- when 'announcement' -%}
+                                {%- if block.settings.text != blank -%}
+                                    <div class="announcement-bar__message text-center none-slide" id="{{block.id}}" style="--button-color-style: {{ block.settings.btn_color }};--button-border-style: {{ block.settings.btn_border_color }};--button-background-style: {% if block.settings.btn_bg_color_gradient != blank %}{{ block.settings.btn_bg_color_gradient }}{% else %}{{ block.settings.btn_bg_color }}{% endif %}">
+                                    {% if block.settings.image != blank %}
+                                            <img {% if settings.enable_lazyload %}data-{% endif %}srcset="{{ block.settings.image | img_url: '38x' }}" alt="{{ block.settings.image.alt | default: '' }}"
+                                                {% unless settings.enable_lazyload %}src="{{ image_trust | img_url: '38x' }}"{% endunless %}
+                                                {% if settings.enable_lazyload %}class="lazyload"{% endif %}/>  
+                                            {% endif %}
+                                    {{ block.settings.text }}
+                                    </div>
+                                {%- endif -%}
+                        {%- endcase -%}
+                    {%- endfor -%}
+                {%- endif -%}
+            </div>
+
+            {%- if section.settings.enable_close and section.settings.layout == 'slider' -%}
+                <button type="button" class="announcement-close clearfix{% if hasCountDown != blank %} hasCountDown{% endif %}" data-close-announcement aria-label="{{ 'general.common.close' | t }}" >{% render 'icon-close' %} {{ 'general.common.close' | t }}</button>
+            {%- endif -%}
+        </div>
+    </announcement-bar-component>
+    
+    <script>
+        class AnnouncementBar extends HTMLElement {
+            constructor() {
+                super();
+            }
+            
+            connectedCallback() {
+                this.closeAnnouncementButton = this.querySelector('[data-close-announcement]');
+                this.announcementBarSlider = this.querySelector('[data-announcement-bar]');
+                this.announcementHasSlides = this.announcementBarSlider?.querySelectorAll('.announcement-bar__message').length > 1;
+
+                if (AnnouncementBar.getCookie('announcement') == 'closed') {
+                    this.remove();
+                } else {
+                    this.style.opacity = 1;
+                    this.style.visibility = 'visible';
+                };
+                
+                this.initAnnouncementBarSlider();
+                this.closeAnnouncementButton?.addEventListener('click', this.closeAnnouncementBar.bind(this));
+            }
+    
+            closeAnnouncementBar(e) {
+                e.preventDefault();
+                e.stopPropagation();
+    
+                this.remove();
+                AnnouncementBar.setCookie('announcement', 'closed', 1);
+            }
+
+            initAnnouncementBarSlider() {
+                if (this.announcementHasSlides && !this.announcementBarSlider.classList.contains('slick-initialized')) {
+                    let showArrows;
+                    this.announcementBarSlider.dataset.arrows == 'true' || this.announcementBarSlider.dataset.arrows == true ? showArrows = true : showArrows = false;
+                    $(this.announcementBarSlider).slick({
+                        infinite: true,
+                        vertical: false,
+                        adaptiveHeight: true,
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        dots: false,
+                        arrows: showArrows,
+                        autoplay: true,
+                        autoplaySpeed: 3000,
+                        nextArrow: '<button type="button" class="slick-next" aria-label="Next"><svg viewBox="0 0 478.448 478.448" class="icon icon-chevron-right" id="icon-chevron-right"><g><g><polygon points="131.659,0 100.494,32.035 313.804,239.232 100.494,446.373 131.65,478.448 377.954,239.232"></polygon></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg></button>',
+                        prevArrow: '<button type="button" class="slick-prev" aria-label="Previous"><svg viewBox="0 0 370.814 370.814" class="icon icon-chevron-left" id="icon-chevron-left"><g><g><polygon points="292.92,24.848 268.781,0 77.895,185.401 268.781,370.814 292.92,345.961 127.638,185.401"></polygon></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg></button>',
+                    });
+                }
+            }
+
+            static setCookie(cname, cvalue, exdays) {
+                const d = new Date();
+                d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                const expires = 'expires=' + d.toUTCString();
+                document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
+            }
+
+            static getCookie(cname) {
+                const name = cname + '=';
+                const ca = document.cookie.split(';');
+        
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) === ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) === 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                
+                return '';
+            }
+        }
+    
+        customElements.define('announcement-bar-component', AnnouncementBar);
+    </script>
+{%- endif -%}
+
+{% schema %}
+{
+    "name": "Text Slider",
+    "max_blocks": 12,
+    "settings": [
+        {
+            "type": "checkbox",
+            "id": "enable_announcement",
+            "label": "Enable Announcement Bar",
+            "default": true
+        },
+        {
+            "type": "select",
+            "id": "layout",
+            "label": "Layout",
+            "default": "slider",
+            "options": [
+                {
+                    "value": "slider",
+                    "label": "Slider"
+                },
+                {
+                    "value": "scroll",
+                    "label": "Infinite Scrolling"
+                },
+                {
+                    "value": "none",
+                    "label": "None"
+                }
+            ]
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_close",
+            "label": "Enable Icon Close?",
+            "info": "(Use for Slide only)",
+            "default": true
+        },
+        {
+            "type": "image_picker",
+            "id": "bg_image_announcement",
+            "label": "Select Image Background"
+        },
+        {
+            "type": "color",
+            "id": "color_text",
+            "label": "Color Text",
+            "default": "#b05d5d"
+        },
+        {
+            "type": "color",
+            "id": "bg_color_text",
+            "label": "Background Color",
+            "default": "#ffe8e8"
+        },
+        {
+            "type": "color_background",
+            "id": "bg_color_text_gradient",
+            "label": "Background Gradient"
+        },
+        {
+            "type": "range",
+            "id": "font_size_text",
+            "label": "Font Size",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "default": 12
+        },
+        {
+            "type": "select",
+            "id": "font_style_text",
+            "label": "Font Style",
+            "default": "normal",
+            "options": [
+            {
+                "value": "normal",
+                "label": "Normal"
+            },
+            {
+                "value": "italic",
+                "label": "Italic"
+            },
+            {
+                "value": "oblique",
+                "label": "Oblique"
+            }]
+        },
+        {
+            "type": "select",
+            "id": "font_weight_text",
+            "label": "Font Weight",
+            "default": "500",
+            "options": [
+            {
+                "value": "400",
+                "label": "Normal"
+            },
+            {
+                "value": "500",
+                "label": "Medium"
+            },
+            {
+                "value": "600",
+                "label": "Semi-Bold"
+            },
+            {
+                "value": "700",
+                "label": "Bold"
+            },
+            {
+                "value": "800",
+                "label": "Bolder"
+            },
+            {
+                "value": "900",
+                "label": "Black"
+            }]
+        },
+        {
+            "type": "paragraph",
+            "content": "Settings For Slider Layout"
+        },
+        {
+            "type": "checkbox",
+            "id": "arrow_active",
+            "label": "Enable Arrow?",
+            "info": "(Use for Slide only)",
+            "default": false
+        },
+        {
+            "type": "range",
+            "id": "content_max_width",
+            "label": "Content Max Width",
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "default": 38
+        },
+        {
+            "type": "header",
+            "content": "Spacing"
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "label": "Padding Top",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom",
+            "label": "Padding Bottom",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "default": 0
+        }
+    ],
+    "blocks": [
+        {
+            "type": "announcement",
+            "name": "Announcement",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "image_1",
+                    "label": "Image 1"
+                },
+                {
+                    "type": "html",
+                    "id": "text_1",
+                    "label": "Text 1",
+                    "default": "<p>Welcome to our store</p>"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "image_2",
+                    "label": "Image 2"
+                },
+                {
+                    "type": "html",
+                    "id": "text_2",
+                    "label": "Text 2",
+                    "default": "<p>Welcome to our store</p>"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "image_3",
+                    "label": "Image 3"
+                },
+                {
+                    "type": "html",
+                    "id": "text_3",
+                    "label": "Text 3",
+                    "default": "<p>Welcome to our store</p>"
+                },
+                {
+                    "type": "paragraph",
+                    "content": "Button"
+                },
+                {
+                    "type" : "color",
+                    "id" : "btn_color",
+                    "label" : "Color",
+                    "default" : "#f84248"
+                },
+                {
+                    "type" : "color",
+                    "id" : "btn_border_color",
+                    "label" : "Border Color",
+                    "default" : "#ffffff"
+                },
+                {
+                    "type" : "color",
+                    "id" : "btn_bg_color",
+                    "label" : "Background Color",
+                    "default" : "#ffffff"
+                },
+                {
+                    "type" : "color_background",
+                    "id" : "btn_bg_color_gradient",
+                    "label" : "Background Gradient"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name":  "RP Text Slider",
+            "blocks": [
+                {
+                    "type": "announcement"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,1 @@
+(async()=>{var e=await import(window.theme.modules.baseComponent);customElements.define("main-header-sticky",class extends e.default{onIntersect(e){this.trigger("stickyMainHeader",{sticky:!e})}})})();

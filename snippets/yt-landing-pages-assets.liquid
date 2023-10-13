@@ -1,0 +1,40 @@
+{% if request.page_type contains 'index' or request.page_type contains 'product' %}
+  <link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}" />
+  <script data-src='{{ 'swiper-bundle.min.js' | asset_url }}' type="lazyload2"></script>
+{% endif %}
+    
+    {% if page.url contains 'microwave-toastie-maker-landing-page' or page.url contains 'microwave-toastie-v2' or page.url contains 'ultrasonic-jewellery-cleaner' or page.url contains 'landing' %}
+    	<link rel="stylesheet" href="{{ 'bootstrap-grid.min.css' | asset_url }}" />
+    	<link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}" />
+    	{% if page.url contains 'microwave-toastie-maker-landing-page' %}
+        	<link rel="stylesheet" href="{{ 'yt-landing-page.css' | asset_url }}" />
+    	{% endif %}
+        {% if page.url contains 'cramp' %}
+        	<link rel="stylesheet" href="{{ 'yt-landing-cramp-relief-css.css' | asset_url }}" />
+            <script type="lazyload2">
+              $(function() {
+                $(window).one('scroll', function(){
+                  let player = $('.video_setup_inner');
+                  console.log(player.length);
+                  player.each(function(i, elem) {
+                    let scroll_position = $(window).scrollTop();
+                    let data_src = $(this).data('src');
+              
+                    if( scroll_position > 0 ) {  
+                      $(this).attr('src', data_src);
+                    }
+                  });
+                });
+              });
+            </script>
+    	{% endif %}
+    	{% if page.url contains 'microwave-toastie-v2' or page.url contains 'ultrasonic-jewellery-cleaner' %}
+    		<link rel="stylesheet" href="{{ 'yt-landing-page-v2.css' | asset_url }}" />
+    	{% endif %}
+    	<script data-src='{{ 'swiper-bundle.min.js' | asset_url }}' type="lazyload2"></script>
+        <script data-src="{{ 'gsap.min.js' | asset_url }}" type="lazyload2"></script>
+        <script data-src="{{ 'ScrollTrigger.min.js' | asset_url }}" type="lazyload2"></script>
+    {% endif %}
+    {% if request.page_type contains 'product' %}
+      {% render 'yt-product-custom-colors' %}
+    {% endif %}

@@ -1,0 +1,375 @@
+{% style %}
+  #shopify-section-{{ section.id }} {
+    background-color: {{ section.settings.sec_bg_color }};
+  }
+  #shopify-section-{{ section.id }} .\#section {
+    margin-top: 0;
+    margin-bottom: 0;
+    background-color: transparent;
+  }
+  #shopify-section-{{ section.id }} .\#hero .\#button-group .\#button {
+    margin-bottom: 0;
+    padding: 8.5px 60px;
+    min-width: 438px;
+    margin-right: 0;
+    margin-top: 2rem;
+  }
+   #shopify-section-{{ section.id }} .\#button.\@color\:default {
+    --background-color: rgba(var(--color-accent), 1);
+    --text-color: rgba(var(--color-accent-c), 1);
+  }
+  #shopify-section-{{ section.id }} .\#hero-heading {
+    font-size: 30px;
+    color: #F5F5DC;
+  }
+  #shopify-section-{{ section.id }} .\#hero-text {
+    opacity: 1;
+    font-size: 16px;
+    color: #F5F5DC;
+  }
+  #shopify-section-{{ section.id }} .\#hero {
+    width: min(803px,100%);
+  }
+  #shopify-section-{{ section.id }} .image-wrapper img {
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 2rem;
+  }
+  #shopify-section-{{ section.id }} .\#container,
+  #shopify-section-{{ section.id }} .image-wrapper {
+    padding: 0 1.7rem;
+  }
+  
+  @media (max-width: 575px) {
+   #shopify-section-{{ section.id }} .image-wrapper img {
+      width: 100%;
+      height: auto;
+    }
+    #shopify-section-{{ section.id }} .\#hero .\#button-group .\#button {
+      min-width: auto;
+    }
+  }
+ @media (max-width: 767px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1199px) {
+     #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_tablet }}px;
+      padding-bottom: {{ section.settings.padding_bottom_tablet }}px;
+    }
+  }
+
+  @media (min-width: 1200px) {
+   #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    }
+  }
+{% endstyle %}
+
+{%- capture Content -%}
+  {% render 'hero',
+    blocks: section.blocks,
+    size: section.settings.text_size,
+    align: section.settings.text_align,
+    color_scheme: section.settings.color_scheme,
+    reveal_animation: true
+  %}
+{%- endcapture -%}
+<div class="image-wrapper">
+   {% render 'yt-image-size', image: section.settings.image %}
+</div>
+{% render 'section-body',
+  content: Content,
+  container: true,
+  spaced: true,
+  color_scheme: section.settings.color_scheme
+%}
+
+{% schema %}
+{
+  "name": "t:sections.rich-text.name",
+  "tag": "section",
+  "class": "spaced-section spaced-section--full-width",
+  "settings": [
+  {
+    "type": "select",
+    "id": "color_scheme",
+    "options": [
+      {
+        "value": "default",
+        "label": "Default"
+      },
+      {
+        "value": "alt",
+        "label": "Alternate"
+      },
+      {
+        "value": "accent",
+        "label": "Accent"
+      },
+      {
+        "value": "invert",
+        "label": "Inverted"
+      }
+    ],
+    "default": "invert",
+    "label": "Color scheme"
+  },
+  {
+    "type": "select",
+    "id": "text_align",
+    "label": "Text alignment",
+    "options": [
+      {
+        "value": "left",
+        "label": "Left"
+      },
+      {
+        "value": "center",
+        "label": "Center"
+      },
+      {
+        "value": "right",
+        "label": "Right"
+      }
+    ],
+    "default": "center"
+  },
+  {
+    "type": "select",
+    "id": "text_size",
+    "label": "Text size",
+    "options": [
+        {
+          "value": "sm",
+          "label": "Small"
+        },
+        {
+          "value": "md",
+          "label": "Medium"
+        },
+        {
+          "value": "lg",
+          "label": "Large"
+        },
+        {
+          "value": "xl",
+          "label": "Extra large"
+        }
+      ],
+      "default": "md"
+    },
+    {
+      "type":"color",
+      "id":"sec_bg_color",
+      "label":"Section Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type":"header",
+      "content":"Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top Desktop",
+      "default": 95
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom Desktop",
+      "default": 95
+    },
+    {
+      "type": "range",
+      "id": "padding_top_tablet",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top Tablet",
+      "default": 95
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_tablet",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom Tablet",
+      "default": 95
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top Mobile",
+      "default": 95
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom Mobile",
+      "default": 95
+    },
+    {
+        "type":"image_picker",
+        "id":"image",
+        "label":"Product image"
+     }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "t:sections.image-banner.blocks.heading.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Talk about your brand",
+          "label": "t:sections.image-banner.blocks.heading.settings.heading.label"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.image-banner.blocks.text.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>",
+          "label": "t:sections.image-banner.blocks.text.settings.text.label"
+        }
+      ]
+    },
+    {
+      "type": "buttons",
+      "name": "Buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Primary button"
+        },
+        {
+          "type": "text",
+          "id": "button",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Style",
+          "options": [
+             {
+                "value": "default",
+                "label": "Default"
+             },
+             {
+                "value": "ghost",
+                "label": "Outline"
+             },
+             {
+                "value": "link",
+                "label": "Link"
+             }
+          ],
+          "default": "default"
+        },
+        {
+           "type": "checkbox",
+           "id": "button_show_arrow",
+           "label": "Show arrow",
+           "default": true
+        },
+        {
+          "type": "header",
+          "content": "Secondary button"
+        },
+        {
+          "type": "text",
+          "id": "secondary_button",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "secondary_button_link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "secondary_button_style",
+          "label": "Style",
+          "options": [
+             {
+                "value": "default",
+                "label": "Default"
+             },
+             {
+                "value": "ghost",
+                "label": "Outline"
+             },
+             {
+                "value": "link",
+                "label": "Link"
+             }
+          ],
+          "default": "default"
+        },
+        {
+          "type": "checkbox",
+          "id": "secondary_button_show_arrow",
+          "label": "Show arrow",
+          "default": true
+       }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RP Richtext",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "buttons"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,31 @@
+.\#hero-heading span {
+  font-size: 18px;
+  display: block;
+}
+  button.tdf_cta_btn.tdf_no_gift {
+    display: none !important;
+ }
+
+  body.green [data-v='Green'],
+  body.yellow [data-v='Yellow'],
+  body.red [data-v='Red'],
+  body.blue [data-v='Blue'],
+  body.black [data-v='Black'],
+  body.orange [data-v='Orange'] {
+    display: none !important;
+  }
+  .\#form-color-swatch-inner.barbie-pink .\#form-color-swatch-display {
+    background-color: #fd028a !important;
+  }
+  .\#form-color-swatch-inner.aqua-blue .\#form-color-swatch-display {
+    background-color: #00bae3 !important;
+  }
+  .\#form-color-swatch-inner.neon-green .\#form-color-swatch-display {
+    background-color: #94b558 !important;
+  }
+
+@media only screen and (max-width: 767px) {
+  #shopify-section-template--18488509399359__1646936029d04511aa figure.\#media.\@aspect-ratio\:mobile\:4x5 {
+      height: 570px !important;
+  }
+}

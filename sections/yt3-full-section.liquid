@@ -1,0 +1,195 @@
+<style>
+  #shopify-section-{{ section.id }}.yt3-full-section {
+    padding: 70px 0;
+    background-color: #f5f5f5;
+  }
+  #shopify-section-{{ section.id }} .inner-content.header {
+      margin-bottom: 45px;
+  }
+  #shopify-section-{{ section.id }} .inner-content.header h2.head-content {
+      text-transform: uppercase;
+  }
+  #shopify-section-{{ section.id }} .inner-content.bottom {
+    margin-bottom: 50px;
+  }
+  #shopify-section-{{ section.id }} .inner-content.bottom .the-head h3 {
+      font-size: 25px;
+      font-weight: 400;
+      margin-bottom: 25px;
+  }
+  #shopify-section-{{ section.id }} .the-cont ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  #shopify-section-{{ section.id }} .the-cont ul li {
+      font-weight: 800;
+      padding-left: 30px;
+      position: relative;
+      font-size: 16px;
+      margin: 5px 0;
+  }
+  #shopify-section-{{ section.id }} .the-cont ul li:before {
+    content: "✔";
+    position: absolute;
+    left: 0;
+  }
+  #shopify-section-{{ section.id }} section.yt-all-data .image-container {
+    margin-bottom: 50px;
+  }
+  @media(max-width: 575px){
+    #shopify-section-{{ section.id }}.yt3-full-section {
+      padding: 40px 0;
+    }
+    #shopify-section-{{ section.id }} .inner-content.bottom {
+        margin-bottom: 30px;
+    }
+    #shopify-section-{{ section.id }} .inner-content.header h2.head-content {
+      font-size: 25px;
+    }
+    #shopify-section-{{ section.id }} .inner-content.bottom .the-head h3 {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+    #shopify-section-{{ section.id }} .the-cont ul li {
+      font-size: 14px;
+      margin: 2px 0;
+    }
+    #shopify-section-{{ section.id }} section.yt-all-data .image-container {
+      margin-bottom: 30px;
+    }
+  }
+</style>
+{% assign input = section.settings %}
+
+
+<style>  
+#shopify-section-{{section.id}}.yt3-full-section .container > div{
+    transform: translateY(30px);
+}
+</style>
+
+<script  type="lazyload2" >
+	function full_timeline(){
+    let box = document.querySelector('#shopify-section-{{section.id}}');
+  
+    var sections = gsap.utils.toArray('#shopify-section-{{section.id}}.yt3-full-section .container > div');
+      sections.forEach((section) => {      
+        ScrollTrigger.matchMedia({
+         "(min-width: 320px)": function() {
+              let topSecHeight = `${section.clientHeight}px`;
+              console.log(topSecHeight)
+              var full_sec_timeline = gsap.timeline({
+                scrollTrigger: {
+                  animation: full_sec_timeline,
+                  trigger: box,
+                  start: "-40% top",
+                  toggleActions: "restart none reverse none",
+                  pinSpacing: true,
+                  invalidateOnRefresh: true,
+                }
+              });
+  
+              full_sec_timeline.to(section, {
+                transform: "translateY(0px)",
+                duration: 1
+              });
+  
+          }
+        })
+      });
+  } 
+  full_timeline();
+  
+</script>
+
+<section class="yt-all-data">
+    <div class="container">
+        <div class="inner-content header">
+            <h2 class="head-content"> {{ input.title_text }} </h2>
+        </div>
+        {% for block in section.blocks %}
+        {% assign block_input = block.settings %}
+            {% if block.type == "image" %}
+                <div class="image-container">
+                    {% render 'yt-image-size', image: block_input.image %}
+                </div>
+            {% else %}
+                <div class="inner-content bottom">
+                    <div class="the-head">
+                        {{ block_input.sub_head }}
+                    </div>
+                    <div class="the-cont">
+                        {{ block_input.content }}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="btn-container">
+            {% render 'yt2-btn-landing-page', url: input.btn_url, text: input.btn_text %}
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+    "name":"YT3 Full Section",
+    "class":"yt3-full-section",
+    "settings":[
+        {
+            "type":"color",
+            "id":"bg_color",
+            "label":"Background Color"
+        },
+        {
+            "type":"text",
+            "id":"title_text",
+            "label":"Title Text"
+        },
+        {
+            "type":"url",
+            "id":"btn_url",
+            "label":"Button Url"
+        },
+        {
+            "type":"text",
+            "id":"btn_text",
+            "label":"Button Text"
+        }
+    ],
+    "blocks":[
+        {
+            "type":"text_display",
+            "name":"Text Display",
+            "settings":[
+                {
+                    "type":"textarea",
+                    "id":"sub_head",
+                    "label":"Sub Heading"
+                },
+                {
+                    "type":"textarea",
+                    "id":"content",
+                    "label":"Content"
+                }
+            ]
+        },
+        {
+            "type":"image",
+            "name":"Image",
+            "settings":[
+                {
+                    "type":"image_picker",
+                    "id":"image",
+                    "label":"Image"
+                }
+            ]
+        }
+    ],
+    "presets":[
+        {
+            "name":"YT3 Full Section",
+            "category":"Custom Section"
+        }
+    ]
+}
+{% endschema %}

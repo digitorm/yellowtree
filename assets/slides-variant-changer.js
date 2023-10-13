@@ -1,0 +1,1 @@
+(async()=>{var e=await import(window.theme.modules.baseComponent);customElements.define("slides-variant-changer",class extends e.default{elements={slideShow:"slide-show"};render(){this.$slideShow&&this.listenTo("variantChange",(e,i)=>{i.variant.featured_media&&this.$slideShow.slideTo(i.variant.featured_media.position-1)})}})})();

@@ -1,0 +1,51 @@
+<style>
+  #shopify-section-{{ section.id }}.text-only {
+    background-color: #fafafa;
+  }
+  #shopify-section-{{ section.id }} section.text-only-cont .container {
+    padding: 50px;
+    text-align: center;
+  }
+  #shopify-section-{{ section.id }} section.text-only-cont .container h3 {
+    font-size: 35px;
+  }
+  @media(max-width: 767px){
+    #shopify-section-{{ section.id }} section.text-only-cont .container {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    #shopify-section-{{ section.id }} section.text-only-cont .container h3 {
+      font-size: 25px;
+    }	
+  }
+</style>
+
+{% assign input = section.settings %}
+
+
+<section class="text-only-cont">
+  <div class="container">
+    <h3> {{ input.text-content }} </h3>
+  </div>
+</section>
+
+
+{% schema %}
+{
+  "name":"Text Only",
+  "class":"text-only",
+  "settings":[
+    {
+      "type":"textarea",
+      "id":"text-content",
+      "label":"Text"
+    }
+  ],
+  "presets":[
+    {
+      "name":"YT Text Only",
+      "category":"Custom Section"
+    }
+  ]
+}
+{% endschema %}

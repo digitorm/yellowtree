@@ -1,0 +1,167 @@
+
+
+{% assign input = section.settings %}
+
+{% assign yt_container = '#shopify-section-' | append: section.id %}
+
+<style>
+  {{ yt_container }}.yt2-image-setup section {
+    padding: 70px 0;
+    position: relative;
+  }
+
+  {{ yt_container }}.yt2-image-setup section h2 {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 45px;
+    margin-bottom: 40px;
+    margin-top: 40px;
+  }
+  {{ yt_container }} .description {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+  }
+  {{ yt_container }} .image-container img.lazyloaded {
+    width: 100%;
+    height: auto;
+  }
+  {{ yt_container }} .image-container.background-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+  }
+  {{ yt_container }} .image-container.background-image img {
+      height: 100%;
+      object-fit: cover;
+  }
+  @media(max-width: 1199px){
+    {{ yt_container }}.yt2-image-setup section h2 {
+      font-size: 35px;
+    }
+  }
+  @media(max-width: 768px){
+    {{ yt_container }}.yt2-image-setup section h2 {
+      font-size: 25px;
+    }
+    {{ yt_container }}.yt2-image-setup section {
+      padding: 40px 0;
+    }
+    {{ yt_container }}.yt2-image-setup section h2 {
+      margin-top: 0;
+    }
+  }
+</style>
+<style>  
+  .yt2-image-setup section .inner-content > *{
+    transform: translateY(30px);
+  }
+</style>
+
+<script  type="lazyload2" >
+	function image_setup(){
+    let box = document.querySelector('#shopify-section-{{section.id}}');
+  
+    var sections = gsap.utils.toArray('#shopify-section-{{section.id}}.yt2-image-setup section .inner-content > *');
+      sections.forEach((section) => {      
+        ScrollTrigger.matchMedia({
+         "(min-width: 320px)": function() {
+              let topSecHeight = `${section.clientHeight}px`;
+              var full_sec_timeline = gsap.timeline({
+                scrollTrigger: {
+                  animation: full_sec_timeline,
+                  trigger: box,
+                  start: "start bottom",
+                  toggleActions: "restart none restart none",
+                  pinSpacing: true,
+                  invalidateOnRefresh: true
+                }
+              });
+  
+              full_sec_timeline.to(section, {
+                transform: "translateY(0px)",
+                duration: 1
+              });
+  
+          }
+        })
+      });
+  } 
+  image_setup();
+  
+</script>
+
+<section class="image-table_{{section.id}}">
+    {% if input.background_image  != blank %}
+    <div class="image-container background-image">
+        {% render 'yt-image-size', image: input.background_image %}
+    </div>
+    {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="inner-content">
+                <h2>
+                    {{ input.heading }}
+                </h2>
+                {% if input.description != blank %}
+                <div class="description setup">
+                  {{ input.description }}
+                </div>
+                {% endif %}
+                <div class="image-container">
+                    {% render 'yt-image-size', image: input.featured_image %}
+                </div>
+                <div class="btn-cont">
+                    {% render 'yt2-btn-landing-page', url: input.btn_url, text: input.btn_text %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+    "name":"Image Setup",
+    "class":"yt2-image-setup",
+    "settings":[
+        {
+            "type":"textarea",
+            "id":"heading",
+            "label":"Heading"
+        },
+        {
+            "type":"textarea",
+            "id":"description",
+            "label": "Description"
+        },
+        {
+            "type":"image_picker",
+            "id":"background_image",
+            "label":"Background Image"
+        },
+        {
+            "type":"image_picker",
+            "id":"featured_image",
+            "label":"Featured Image"
+        },
+        {
+            "type":"url",
+            "id":"btn_url",
+            "label":"Button Url"
+        },
+        {
+            "type":"text",
+            "id":"btn_text",
+            "label":"Button Url"
+        }
+    ],
+    "presets":[
+        {
+            "name":"Image Setup",
+            "category":"Custom section"
+        }
+    ]
+}
+{% endschema %}

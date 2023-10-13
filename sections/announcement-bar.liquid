@@ -1,0 +1,338 @@
+{% if section.settings.choosen_bar == 'announcement_bar' %}
+
+<link rel="stylesheet" data-href="{{ 'announcement-bar.css' | asset_url }}" />
+
+{%- if section.settings.display and section.settings.text != blank -%}
+  {%- assign dismissible = section.settings.dismissible -%}
+  {%- assign announcement_link = section.settings.url -%}
+  {%- capture dismiss_btn -%}
+      {%- if dismissible -%}
+        <button class="#announcement-bar-dismiss" data-dismiss>
+          {% render 'icon' name: 'x' %}
+        </button>
+      {%- endif -%}
+    {%- endcapture -%}
+  <announcement-bar   
+    {% if dismissible %}dismissible {% unless request.design_mode %}hidden{% endunless %}{% endif %}
+    class="#announcement-bar"
+    style="--announcement-bar-color-text: {{ section.settings.text_color }}; --announcement-bar-color-background: {{ section.settings.bg_color }};"
+  >
+    {%- if section.settings.url != blank -%}
+      <a href="{{ announcement_link }}" class="stretched-link"></a>
+    {%- endif -%}
+    <p class="#announcement-bar-text">
+      {{ section.settings.text }}
+    </p>
+    {{ dismiss_btn }}
+  </announcement-bar>
+  {%- if dismissible -%}
+    <script type="module" src="{{ 'announcement-bar.js' | asset_url }}"></script> 
+  {%- endif -%}
+{%- endif -%}
+{% else %}
+  {% render 'shipping_timer_countdown', section: section %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Announcement bar",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "display",
+        "label": "Enable bar",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "dismissible",
+        "label": "Show close button",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text",
+        "default": "#fbcf00"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background",
+        "default": "#232734"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text",
+        "default": "Free shipping over $50"
+      },
+      {
+        "type": "url",
+        "id": "url",
+        "label": "Link"
+      },
+      
+      {
+        "type": "radio",
+        "id": "choosen_bar",
+        "label": "Choose Header Bar",
+        "options": [
+          {
+            "value": "announcement_bar",
+            "label": "Announcement Bar"
+          },
+          {
+            "value": "timer_bar",
+            "label": "Timer Bar"
+          }
+        ],
+        "default": "announcement_bar",
+        "info": "Choose Header Bar"
+      },
+      {
+        "type": "text",
+        "id": "announcement_text",
+        "label": "Announcement text",
+        "default": "Free shipping and returns"
+      },
+      {
+        "type": "url",
+        "id": "announcement_link",
+        "label": "Announcement link"
+      },
+      {
+        "type": "color",
+        "id": "shipping_bar_background_color",
+        "label": "Background Color"
+      },
+      {
+        "type": "header",
+        "content": "Countdown Timer Bar"
+      },
+      {
+        "type": "textarea",
+        "id": "timer_bar_label",
+        "label": "Timer Bar Label"
+      },
+      {
+        "type": "header",
+        "content": "Countdown Timer Bar Button"
+      },
+      {
+        "type": "text",
+        "id": "timer_bar_button_label",
+        "label": "Timer Bar Button Label"
+      },
+      {
+        "type": "url",
+        "id": "timer_bar_button_button",
+        "label": "Timer Bar Button Link"
+      },
+      {
+        "type": "text",
+        "id": "timer_bar_timer_end",
+        "label": "Timer Done Text"
+      },
+      {
+        "type": "header",
+        "content": "Timer Start"
+      },
+      {
+        "type": "range",
+        "id": "timer_bar_start_year",
+        "label": "Year",
+        "min": 2021,
+        "max": 2025,
+        "step": 1,
+        "default": 2021
+      },
+      {
+        "type": "select",
+        "id": "timer_bar_start_month",
+        "label": "Month",
+        "options": [
+          {
+            "value": "Jan",
+            "label": "January"
+          },
+          {
+            "value": "Feb",
+            "label": "February"
+          },
+          {
+            "value": "Mar",
+            "label": "March"
+          },
+          {
+            "value": "Apr",
+            "label": "April"
+          },
+          {
+            "value": "May",
+            "label": "May"
+          },
+          {
+            "value": "Jun",
+            "label": "June"
+          },
+          {
+            "value": "Jul",
+            "label": "July"
+          },
+          {
+            "value": "Aug",
+            "label": "August"
+          },
+          {
+            "value": "Sep",
+            "label": "September"
+          },
+          {
+            "value": "Oct",
+            "label": "October"
+          },
+          {
+            "value": "Nov",
+            "label": "November"
+          },
+          {
+            "value": "Dec",
+            "label": "December"
+          }
+        ],
+        "default": "Jan",
+        "info": "January"
+      },
+      {
+        "type": "range",
+        "id": "timer_bar_start_day",
+        "label": "Day",
+        "min": 1,
+        "max": 31,
+        "step": 1,
+        "default": 1,
+        "info": "======================="
+      },
+      {
+        "type": "text",
+        "id": "timer_bar_start_time",
+        "label": "Start Time",
+        "info": "24hr Clock"
+      },
+      {
+        "type": "header",
+        "content": "Timer End"
+      },
+      {
+        "type": "range",
+        "id": "timer_bar_end_year",
+        "label": "Year",
+        "min": 2021,
+        "max": 2025,
+        "step": 1,
+        "default": 2021
+      },
+      {
+        "type": "select",
+        "id": "timer_bar_end_month",
+        "label": "Month",
+        "options": [
+          {
+            "value": "Jan",
+            "label": "January"
+          },
+          {
+            "value": "Feb",
+            "label": "February"
+          },
+          {
+            "value": "Mar",
+            "label": "March"
+          },
+          {
+            "value": "Apr",
+            "label": "April"
+          },
+          {
+            "value": "May",
+            "label": "May"
+          },
+          {
+            "value": "Jun",
+            "label": "June"
+          },
+          {
+            "value": "Jul",
+            "label": "July"
+          },
+          {
+            "value": "Aug",
+            "label": "August"
+          },
+          {
+            "value": "Sep",
+            "label": "September"
+          },
+          {
+            "value": "Oct",
+            "label": "October"
+          },
+          {
+            "value": "Nov",
+            "label": "November"
+          },
+          {
+            "value": "Dec",
+            "label": "December"
+          }
+        ],
+        "default": "Jan",
+        "info": "January"
+      },
+      {
+        "type": "range",
+        "id": "timer_bar_end_day",
+        "label": "Day",
+        "min": 1,
+        "max": 31,
+        "step": 1,
+        "default": 1,
+        "info": "======================="
+      },
+      {
+        "type": "text",
+        "id": "timer_bar_end_time",
+        "label": "End Time",
+        "info": "24hr Clock"
+      },
+      {
+        "type": "header",
+        "content": "Design"
+      },
+      {
+        "type": "color",
+        "id": "timer_bar_text_color",
+        "label": "Text Color"
+      },
+      {
+        "type": "color",
+        "id": "timer_bar_text_time_color",
+        "label": "Time Color",
+        "info": "============"
+      },
+      {
+        "type": "color",
+        "id": "timer_bar_text_button_color",
+        "label": "Button Text Color",
+        "info": "24hr Clock"
+      },
+      {
+        "type": "color",
+        "id": "timer_bar_text_button_background_color",
+        "label": "Button Background Color",
+        "info": "24hr Clock"
+      }
+    ]
+  }
+{% endschema %}

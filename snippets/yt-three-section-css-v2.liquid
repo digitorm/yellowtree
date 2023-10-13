@@ -1,0 +1,83 @@
+<style>
+  #shopify-section-{{section.id}} .three-columns {
+    padding: {{section.settings.spacing_top}}px 0 {{section.settings.spacing_bottom}}px;
+    background-color: #f2cd1a2e;
+  }
+  #shopify-section-{{section.id}} .row.content-display {
+    padding: 40px;
+    margin: 0;
+    background-color: unset;
+    border-radius: 20px;
+    box-shadow: 0px 8px 22px -1px #e9e9e9;
+    margin-top: 20px;
+  }
+  #shopify-section-{{section.id}} .row.content-display .section-content h3 {
+    color: #ffd400;
+    text-transform: uppercase;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+  #shopify-section-{{section.id}} .row.content-display .section-content .content {
+    color: #000;
+    text-align: left;
+    font-size: 18px;
+  }
+  #shopify-section-{{section.id}} .row.head_text h2.title {
+    text-align: center;
+    font-size: 45px;
+    margin-bottom: 0;
+  }
+  #shopify-section-{{section.id}} .row.btn-action {
+    justify-content: center;
+    padding: 30px 0 0;
+  }
+  #shopify-section-{{section.id}} .section-image img {
+    border: 2px solid #000;
+    border-radius: 2px;
+    height: 100%;
+    width: 100%;
+    
+  }
+  
+   @media(max-width: 767px){
+    #shopify-section-{{section.id}} .three-columns {
+      padding: 35px 0;
+    }
+    #shopify-section-{{section.id}} .row.head_text h2.title {
+      font-size: 30px;
+    }
+    #shopify-section-{{section.id}} .row.content-display {
+      row-gap: 3rem;
+    }
+    #shopify-section-{{section.id}} .container, 
+    #shopify-section-{{section.id}} .container-fluid, 
+    #shopify-section-{{section.id}} .container-padd60 {
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+    #shopify-section-{{section.id}} .row.btn-action {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    #shopify-section-{{section.id}} a.btn.landing-btn {
+      font-size: 16px;
+    }
+  }
+  @media(max-width: 575px){
+    #shopify-section-{{section.id}} a.btn.landing-btn {
+      font-size: 12px;
+      width: 100%;
+    }
+    #shopify-section-{{section.id}} .row.head_text h2.title {
+      font-size: 23px;
+    }
+    #shopify-section-{{section.id}} .row.content-display .section-content .content {
+      font-size: 16px;
+    }
+  }
+  @media(max-width: 414px){
+    #shopify-section-{{section.id}} .row.content-display {
+      padding: 20px;
+    }
+  }
+</style>

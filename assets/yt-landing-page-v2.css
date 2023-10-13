@@ -1,0 +1,65 @@
+body{
+	color: #000;
+}
+main#MainContent {
+    width: 100%;
+    overflow-x: hidden;
+}
+a.btn-landing2.btn {
+  padding: 10px;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 900;
+  min-width: 350px;
+  display: block;
+  text-decoration: unset;
+  margin: 25px auto;
+  background-color: #000;
+  text-align: center;
+  border-radius: 8px;
+  max-width: 550px;
+  font-size: 25px;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+a.btn-landing2.btn:before {
+    content: "";
+    width: 0%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #2e2e2e;
+    z-index: 1;
+    transition: .2s all ease;
+    border-radius: 8px;
+}
+a.btn-landing2.btn span.btn-text {
+    z-index: 2;
+    position: relative;
+}
+a.btn-landing2.btn:hover:before {
+    width: 100%;
+}
+a.btn-landing2.btn.banner_btn {
+    max-width: 300px;
+    font-size: 35px;
+}
+
+@media(max-width: 575px){
+  a.btn-landing2.btn.banner_btn {
+    font-size: 30px;
+    min-width: unset;
+    min-height: unset;
+    margin: 10px 0;
+  }
+  a.btn-landing2.btn {
+    font-size: 16px;
+    min-width: unset;
+    min-height: unset;
+    max-width: 90%;
+  }
+}

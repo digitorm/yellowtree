@@ -1,0 +1,196 @@
+:root{}
+@font-face {
+    font-family: "Founders Grotesk";
+    src: url("FoundersGrotesk-Light.woff") format("woff");
+   	font-display: "swap";
+  	font-weight: 400;
+}
+@font-face {
+    font-family: "Founders Grotesk";
+    src: url("FoundersGrotesk-Regular.woff") format("woff");
+   	font-display: "swap";
+  	font-weight: 500;
+}
+@font-face {
+    font-family: "Founders Grotesk";
+    src: url("FoundersGrotesk-Medium.woff") format("woff");
+   	font-display: "swap";
+  	font-weight: 600;
+}
+@font-face {
+    font-family: "Founders Grotesk";
+    src: url("FoundersGrotesk-Bold.woff") format("woff");
+   	font-display: "swap";
+  	font-weight: 800;
+}
+@font-face {
+    font-family: "Niveau Grotesk";
+    src: url("NiveauGroteskLight.woff") format("woff");
+   	font-display: "swap";
+  	font-weight: 400;
+}
+@font-face {
+    font-family: "Niveau Grotesk";
+    src: url("NiveauGroteskRegular.woff") format("woff");
+   	font-display: "swap";
+  	font-weight: 500;
+}
+@font-face {
+    font-family: "Niveau Grotesk";
+    src: url("NiveauGroteskMedium.woff") format("woff");
+   	font-display: "swap";
+  	font-weight: 600;
+}
+@font-face {
+    font-family: "Niveau Grotesk";
+    src: url("NiveauGroteskBold.woff") format("woff");
+   	font-display: "swap";
+  	font-weight: 800;
+}
+img {
+    height: auto;
+}
+body .\#main-footer {
+    background-color: #faf5f5;
+    color: #000;
+}
+.pre-order-date {
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 15px;
+}
+h1, h2, h3, h4, h5, h6, 
+.btn, .site-nav a,
+.grid-item .product-title,
+.template-product .product-shop .product-title,
+.template-product .product_bottom .tab-title .tab-links,
+.related-products .grid-item .product-bottom .product-title,
+.product-meta .product-title{
+	font-family: "Niveau Grotesk";
+}
+body {
+    font-family: "Founders Grotesk";
+    overflow-x: hidden;
+    font-size: 20px;
+    background-color: #fff7f8 !important;
+}
+
+body announcement-bar.\#announcement-bar {
+    background: #f5dadf !important;
+}
+body .\#main-header.\@overlap.\@sticky,
+body .\#main-header.\@sticky,
+body .\#main-header:not(.\@overlap) {
+    background-color: #fff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+main#MainContent {
+    overflow-x: hidden;
+}
+a{
+	text-decoration: unset;
+}
+a.btn.landing-btn,
+a.btn.btn-landing2 {
+	background-color: #ff002f;
+    padding: 14px 30px!important;
+    color: #fff;
+    border-radius: 0;
+    position: relative;
+    min-width: 200px;
+    box-shadow: 0 0 19px -3px #959393;
+    font-size: 17px;
+    font-weight: 900;
+    text-decoration: unset;
+    text-transform: uppercase;
+    overflow: hidden;
+    text-align: center;
+    max-width: 300px;
+    margin: 0 auto;
+    display: block;
+}
+a.btn.landing-btn:before,
+a.btn.btn-landing2:before{
+    content: "";
+    width: 0%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #2e2e2e;
+    z-index: 1;
+    transition: .2s all ease;
+}
+a.btn.landing-btn:hover,
+a.btn.btn-landing2:hover{
+	border-color: #2e2e2e;
+}
+a.btn.landing-btn:hover::before,
+a.btn.btn-landing2:hover::before{
+    width: 100%;
+}
+a.btn.landing-btn span.btn-text,
+a.btn.btn-landing2 span.btn-text{
+	z-index: 2;
+  	position: relative;
+}
+a.btn.landing-btn.secondary {
+  background-color: #52f646;
+}
+a.btn.landing-btn.secondary:hover {
+  background-color: #52f646;
+}
+a.btn.landing-btn.secondary::before {
+  background-color: #52f646;
+}
+body#yellowtree-lp {
+    padding-bottom: 60px !important;
+}
+
+.footer-default .footer-bottom {
+    padding: 20px 0;
+}
+.footer-bottom, .footer-bottom address, .footer-bottom address a {
+    margin-bottom: 0;
+    text-align: center;
+}
+#dropdown-cart .summary .d-flex {
+  margin-bottom: 1rem;
+}
+
+.sticky_form .col-img-title {
+    display: block !important;
+}
+.sticky_form .pr-img {
+    margin-right: 0px;
+}
+.sticky_form .pr-img .product-title {
+    line-height: 1.2;
+}
+.sticky_form .align-items-center .col-actions .action input {
+    border-radius: 20px;
+    font-size: 15px;
+    box-shadow: 0 0 3px #ccc;
+}
+
+
+
+@media(max-width: 767px){
+  body {
+    font-size: 15px;
+  }
+  a.btn.landing-btn{
+  	padding: 14px 15px !important;
+  }
+  .ajax-success-modal.ajax-success-normal .actions .btn {
+    font-size: 14px;
+  }
+  div#AppleBusinessChat {
+    display: none !important;
+    opacity: 0;
+    pointer-events: none !important;
+  }
+}
